@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Estado de los enlaces troncales en Castellón</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <style type="text/css">
+      html, body, #map_canvas {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      #info {
+        margin-top: 2em;
+        background: #EEE;
+        border: 4px solid #888;
+        border-radius: 12px;
+        padding: .3em 2em;
+        font-family: arial;
+        font-size: 1.2em;
+      }
+      #info p {
+        width: 100%;
+        text-align: center;
+      }
+      #info td {
+        padding: 0 1em;
+      }
+      #info td span {
+        font-size: 1.5em;
+      }
+    </style>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>
+    <script type="text/javascript" src="js/StyledMarker.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
+  </head>
+  <body>
+    <div id="map_canvas"></div>
+    <div id="info">
+      <p>Pasa por encima de un enlace para obtener información en tiempo real.</p>
+      <table>
+        <tr>
+          <td>Distancia del enlace: <span id="distance">0.0km</span></td>
+          <td>Ancho de banda actual: <span id="bandwith">0.0Mbits/s</span></td>
+          <td>Consumo de tráfico: <span id="traffic">0.0Mbits/s</span></td>
+        </tr>
+      </table>
+      </p>
+    </div>
+  </body>
+</html>

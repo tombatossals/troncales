@@ -1,0 +1,4 @@
+:global i
+/tool bandwidth-test 10.228.144.161 \
+    direction=transmit duration=4s protocol=tcp do={ :set i $"tx-current" }
+{ :put $i }
