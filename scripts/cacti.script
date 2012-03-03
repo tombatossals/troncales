@@ -1,0 +1,8 @@
+#!/bin/bash
+
+[ $# -eq 2 ] || exit -1
+HOST=$1
+LINK=$2
+
+BW=$(ssh guest@$HOST "/system script run bandwidth_$LINK" | tail -1 | sed -e s///)
+echo "scale=2; ${BW} / 1000000" | bc
