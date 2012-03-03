@@ -11,8 +11,9 @@
         padding: 0;
         height: 100%;
       }
-      #info {
-        margin-top: 2em;
+      #mainInfo {
+        margin-bottom: 2em;
+        position: absolute;
         background: #EEE;
         border: 4px solid #888;
         border-radius: 12px;
@@ -20,14 +21,23 @@
         font-family: arial;
         font-size: 1.2em;
       }
+
+      #info {
+        margin-top: 1em;
+      }
+
       #info p {
+        background: #EEE;
+        border: 4px solid #888;
+        border-radius: 12px;
+        padding: .5em 1em;
+        font-family: arial;
+        font-size: 1.2em;
         width: 100%;
         text-align: center;
-      }
-      #info td {
-        padding: 0 1em;
-      }
-      #info td span {
+    }
+
+      #mainInfo span {
         font-size: 1.5em;
       }
     </style>
@@ -41,14 +51,11 @@
     <div id="map_canvas"></div>
     <div id="info">
       <p>Pasa por encima de un enlace para obtener información en tiempo real.</p>
-      <table>
-        <tr>
-          <td>Distancia del enlace: <span id="distance">0.0km</span></td>
-          <td>Ancho de banda actual: <span id="bandwith">0.0Mbits/s</span></td>
-          <td>Consumo de tráfico: <span id="traffic">0.0Mbits/s</span></td>
-        </tr>
-      </table>
-      </p>
+    </div>
+    <div id="mainInfo">
+      Distancia del enlace: <span id="distance">0.0km</span>
+      Ancho de banda actual: <span id="bandwith">0.0Mbits/s</span>
+      Consumo de tráfico: <span id="traffic">0.0Mbits/s</span>
     </div>
   </body>
 </html>
