@@ -84,7 +84,7 @@ function initialize() {
     map: map,
   };
 
-  enlaces = [ { graph_id: 17, traffic_graph_id: 5, p2p: [ "castalia", "laplana" ] }, { graph_id: 15, traffic_graph_id: 6, p2p: [ "castalia", "ujihumanas" ] }, { p2p: [ "ujihumanas", "pabello" ] } ];
+  enlaces = [ { graph_id: 17, traffic_graph_id: 5, p2p: [ "castalia", "laplana" ] }, { graph_id: 15, traffic_graph_id: 6, p2p: [ "castalia", "ujihumanas" ] }, { graph_id: 21, traffic_graph_id: 19, p2p: [ "ujihumanas", "pabello" ] } ];
   var path = {};
   var link1 = "";
   var link2 = "";
