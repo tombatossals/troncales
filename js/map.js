@@ -20,9 +20,10 @@ function getMarker(node, map, name) {
 
 function updatelink(poly) {
     var distance = (google.maps.geometry.spherical.computeDistanceBetween(supernodos[poly.link1].latlng, supernodos[poly.link2].latlng) / 1000).toFixed(3);
-    $("#distance").html(distance+"Km.");
-
-    $("#info").html("<img src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.graph_id + "\" />" + "<img src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.traffic_graph_id + "\" />");
+    $("#graphs").css("position", "absolute");
+    $("#graphs").css("left", "5em");
+    $("#graphs").css("bottom", "1em");
+    $("#graphs").html("<img style=\"height: 150px;\" src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.graph_id + "\" />" + "<img style=\"height: 150px;\" src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.traffic_graph_id + "\" />");
 
     var polyOptions = {
         strokeColor: '#FF0000',
@@ -30,14 +31,14 @@ function updatelink(poly) {
         strokeWeight: 12,
         map: map,
     };
-
     poly.setOptions(polyOptions);
+    $("#info").html("Distancia del enlace: <strong>" + distance + "</strong> Km.");
 }
 
 function out(poly) {
     var distance = "0.0";
-    $("#distance").html(distance+"Km.");
-    $("#info").html("<p>Pasa por encima de un enlace para obtener información en tiempo real.</p>");
+    $("#info").html("Pasa por encima de un enlace para obtener más información.");
+    $("#graphs").html("");
 
     var polyOptions = {
         strokeColor: '#00FF00',
@@ -67,7 +68,7 @@ function initialize() {
       myOptions);
 
     map.controls[google.maps.ControlPosition.TOP].push(document.getElementById('info'));
-    map.controls[google.maps.ControlPosition.BOTTOM].push(document.getElementById('mainInfo'));
+    map.controls[google.maps.ControlPosition.BOTTOM].push(document.getElementById('graphs'));
 
     for (var i in supernodos) {
         supernodos[i].marker = getMarker(supernodos[i].latlng, map, supernodos[i].name);
@@ -84,7 +85,7 @@ function initialize() {
     map: map,
   };
 
-  enlaces = [ { graph_id: 24, traffic_graph_id: 5, p2p: [ "castalia", "laplana" ] }, { graph_id: 23, traffic_graph_id: 6, p2p: [ "castalia", "ujihumanas" ] }, { graph_id: 25, traffic_graph_id: 19, p2p: [ "ujihumanas", "pabello" ] } ];
+  enlaces = [ { graph_id: 24, traffic_graph_id: 5, p2p: [ "castalia", "laplana" ] }, { graph_id: 23, traffic_graph_id: 6, p2p: [ "castalia", "ujihumanas" ] }, { graph_id: 26, traffic_graph_id: 19, p2p: [ "ujihumanas", "pabello" ] } ];
   var path = {};
   var link1 = "";
   var link2 = "";

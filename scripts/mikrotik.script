@@ -1,4 +1,8 @@
-:global i
-/tool bandwidth-test 10.228.144.161 \
-    direction=transmit duration=4s protocol=tcp do={ :set i $"tx-current" }
-{ :put $i }
+:global tx
+:global rx
+/tool bandwidth-test 172.16.1.78 \
+    direction=both duration=10s protocol=tcp do={ 
+    :set tx $"tx-total-average" 
+    :set rx $"rx-total-average" 
+}
+:put ("tx:". $tx . " rx:" . $rx )

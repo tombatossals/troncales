@@ -5,4 +5,8 @@ HOST=$1
 LINK=$2
 
 BW=$(ssh guest@$HOST "/system script run bandwidth_$LINK" | tail -1 | sed -e s///)
-echo "scale=2; ${BW} / 1000000" | bc
+TX=$(echo ${BW} | cut -f1 -d" " | sed -e s/tx://)
+RX=$(echo ${BW} | cut -f2 -d" " | sed -e s/rx://)
+TX=$(echo "scale=2; ${TX} / 1000000" | bc)
+RX=$(echo "scale=2; ${RX} / 1000000" | bc)
+echo "tx:$TX rx:$RX"
