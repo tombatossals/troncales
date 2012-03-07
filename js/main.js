@@ -2,8 +2,14 @@ var map;
 var supernodos;
 var enlaces;
 
+var statusColor = {
+    "down": "FF0000",
+    "ok": "00FF00",
+    "saturated": "FFd660"
+}
+
 function getMarker(node, map, name) {
-    var icon = new google.maps.MarkerImage("images/wifi.png", null, null, new google.maps.Point(16, 16));
+    var icon = new google.maps.MarkerImage("img/wifi.png", null, null, new google.maps.Point(16, 16));
     var marker2 = new google.maps.Marker({
             map: map,
             position: node,
@@ -20,30 +26,26 @@ function getMarker(node, map, name) {
 
 function updatelink(poly) {
     var distance = (google.maps.geometry.spherical.computeDistanceBetween(supernodos[poly.link1].latlng, supernodos[poly.link2].latlng) / 1000).toFixed(3);
-    $("#graphs").css("position", "absolute");
-    $("#graphs").css("left", "5em");
-    $("#graphs").css("bottom", "1em");
-    $("#graphs").html("<img style=\"height: 150px;\" src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.graph_id + "\" />" + "<img style=\"height: 150px;\" src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.traffic_graph_id + "\" />");
+    $("#graph1").html("<img src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.graph_id + "\" />");
+    $("#graph2").html("<img src=\"http://10.228.144.163:81/cacti/graph_image.php?local_graph_id=" + poly.traffic_graph_id + "\" />");
 
     var polyOptions = {
-        strokeColor: '#FF0000',
+        strokeColor: '#FFFFFF',
         strokeOpacity: 1.0,
-        strokeWeight: 12,
+        strokeWeight: 9,
         map: map,
     };
     poly.setOptions(polyOptions);
-    $("#info").html("Distancia del enlace: <strong>" + distance + "</strong> Km.");
+    $("#distance").html("Distancia del enlace: <strong>" + distance + "</strong> Km.");
 }
 
 function out(poly) {
     var distance = "0.0";
-    $("#info").html("Pasa por encima de un enlace para obtener más información.");
-    $("#graphs").html("");
 
     var polyOptions = {
-        strokeColor: '#00FF00',
+        strokeColor: statusColor[poly.status],
         strokeOpacity: 1.0,
-        strokeWeight: 12,
+        strokeWeight: 9,
         map: map,
     };
 
@@ -67,9 +69,6 @@ function initialize() {
     map = new google.maps.Map(document.getElementById('map_canvas'),
       myOptions);
 
-    map.controls[google.maps.ControlPosition.TOP].push(document.getElementById('info'));
-    map.controls[google.maps.ControlPosition.BOTTOM].push(document.getElementById('graphs'));
-
     for (var i in supernodos) {
         supernodos[i].marker = getMarker(supernodos[i].latlng, map, supernodos[i].name);
     }
@@ -78,14 +77,7 @@ function initialize() {
   //var bounds = new google.maps.LatLngBounds(castalia.marker.getPosition(), laplana.marker.getPosition());
   //map.fitBounds(bounds);
 
-  var polyOptions = {
-    strokeColor: '#00FF00',
-    strokeOpacity: 1.0,
-    strokeWeight: 12,
-    map: map,
-  };
-
-  enlaces = [ { graph_id: 24, traffic_graph_id: 5, p2p: [ "castalia", "laplana" ] }, { graph_id: 23, traffic_graph_id: 6, p2p: [ "castalia", "ujihumanas" ] }, { graph_id: 26, traffic_graph_id: 19, p2p: [ "ujihumanas", "pabello" ] } ];
+  enlaces = [ { status: "ok", graph_id: 24, traffic_graph_id: 5, p2p: [ "castalia", "laplana" ] }, { status: "saturated", graph_id: 23, traffic_graph_id: 6, p2p: [ "castalia", "ujihumanas" ] }, { status: "down", graph_id: 28, traffic_graph_id: 19, p2p: [ "ujihumanas", "pabello" ] } ];
   var path = {};
   var link1 = "";
   var link2 = "";
@@ -94,6 +86,14 @@ function initialize() {
   for (enlace in enlaces) {
     link1 = enlaces[enlace]["p2p"][0];
     link2 = enlaces[enlace]["p2p"][1];
+
+    var polyOptions = {
+        strokeColor: statusColor[enlaces[enlace]["status"]],
+        strokeOpacity: 1.0,
+        strokeWeight: 9,
+        map: map,
+    };
+
     var poly = new google.maps.Polyline(polyOptions);
     path = [ supernodos[link1].marker.getPosition(), supernodos[link2].marker.getPosition()];
     poly.setPath(path);
@@ -101,6 +101,7 @@ function initialize() {
     poly.link2 = link2;
     poly.graph_id = enlaces[enlace]["graph_id"];
     poly.traffic_graph_id = enlaces[enlace]["traffic_graph_id"];
+    poly.status = enlaces[enlace]["status"];
     google.maps.event.addListener(poly, "mouseout", 
         (function(poly) {
             return function() {
