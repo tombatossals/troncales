@@ -1,0 +1,22 @@
+[
+   { 
+   	"id": "castalia",	   
+	"name": "Castalia", 
+	"point": [ 39.995174, -0.036052 ]
+   },
+   { 
+   	"id": "laplana",	   
+	"name": "La Plana", 
+	"point": [ 39.996424, -0.000437 ]
+   },
+   {
+   	"id": "ujihumanas",	
+	"name": "UJI Humanas", 
+	"point": [ 39.995347, -0.070050]
+   },
+   {
+   	"id": "pabello",	
+	"name": "Pabello Ciutat de Castello",
+	"point": [ 39.974999, -0.055556 ]
+   }
+]

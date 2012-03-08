@@ -1,0 +1,23 @@
+[
+	{
+		"id": "castalia-laplana",
+        	"state": "ok",
+        	"graph_id": 24,
+        	"traffic_graph_id": 5,
+        	"supernodos": [ "castalia", "laplana" ]
+	}, 
+	{
+		"id": "castalia-ujihumanas",
+        	"state": "saturated",
+        	"graph_id": 23,
+        	"traffic_graph_id": 6,
+        	"supernodos": [ "castalia", "ujihumanas" ]
+	}, 
+	{
+		"id": "ujihumanas-pabello",
+        	"state": "down",
+        	"graph_id": 28,
+        	"traffic_graph_id": 19,
+        	"supernodos": [ "ujihumanas", "pabello" ]
+	}
+]

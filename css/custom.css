@@ -1,5 +1,27 @@
+html {
+  min-height: 600px;
+  height: 100%;
+}
+
+body {
+  height: 85%;
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+.sidebar-nav {
+  padding: 9px 0;
+}
+
 #map_canvas {
-  height: 600px;
+  height: 100%;
+}
+
+.row-fluid {
+  height: 100%;
+}
+
+.container-fluid {
+  height: 100%;
 }
 
 #map_canvas label {width: auto;}
@@ -15,6 +37,21 @@
 #info p {
   font-size: 1.4em;
 }
+
 #info span {
   font-size: 1.5em;
 }
+
+#linkInfo .modal-body {
+  overflow: hidden;
+}
+
+.navbar .nav .open > .dropdown-toggle, .navbar .nav .active > .dropdown-toggle, .navbar .nav .open.active > .dropdown-toggle {
+	background-color: hsl(208, 100%, 40%);
+}
+
+.nav > .btn-group {
+	float: right;
+}
+
+.modal { height: 540px; max-height: 540px; }

@@ -5,20 +5,11 @@
     <title>Estado de los enlaces de la troncal de La Plana Alta</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="David Rubert">
 
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -48,17 +39,19 @@
             <ul class="nav">
               <li class="active"><a href="#">Inicio</a></li>
               <li><a href="#about">Acerca de</a></li>
-              <li><a href="#contact">Contacto</a></li>
+	      <li><a href="#contact">Contacto</a></li>
+	    </ul>
+	    <ul class="nav pull-right">
               <li>
                 <div class="btn-group">
-                    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> User</a>
+                    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> Accions</a>
                     <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                        <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                        <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
+                        <li><a href="#"><i class="icon-pencil"></i> Afegir nou supernode</a></li>
+                        <li><a href="#"><i class="icon-trash"></i> Contactar con la gente</a></li>
+                        <li><a href="#"><i class="icon-ban-circle"></i> Reportar un problema</a></li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="i"></i> Make admin</a></li>
+                        <li><a href="#"><i class="i"></i> </a></li>
                     </ul>
                 </div>
               </li>
@@ -72,36 +65,49 @@
       <div class="row-fluid">
         <div class="span3">
             <div id="info">
-                <p>Pasa por encima de un enlace para obtener más información.</p>
-                <ul class="unstyled">
-                    <li>Distancia: 11km.</li>
-                    <li id="graph1"></li>
-                    <li id="graph2"></li>
+                <p>Pasa por encima de un enlace para obtener m&aacute;s informaci&oacute;n.</p>
+		<ul class="unstyled">
+                    <li class="distance"></li>
+                    <li class="graph1"></li>
+                    <li class="graph2"></li>
                 </ul>
             </div>
             <div id="graphs"></div>
         </div><!--/span-->
-        <div class="span9">
-            <div id="map_canvas"></div>
-        </div><!--/span-->
+	<div class="span9" id="map_canvas"></div>
       </div><!--/row-->
 
-      <hr>
-
-      <footer>
-        <p>&copy; Castelló 2012</p>
-      </footer>
-
+    <div class="modal fade" id="linkInfo">
+      <div class="modal-header">
+    	<a class="close" data-dismiss="modal">×</a>
+    	  <h3>Modal header</h3>
+  	</div>
+	<div class="modal-body">
+          <ul class="thumbnails">
+            <li class="graph1 thumbnail"></li>
+            <li class="graph2 thumbnail"></li>
+          </ul>
+  	</div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-primary">Tancar</a>
+      </div>
+    </div>
     </div><!--/.fluid-container-->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap-dropdown.js"></script>
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/json2.js"></script>
+    <script src="js/libs/underscore.js"></script>
+    <script src="js/libs/backbone.js"></script>
+    <script src="js/libs/bootstrap-dropdown.js"></script>
+    <script src="js/libs/bootstrap-modal.js"></script>
     <script type="text/javascript"
         src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>
     <script type="text/javascript" src="js/StyledMarker.js"></script>
+    <script type="text/javascript" src="js/models.js"></script>
+    <script type="text/javascript" src="js/collections.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 
   </body>
