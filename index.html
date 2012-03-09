@@ -58,17 +58,17 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-            <div id="info">
-                <p>Pasa por encima de un enlace y pulsa sobre &eacute;l para obtener m&aacute;s informaci&oacute;n.</p>
-		<h2 class="linkname">Nombre del enlace</h2>
-		<ul class="unstyled">
-                    <li class="distance"></li>
-                    <li class="graph1"></li>
-                    <li class="graph2"></li>
-                </ul>
-            </div>
-            <div id="graphs"></div>
+        <div class="span3" id="info">
+            <p>Pasa por encima de un enlace y pulsa sobre &eacute;l para obtener m&aacute;s informaci&oacute;n.</p>
+	    <div class="alert alert-info" id="infoSupernodo">
+		<a class="close">&times;</a>
+		<h2 class="name">Nombre del enlace</h2>
+		<ul class="thumbnails">
+               	    <li class="distance"></li>
+                    <li class="graph1 thumbnail"></li>
+                    <li class="graph2 thumbnail"></li>
+               	</ul>
+	    </div>
         </div><!--/span-->
 	<div class="span9" id="map_canvas"></div>
       </div><!--/row-->
@@ -76,10 +76,11 @@
     <div class="modal fade" id="linkInfo">
       <div class="modal-header">
     	<a class="close" data-dismiss="modal">×</a>
-    	  <h3>Modal header</h3>
+    	  <h2 class="name">Modal header</h3>
   	</div>
 	<div class="modal-body">
           <ul class="thumbnails">
+      	    <li class="distance"></li>
             <li class="graph1 thumbnail"></li>
             <li class="graph2 thumbnail"></li>
           </ul>

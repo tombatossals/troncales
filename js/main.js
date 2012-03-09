@@ -7,4 +7,13 @@ $(function() {
     $(".modal .modal-footer .btn-primary").click(function() {
     	$("#linkInfo").modal("hide");
     });
+
+    $("a.close").click(function(e) {
+	    event.stopPropagation();
+	    $(this).parent().hide();
+    });
+
+    $("#infoSupernodo").click(function() {
+	    $("#linkInfo").modal();
+    });
 });

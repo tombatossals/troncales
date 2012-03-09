@@ -4,7 +4,7 @@ var MapView = Backbone.View.extend({
     	var myOptions = {
         	zoom: 13,
         	center: new google.maps.LatLng(40.000531,-0.039139),
-        	mapTypeId: google.maps.MapTypeId.SATELLITE
+        	mapTypeId: google.maps.MapTypeId.HYBRID
     	};
     	map = new google.maps.Map(this.el, myOptions);
     	this.render();
@@ -62,10 +62,10 @@ var EnlaceView = Backbone.View.extend({
                                 return function() {
     					$(".graph1").html("<img src=\"http://10.228.144.163/cacti/graph_image.php?local_graph_id=" + ref.model.get("graph_id") + "\" />");
     					$(".graph2").html("<img src=\"http://10.228.144.163/cacti/graph_image.php?local_graph_id=" + ref.model.get("traffic_graph_id") + "\" />");
-    					$(".distance").html("Distancia del enlace: " + ref.model.get("distance") + "km.");
-
     					ref.model.get("poly").setOptions({ strokeColor: "#FFFFFF" });
-    					$("#distance").html("Distancia del enlace: <strong>" + ref.model.get("distance") + "</strong> Km.");
+    					$(".distance").html("Distancia del enlace: <strong>" + ref.model.get("distance") + " Km.</strong>");
+					$("#infoSupernodo").show();
+					$(".name").text(ref.model.get("id"));
                                 };
                         })(ref)
                 );

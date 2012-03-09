@@ -30,10 +30,6 @@ body {
     max-width: none;
 }
 
-.graph img {
-  width: 300px;
-}
-
 #info p {
   font-size: 1.2em;
 }
@@ -54,4 +50,20 @@ body {
 	float: right;
 }
 
-.modal { height: 540px; max-height: 540px; }
+#infoSupernodo {
+	display: none;
+}
+
+#infoSupernodo li.thumbnail {
+	background: white;
+}
+
+#infoSupernodo:hover {
+	cursor: pointer;
+}
+
+#infoSupernodo h2 {
+	font-size: 1.6em;
+}
+
+.modal { height: 590px; max-height: 590px; }
