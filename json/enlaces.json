@@ -14,6 +14,27 @@
         	"supernodos": [ "castalia", "ujihumanas" ]
 	}, 
 	{
+		"id": "riodanubio-laplana",
+        	"state": "ok",
+        	"graph_id": 29,
+        	"traffic_graph_id": 36,
+        	"supernodos": [ "riodanubio", "laplana" ]
+	}, 
+	{
+		"id": "fcatolico-pabello",
+        	"state": "ok",
+        	"graph_id": 41,
+        	"traffic_graph_id": 40,
+        	"supernodos": [ "fcatolico", "pabello" ]
+	}, 
+	{
+		"id": "riodanubio-pabello",
+        	"state": "ok",
+        	"graph_id": 38,
+        	"traffic_graph_id": 37,
+        	"supernodos": [ "riodanubio", "pabello" ]
+	}, 
+	{
 		"id": "ujihumanas-pabello",
         	"state": "down",
         	"graph_id": 28,

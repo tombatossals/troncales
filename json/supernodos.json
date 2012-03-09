@@ -2,21 +2,31 @@
    { 
    	"id": "castalia",	   
 	"name": "Castalia", 
-	"point": [ 39.995174, -0.036052 ]
+	"latlng": [ 39.995174, -0.036052 ]
    },
    { 
    	"id": "laplana",	   
 	"name": "La Plana", 
-	"point": [ 39.996424, -0.000437 ]
+	"latlng": [ 39.996424, -0.000437 ]
    },
    {
    	"id": "ujihumanas",	
 	"name": "UJI Humanas", 
-	"point": [ 39.995347, -0.070050]
+	"latlng": [ 39.995347, -0.070050 ]
+   },
+   {
+   	"id": "fcatolico",	
+	"name": "Fernando el Catolico", 
+	"latlng": [ 39.980505, -0.030588 ]
+   },
+   {
+   	"id": "riodanubio",	
+	"name": "Rio Danubio", 
+	"latlng": [ 39.975539, -0.034238 ]
    },
    {
    	"id": "pabello",	
 	"name": "Pabello Ciutat de Castello",
-	"point": [ 39.974999, -0.055556 ]
+	"latlng": [ 39.974999, -0.055556 ]
    }
 ]
