@@ -29,11 +29,6 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
           <a class="brand" href="#">Troncal de La Plana Alta</a>
           <div class="nav-collapse">
 	    <ul class="nav pull-right">
@@ -56,45 +51,23 @@
       </div>
     </div>
 
+    <div id="modal"></div>
+
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3" id="info">
+	<div id="info" class="span3">
             <p>Pasa por encima de un enlace y pulsa sobre &eacute;l para obtener m&aacute;s informaci&oacute;n.</p>
-	    <div class="alert alert-info" id="infoSupernodo">
-		<a class="close">&times;</a>
-		<h2 class="name">Nombre del enlace</h2>
-		<ul class="thumbnails">
-               	    <li class="distance"></li>
-                    <li class="graph1 thumbnail"></li>
-                    <li class="graph2 thumbnail"></li>
-               	</ul>
-	    </div>
+	    <div id="info-supernodo"></div>
         </div><!--/span-->
 	<div class="span9" id="map_canvas"></div>
       </div><!--/row-->
-
-    <div class="modal fade" id="linkInfo">
-      <div class="modal-header">
-    	<a class="close" data-dismiss="modal">×</a>
-    	  <h2 class="name">Modal header</h3>
-  	</div>
-	<div class="modal-body">
-          <ul class="thumbnails">
-      	    <li class="distance"></li>
-            <li class="graph1 thumbnail"></li>
-            <li class="graph2 thumbnail"></li>
-          </ul>
-  	</div>
-      <div class="modal-footer">
-        <a href="#" class="btn btn-primary">Tancar</a>
-      </div>
-    </div>
     </div><!--/.fluid-container-->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/template.js"></script>
     <script src="js/libs/json2.js"></script>
     <script src="js/libs/underscore.js"></script>
     <script src="js/libs/backbone.js"></script>
@@ -102,6 +75,7 @@
     <script src="js/libs/bootstrap-modal.js"></script>
     <script type="text/javascript"
         src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>
+    <script type="text/javascript" src="js/events.js"></script>
     <script type="text/javascript" src="js/models.js"></script>
     <script type="text/javascript" src="js/collections.js"></script>
     <script type="text/javascript" src="js/views.js"></script>

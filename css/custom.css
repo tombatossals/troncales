@@ -38,10 +38,6 @@ body {
   font-size: 1.5em;
 }
 
-#linkInfo .modal-body {
-  overflow: hidden;
-}
-
 .navbar .nav .open > .dropdown-toggle, .navbar .nav .active > .dropdown-toggle, .navbar .nav .open.active > .dropdown-toggle {
 	background-color: hsl(208, 100%, 40%);
 }
@@ -50,19 +46,23 @@ body {
 	float: right;
 }
 
-#infoSupernodo {
-	display: none;
+#info-supernodo {
+	display: normal;
 }
 
-#infoSupernodo li.thumbnail {
+#info-supernodo li.thumbnail {
 	background: white;
 }
 
-#infoSupernodo:hover {
+#info-supernodo:hover {
 	cursor: pointer;
 }
 
-#infoSupernodo h2 {
+#info-supernodo img {
+	width: 240px;
+}
+
+#info-supernodo h2 {
 	font-size: 1.6em;
 }
 

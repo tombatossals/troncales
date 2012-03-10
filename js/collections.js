@@ -11,7 +11,7 @@ window.ListaEnlaces = Backbone.Collection.extend({
 		var ref = this;
 		this.supernodos.fetch({ success: function() {
 			ref.supernodos.each(function(supernodo) {
-				new SupernodoView({ model: supernodo });
+				new SupernodoMapView({ model: supernodo });
 			});
                		ref.fetch({ success: function() {
 				ref.each(function(enlace) {
@@ -20,7 +20,7 @@ window.ListaEnlaces = Backbone.Collection.extend({
              				enlace.set("supernodos", [ s0, s1 ]);
                 			var distance = (google.maps.geometry.spherical.computeDistanceBetween(s0.get("latlng"), s1.get("latlng")) / 1000).toFixed(2);
                 			enlace.set("distance", distance);
-					new EnlaceView({ model: enlace });
+					new EnlaceMapView({ model: enlace });
 				});
 			}});
 		}});

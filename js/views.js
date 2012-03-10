@@ -13,10 +13,9 @@ var MapView = Backbone.View.extend({
     render: function() {
         return this;
     }
-
 });
 
-var SupernodoView = Backbone.View.extend({
+var SupernodoMapView = Backbone.View.extend({
 	initialize: function() {
 		this.render();
 	},
@@ -31,7 +30,47 @@ var SupernodoView = Backbone.View.extend({
 	}
 });
 
-var EnlaceView = Backbone.View.extend({
+var EnlaceBoxView = Backbone.View.extend({
+	tagName: "div",
+    	className: "box",
+    	events: {
+		"click .close": "close",
+		"click": "showModal"
+	},
+    	render: function() {
+		var self =this;
+                $(self.el).empty().template("templates/linkBox.html", self.model.toJSON());
+		return this;
+	},
+    	showModal: function() {
+            var linkModalView = new EnlaceModalView({ model: this.model });
+            $("#modal").empty().append(linkModalView.render().el);
+	},
+    	close: function(event) {
+		event.stopPropagation();
+		$(this.el).hide();
+	}
+});
+
+var EnlaceModalView = Backbone.View.extend({
+	tagName: "div",
+    	className: "modal",
+    	events: {
+		"click .showoff": "close",
+	},
+    	render: function() {
+		var self =this;
+                $(self.el).empty().template("templates/linkModal.html", self.model.toJSON(), function() {
+			$(self.el).modal();
+		});
+		return this;
+	},
+    	close: function() {
+		$(this.el).modal("hide");
+	}
+});
+
+var EnlaceMapView = Backbone.View.extend({
 	initialize: function() {
 		this.render();
 	},
@@ -48,29 +87,28 @@ var EnlaceView = Backbone.View.extend({
                 var poly = new google.maps.Polyline(polyOptions);
                 this.model.set("poly", poly);
 
-		// Google Map events
+		// Google Map events for this polyline
                 var ref = this;
                 google.maps.event.addListener(poly, "mouseout",
-                        (function(ref) {
-                                return function() {
-    					ref.model.get("poly").setOptions({ strokeColor: ref.model.get("state") });
-                                };
-                        })(ref)
+                    (function(ref) {
+                        return function() {
+    			    dispatcher.trigger("polyout", ref);
+                        };
+                    })(ref)
                 );
                 google.maps.event.addListener(poly, "mouseover",
-                        (function(ref) {
-                                return function() {
-    					$(".graph1").html("<img src=\"http://10.228.144.163/cacti/graph_image.php?local_graph_id=" + ref.model.get("graph_id") + "\" />");
-    					$(".graph2").html("<img src=\"http://10.228.144.163/cacti/graph_image.php?local_graph_id=" + ref.model.get("traffic_graph_id") + "\" />");
-    					ref.model.get("poly").setOptions({ strokeColor: "#FFFFFF" });
-    					$(".distance").html("Distancia del enlace: <strong>" + ref.model.get("distance") + " Km.</strong>");
-					$("#infoSupernodo").show();
-					$(".name").text(ref.model.get("id"));
-                                };
-                        })(ref)
+                    (function(ref) {
+                        return function() {
+    			    dispatcher.trigger("polyin", ref);
+                        };
+                    })(ref)
                 );
-                google.maps.event.addListener(poly, "click", function() {
-                        $('#linkInfo').modal("show");
-                });
+                google.maps.event.addListener(poly, "click",
+                    (function(ref) {
+                        return function() {
+    			    dispatcher.trigger("polyclick", ref);
+                        };
+                    })(ref)
+                );
 	}
 });

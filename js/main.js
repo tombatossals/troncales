@@ -1,19 +1,20 @@
 var map;
+_.templateSettings = {
+	  interpolate : /\{\{(.+?)\}\}/g
+};
 
-$(function() {
-    var mapView = new MapView({ el: $("#map_canvas") });
-    var enlaces = new ListaEnlaces();
+(function($) {
+  $(document).ready(function() {
+    	var mapView = new MapView({ el: $("#map_canvas") });
+    	var enlaces = new ListaEnlaces();
 
-    $(".modal .modal-footer .btn-primary").click(function() {
-    	$("#linkInfo").modal("hide");
-    });
+    	$(".modal .modal-footer .btn-primary").click(function() {
+    		$("#modal").modal("hide");
+    	});
 
-    $("a.close").click(function(e) {
+    	$("a.close").click(function(e) {
 	    event.stopPropagation();
 	    $(this).parent().hide();
-    });
-
-    $("#infoSupernodo").click(function() {
-	    $("#linkInfo").modal();
-    });
-});
+    	});
+  });
+})(jQuery);
