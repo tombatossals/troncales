@@ -7,8 +7,8 @@ require.config({
     underscore: 'libs/underscore/underscore-min', // https://github.com/amdjs
     backbone: 'libs/backbone/backbone-min', // https://github.com/amdjs
     sinon: 'libs/sinon/sinon.js',
-    async: 'libs/requirejs-plugins/src/async',
-    depend: 'libs/requirejs-plugins/src/depend',
+    async: 'libs/require/async',
+    depend: 'libs/require/depend',
 
     // Require.js plugins
     text: 'libs/require/text',
