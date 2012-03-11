@@ -46,10 +46,6 @@ body {
 	float: right;
 }
 
-#info-supernodo {
-	display: normal;
-}
-
 #info-supernodo li.thumbnail {
 	background: white;
 }
@@ -66,4 +62,6 @@ body {
 	font-size: 1.6em;
 }
 
-.modal { height: 590px; max-height: 590px; }
+.modal {
+	height: 570px; min-height: 570px;
+}
