@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'views/box',
+  'views/modal',
   'async!http://maps.google.com/maps/api/js?sensor=false&libraries=geometry'
-], function($, _, Backbone, BoxView){
+], function($, _, Backbone, BoxView, ModalView){
 
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
@@ -79,7 +80,9 @@ define([
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-            dispatcher.trigger("polyclick", ref);
+			var modalView = new ModalView ( { el: "#modal", model: enlace } );
+			modalView.render();
+			modalView.show();
                 };
             })(enlace)
         );

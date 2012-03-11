@@ -8,6 +8,7 @@ require.config({
     backbone: 'libs/backbone/backbone-min', // https://github.com/amdjs
     sinon: 'libs/sinon/sinon.js',
     async: 'libs/requirejs-plugins/src/async',
+    depend: 'libs/requirejs-plugins/src/depend',
 
     // Require.js plugins
     text: 'libs/require/text',
