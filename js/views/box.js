@@ -11,7 +11,7 @@ define([
   	template: _.template(templateBox),
         events: {
         	"click .close": "close",
-        	"click": "modal"
+        	"click .link-info": "modal"
     	},
   	initialize: function(options) {
 		_.bindAll( this, "loadEnlace" );

@@ -46,12 +46,12 @@ body {
 	float: right;
 }
 
-#info-supernodo li.thumbnail {
-	background: white;
+#info-supernodo {
+	margin-top: 3em;
 }
 
-#info-supernodo:hover {
-	cursor: pointer;
+#info-supernodo li.thumbnail {
+	background: white;
 }
 
 #info-supernodo img {
@@ -73,4 +73,8 @@ footer {
 footer a {
 	border-top: 1px solid #888;
 	padding: 1em;
+}
+
+#search {
+	margin-right: 2em;
 }
