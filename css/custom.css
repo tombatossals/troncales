@@ -1,6 +1,6 @@
 html {
   min-height: 600px;
-  height: 100%;
+  height: 99%;
 }
 
 body {
@@ -64,4 +64,13 @@ body {
 
 .modal {
 	height: 570px; min-height: 570px;
+}
+
+footer {
+	margin: .2em 1em;
+}
+
+footer a {
+	border-top: 1px solid #888;
+	padding: 1em;
 }
