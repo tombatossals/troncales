@@ -10,5 +10,5 @@ define([
         url: 'json/supernodos.json'
   });
 
-  return new ListaSupernodos;
+  return ListaSupernodos;
 });

@@ -27,5 +27,5 @@ require([
   'router',
   'depend!libs/bootstrap/bootstrap-dropdown[order!jquery]'
 ], function(ListaEnlaces, Router){
-  Router.initialize();
+  Router.initialize(ListaEnlaces);
 });

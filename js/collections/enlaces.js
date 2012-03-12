@@ -12,7 +12,7 @@ define([
         model: Enlace,
         url: 'json/enlaces.json',
         initialize: function() {
-		this.supernodos = ListaSupernodos;
+		this.supernodos = new ListaSupernodos();
 		var ref = this;
 		this.supernodos.fetch({ success: function() {
                 	ref.fetch( { success: function() {
@@ -34,5 +34,5 @@ define([
 	}
   });
 
-  return new ListaEnlaces;
+  return ListaEnlaces;
 });
