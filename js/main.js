@@ -22,10 +22,10 @@ require.config({
 });
 
 // Let's kick off the application
-var map;
 require([
   'collections/enlaces',
-  'router'
+  'router',
+  'depend!libs/bootstrap/bootstrap-dropdown[order!jquery]'
 ], function(ListaEnlaces, Router){
   Router.initialize();
 });

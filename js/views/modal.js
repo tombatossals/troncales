@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'text!templates/modal.html',
-  'depend!libs/bootstrap-modal[order!jquery]'
+  'depend!libs/bootstrap/bootstrap-modal[order!jquery]'
 ], function($, _, Backbone, templateModal) {
 
   var ModalView = Backbone.View.extend({
