@@ -2,36 +2,38 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/box',
   'views/modal',
   'async!http://maps.google.com/maps/api/js?sensor=false&libraries=geometry'
-], function($, _, Backbone, BoxView, ModalView){
+], function($, _, Backbone, ModalView){
 
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
     initialize: function(options) {
-	var enlaces = options.enlaces;
-	var supernodos = enlaces.supernodos;
+	_.bindAll( this, "renderLinks" );
+	this.enlaces = options.enlaces;
+	this.supernodos = options.supernodos;
+	this.router = options.router;
+	this.enlaces.bind("loaded", this.renderLinks);
         var myOptions = {
                 zoom: 13,
                 center: new google.maps.LatLng(40.000531,-0.039139),
                 mapTypeId: google.maps.MapTypeId.HYBRID
         };
         this.map = new google.maps.Map(this.el, myOptions);
-	var ref = this;
-	google.maps.event.addListenerOnce(this.map, 'idle', function(){
-		supernodos.each(function(supernodo) {
-			ref.renderMarker(supernodo);
-		});
-		enlaces.each(function(enlace) {
-			ref.renderLink(enlace);
-		});
-	});
-
     },
 
     render: function() {
         return this;
+    },
+
+    renderLinks: function(enlaces, supernodos) {
+	var ref = this;
+	this.supernodos.each(function(supernodo) {
+		ref.renderMarker(supernodo);
+	});
+	this.enlaces.each(function(enlace) {
+		ref.renderLink(enlace);
+	});
     },
 
     // renders new marker to map
@@ -60,6 +62,7 @@ define([
         };
         var poly = new google.maps.Polyline(polyOptions);
 
+	var ref = this;
         google.maps.event.addListener(poly, "mouseout",
             (function(enlace, ply) {
                 return function() {
@@ -70,9 +73,7 @@ define([
         google.maps.event.addListener(poly, "mouseover",
             (function(enlace, poly) {
                 return function() {
-			var boxView = new BoxView( { el: "#info-supernodo", model: enlace });
-			boxView.render();
-			boxView.show();
+			ref.enlaces.setactive(enlace);
     			poly.setOptions({ strokeColor: "#FFFFFF" });
                 };
             })(enlace, poly)
@@ -80,9 +81,7 @@ define([
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-			var modalView = new ModalView ( { el: "#modal", model: enlace } );
-			modalView.render();
-			modalView.show();
+                	ref.router.navigate("show/" + enlace.get("id"), { trigger: true });
                 };
             })(enlace)
         );

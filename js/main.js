@@ -1,6 +1,7 @@
 // Require.js allows us to configure shortcut alias
 // Their usage will become more apparent futher along in the tutorial.
 require.config({
+  waitSeconds: 16,
   paths: {
     // Major libraries
     jquery: 'libs/jquery/jquery-min',
@@ -24,8 +25,17 @@ require.config({
 // Let's kick off the application
 require([
   'collections/enlaces',
+  'collections/supernodos',
   'router',
+  'views/modal',
+  'views/box',
+  'views/map',
   'depend!libs/bootstrap/bootstrap-dropdown[order!jquery]'
-], function(ListaEnlaces, Router){
-  Router.initialize(ListaEnlaces);
+], function(ListaEnlaces, ListaSupernodos, AppRouter, ModalView, BoxView, MapView){
+  var listaSupernodos =	new ListaSupernodos();
+  var listaEnlaces = new ListaEnlaces( { supernodos: listaSupernodos } );
+  var router = new AppRouter( { enlaces: listaEnlaces } );
+  var modalView = new ModalView ( { el: "#modal", enlaces: listaEnlaces, router: router } );
+  var boxView = new BoxView( { el: "#info-supernodo", enlaces: listaEnlaces, router: router } );
+  var mapView = new MapView( { enlaces: listaEnlaces, supernodos: listaSupernodos, router: router });
 });
