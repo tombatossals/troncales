@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/modal',
   'async!http://maps.google.com/maps/api/js?sensor=false&libraries=geometry'
-], function($, _, Backbone, ModalView){
+], function($, _, Backbone){
 
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
@@ -79,7 +78,7 @@ define([
         google.maps.event.addListener(poly, "mouseover",
             (function(enlace, poly) {
                 return function() {
-			ref.enlaces.setactive(enlace);
+			ref.router.navigate("show/" + enlace.get("id"), { trigger: true });
     			poly.setOptions({ strokeColor: "#FFFFFF" });
                 };
             })(enlace, poly)
@@ -87,7 +86,7 @@ define([
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-                	ref.router.navigate("show/" + enlace.get("id"), { trigger: true });
+                	ref.router.navigate("showmodal/" + enlace.get("id"), { trigger: true });
                 };
             })(enlace)
         );

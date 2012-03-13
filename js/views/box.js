@@ -11,13 +11,13 @@ define([
   	template: _.template(templateBox),
         events: {
         	"click .close": "close",
-        	"click .link-info": "modal"
+        	"click .link-info": "modal",
+        	"click .help-info": "help"
     	},
   	initialize: function(options) {
 		_.bindAll( this, "loadEnlace" );
-		this.enlaces = options.enlaces;
 		this.router = options.router;
-		this.enlaces.bind("active", this.loadEnlace);
+		this.router.on("showbox", this.loadEnlace);
 	},	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));
@@ -30,13 +30,17 @@ define([
         close: function(event) {
         	event.stopPropagation();
         	$(this.el).hide();
+		this.router.navigate("");
     	},
 	loadEnlace: function(enlace) {
 		this.model = enlace;
 		this.show();
 	},
   	modal: function() {
-		this.router.navigate("show/" + this.model.get("id"), { trigger: true });
+		this.router.navigate("showmodal/" + this.model.get("id"), { trigger: true });
+	},
+  	help: function() {
+		this.router.navigate("help/" + this.model.get("id"), { trigger: true });
 	}
   });
 

@@ -1,0 +1,4 @@
+* Anyadir labels a las estrellas de los supernodos cuando se pasa el puntero por encima. Inspirarse en lo que hacen en foursquare.
+* Cambiar de Google Maps a OpenStreetMaps.
+* Permitir busqueda de supernodos, o zonas. A medida que van buscando autocompletar (bootstrap lo permite con un modulo). Si escribe una poblacion, centrar el mapa en esa poblacion.
+* Hacer la parte de servidor, donde con llamadas rest se pueda cargar la lista de supernodos, o incluso anyadir nuevos supernodos.

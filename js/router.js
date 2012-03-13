@@ -8,20 +8,31 @@ define([
     routes: {
       // Pages
       'show/:supernodo': 'show',
+      'showmodal/:supernodo': 'showmodal',
+      'help/:supernodo': 'help',
     
       // Default - catch all
       '*actions': 'defaultAction'
     },
 
     initialize: function(options) {
-        _.bindAll( this, "loadmodal" );
+        _.bindAll( this, "loadmodal", "loadbox" );
 	this.enlaces = options.enlaces;
 	this.supernodos = options.supernodos;
  	Backbone.history.start();
     },
 
-    show: function(modalId) {
-	this.modalId = modalId
+    show: function(enlaceId) {
+	this.enlaceId = enlaceId
+	if (!this.enlaces.loaded) {
+        	this.enlaces.on("reset", this.loadbox);
+	} else {
+		this.loadbox();
+	}
+    },
+ 
+    showmodal: function(enlaceId) {
+	this.enlaceId = enlaceId
 	if (!this.enlaces.loaded) {
         	this.enlaces.on("reset", this.loadmodal);
 	} else {
@@ -29,9 +40,19 @@ define([
 	}
     },
  
+    help: function(enlaceId) {
+	var enlace = this.enlaces.get(this.enlaceId);
+	this.trigger("showhelp", enlace);
+    },
+ 
+    loadbox: function() {
+	    var enlace = this.enlaces.get(this.enlaceId);
+	    this.trigger("showbox", enlace);
+    }, 
+
     loadmodal: function() {
-	    var enlace = this.enlaces.get(this.modalId);
-	    this.enlaces.setmodal(enlace);
+	    var enlace = this.enlaces.get(this.enlaceId);
+	    this.trigger("showmodal", enlace);
     }, 
 
     defaultAction: function(actions){

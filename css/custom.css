@@ -62,7 +62,7 @@ body {
 	font-size: 1.6em;
 }
 
-.modal {
+#modal .modal {
 	height: 570px; min-height: 570px;
 }
 

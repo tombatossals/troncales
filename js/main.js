@@ -30,12 +30,14 @@ require([
   'views/modal',
   'views/box',
   'views/map',
+  'views/help',
   'depend!libs/bootstrap/bootstrap-dropdown[order!jquery]'
-], function(ListaEnlaces, ListaSupernodos, AppRouter, ModalView, BoxView, MapView){
+], function(ListaEnlaces, ListaSupernodos, AppRouter, ModalView, BoxView, MapView, HelpView){
   var listaSupernodos =	new ListaSupernodos();
   var listaEnlaces = new ListaEnlaces( { supernodos: listaSupernodos } );
   var router = new AppRouter( { enlaces: listaEnlaces } );
-  var modalView = new ModalView ( { el: "#modal", enlaces: listaEnlaces, router: router } );
-  var boxView = new BoxView( { el: "#info-supernodo", enlaces: listaEnlaces, router: router } );
+  var modalView = new ModalView ( { el: "#modal", router: router } );
+  var boxView = new BoxView( { el: "#info-supernodo", router: router } );
+  var helpView = new HelpView( { el: "#help", router: router } );
   var mapView = new MapView( { enlaces: listaEnlaces, router: router });
 });
