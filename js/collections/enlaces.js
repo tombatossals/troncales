@@ -14,12 +14,14 @@ define([
         initialize: function(options) {
 		_.bindAll( this, "supernodosLoaded" );
 		this.supernodos = options.supernodos
+	  	this.loaded = false;
 		var ref = this;
   		this.supernodos.bind("reset", this.supernodosLoaded);
         },
 
   	supernodosLoaded: function() {
-		this.fetch();
+		var ref = this;
+		this.fetch( { success: function() { ref.loaded = true; } });
 	},
 
   	parse: function(data) {
@@ -37,8 +39,8 @@ define([
 	setactive: function(enlace) {
 		this.trigger("active", enlace);
 	},
-	loadmodal: function(enlace) {
-		this.trigger("loadmodal", enlace);
+	setmodal: function(enlace) {
+		this.trigger("setmodal", enlace);
 	}
   });
 

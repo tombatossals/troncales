@@ -16,7 +16,7 @@ define([
                 _.bindAll( this, "show" );
 		this.enlaces = options.enlaces;
 		this.router = options.router;
-		this.enlaces.bind("loadmodal", this.show);
+		this.enlaces.bind("setmodal", this.show);
 	},	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));

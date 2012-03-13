@@ -17,7 +17,13 @@ define([
         var myOptions = {
                 zoom: 13,
                 center: new google.maps.LatLng(40.000531,-0.039139),
-                mapTypeId: google.maps.MapTypeId.HYBRID
+                mapTypeId: google.maps.MapTypeId.HYBRID,
+	  	zoomControl: true,
+  		panControl: false,
+  		streetViewControl: false,
+  		zoomControlOptions: {
+	      		style: google.maps.ZoomControlStyle.SMALL
+	    	}
         };
         this.map = new google.maps.Map(this.el, myOptions);
     },

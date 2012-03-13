@@ -13,19 +13,30 @@ define([
       '*actions': 'defaultAction'
     },
 
-    show: function(id) {
-	var enlace = this.enlaces.get(id);
-        this.enlaces.loadmodal(enlace);
-    },
-  
-    defaultAction: function(actions){
-    },
-
     initialize: function(options) {
+        _.bindAll( this, "loadmodal" );
 	this.enlaces = options.enlaces;
 	this.supernodos = options.supernodos;
  	Backbone.history.start();
+    },
+
+    show: function(modalId) {
+	this.modalId = modalId
+	if (!this.enlaces.loaded) {
+        	this.enlaces.on("reset", this.loadmodal);
+	} else {
+		this.loadmodal();
+	}
+    },
+ 
+    loadmodal: function() {
+	    var enlace = this.enlaces.get(this.modalId);
+	    this.enlaces.setmodal(enlace);
+    }, 
+
+    defaultAction: function(actions){
     }
+
   });
 
   return AppRouter;
