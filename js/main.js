@@ -37,5 +37,5 @@ require([
   var router = new AppRouter( { enlaces: listaEnlaces } );
   var modalView = new ModalView ( { el: "#modal", enlaces: listaEnlaces, router: router } );
   var boxView = new BoxView( { el: "#info-supernodo", enlaces: listaEnlaces, router: router } );
-  var mapView = new MapView( { enlaces: listaEnlaces, supernodos: listaSupernodos, router: router });
+  var mapView = new MapView( { enlaces: listaEnlaces, router: router });
 });

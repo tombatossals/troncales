@@ -10,15 +10,18 @@ define([
   var ListaEnlaces = Backbone.Collection.extend({
         model: Enlace,
         url: 'json/enlaces.json',
+
         initialize: function(options) {
+		_.bindAll( this, "supernodosLoaded" );
 		this.supernodos = options.supernodos
 		var ref = this;
-		this.supernodos.fetch({ success: function() {
-                	ref.fetch( { success: function() {
-				ref.trigger("loaded");
-			} });
-		} });
+  		this.supernodos.bind("reset", this.supernodosLoaded);
         },
+
+  	supernodosLoaded: function() {
+		this.fetch();
+	},
+
   	parse: function(data) {
 		var ref = this;
 		_.each(data, function(element) {

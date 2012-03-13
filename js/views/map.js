@@ -11,9 +11,9 @@ define([
     initialize: function(options) {
 	_.bindAll( this, "renderLinks" );
 	this.enlaces = options.enlaces;
-	this.supernodos = options.supernodos;
+	this.supernodos = this.enlaces.supernodos;
 	this.router = options.router;
-	this.enlaces.bind("loaded", this.renderLinks);
+	this.enlaces.bind("reset", this.renderLinks);
         var myOptions = {
                 zoom: 13,
                 center: new google.maps.LatLng(40.000531,-0.039139),
