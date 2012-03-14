@@ -49,6 +49,11 @@ define([
                         position: supernodo.get("latlng"),
                         icon: icon
                         });
+
+	var infowindow = new google.maps.InfoWindow({ content: "Supernodo <strong>" + supernodo.get("id") + "</strong>" });
+	google.maps.event.addListener(marker, 'mouseover', function() { infowindow.open(this.map,marker); });
+	google.maps.event.addListener(marker, 'mouseout', function() { infowindow.close(); });
+
     },
 
     renderLink: function(enlace) {

@@ -28,6 +28,13 @@
         	"supernodos": [ "fcatolico", "pabello" ]
 	}, 
 	{
+		"id": "riodanubio-2maig",
+        	"state": "ok",
+        	"bandwidth_graph_id": 45,
+        	"traffic_graph_id": 44,
+        	"supernodos": [ "riodanubio", "2maig" ]
+	}, 
+	{
 		"id": "riodanubio-pabello",
         	"state": "saturated",
         	"bandwidth_graph_id": 38,

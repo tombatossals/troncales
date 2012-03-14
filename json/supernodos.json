@@ -25,6 +25,11 @@
 	"latlng": [ 39.975539, -0.034238 ]
    },
    {
+   	"id": "2maig",	
+	"name": "Almassora 2 Maig Constitucio",
+	"latlng": [ 39.951332, -0.065878 ]
+   },
+   {
    	"id": "pabello",	
 	"name": "Pabello Ciutat de Castello",
 	"latlng": [ 39.974999, -0.055556 ]
