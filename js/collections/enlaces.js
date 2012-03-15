@@ -21,7 +21,10 @@ define([
 
   	supernodosLoaded: function() {
 		var ref = this;
-		this.fetch( { success: function() { ref.loaded = true; } });
+		this.fetch( { success: function() { 
+				ref.loaded = true; 
+			} 
+		});
 	},
 
   	parse: function(data) {

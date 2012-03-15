@@ -12,7 +12,8 @@ define([
 	this.enlaces = options.enlaces;
 	this.supernodos = this.enlaces.supernodos;
 	this.router = options.router;
-	this.enlaces.bind("reset", this.renderLinks);
+	this.enlaces.on("reset", this.renderLinks);
+	this.router.on("centermap", this.centermap);
         var myOptions = {
                 zoom: 13,
                 center: new google.maps.LatLng(40.000531,-0.039139),
@@ -29,6 +30,11 @@ define([
 
     render: function() {
         return this;
+    },
+
+    centermap: function(id) {
+	    var supernodo = this.enlaces.supernodos.get("id");
+	    this.map.setCenter(supernodo.get("latlng"));
     },
 
     renderLinks: function(enlaces, supernodos) {

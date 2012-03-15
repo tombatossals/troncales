@@ -8,7 +8,8 @@ define([
     routes: {
       // Pages
       'show/:supernodo': 'show',
-      'showmodal/:supernodo': 'showmodal',
+      'showmodal/:enlaceId': 'showmodal',
+      'centermap/:supernodo': 'centermap',
       'help/:supernodo': 'help',
     
       // Default - catch all
@@ -16,7 +17,7 @@ define([
     },
 
     initialize: function(options) {
-        _.bindAll( this, "loadmodal", "loadbox" );
+        _.bindAll( this, "loadmodal", "loadbox", "callmap" );
 	this.enlaces = options.enlaces;
 	this.supernodos = options.supernodos;
  	Backbone.history.start();
@@ -31,6 +32,18 @@ define([
 	}
     },
  
+    centermap: function(supernodo) {
+	this.supernodo = supernodo;
+	if (!this.enlaces.loaded) {
+        	this.enlaces.on("reset", this.callmap);
+	} else {
+		this.callmap();
+	}
+    },
+
+    callmap: function() {
+	this.trigger("centermap", this.supernodo);
+    }, 
     showmodal: function(enlaceId) {
 	this.enlaceId = enlaceId
 	if (!this.enlaces.loaded) {
