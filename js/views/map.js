@@ -33,7 +33,6 @@ define([
     },
 
     centermap: function(placeId) {
-	    console.log(placeId);
 	    var supernodo = this.enlaces.supernodos.get(placeId);
 	    this.map.setCenter(supernodo.get("latlng"));
     },

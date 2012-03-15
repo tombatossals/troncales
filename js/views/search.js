@@ -9,26 +9,24 @@ define([
     	tagName: "div",
         className: "search",
         events: {
-	        "submit #searchForm": "centermap",
-	        "click": "centermap"
+  		"change .typeahead": "centermap",
 	        },
         template: _.template(templateSearch),
   	initialize: function(options) {
 		_.bindAll( this, "render", "centermap" );
 		this.enlaces = options.enlaces;
 		this.router = options.router;
-		console.log(this.router);
 		this.enlaces.on("reset", this.render);
 	},	
         render: function() {
                 $(this.el).html(this.template());
-		var source = this.enlaces.supernodos.pluck("id");
-		$(".typeahead").typeahead( { source: source } );
+		this.source = this.enlaces.supernodos.pluck("id");
+		$(".typeahead").typeahead( { source: this.source } );
 	},
   	centermap: function() {
 		var id = $(".typeahead").val();
-		if (id) {
-                	this.router.navigate("centermap/" + id);
+		if (_.include(this.source, id)) {
+                	this.router.navigate("centermap/" + id, { trigger: true } );
 		}
 	}
   });
