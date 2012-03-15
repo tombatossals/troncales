@@ -8,7 +8,7 @@ define([
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
     initialize: function(options) {
-	_.bindAll( this, "renderLinks" );
+	_.bindAll( this, "renderLinks", "centermap" );
 	this.enlaces = options.enlaces;
 	this.supernodos = this.enlaces.supernodos;
 	this.router = options.router;
@@ -32,8 +32,9 @@ define([
         return this;
     },
 
-    centermap: function(id) {
-	    var supernodo = this.enlaces.supernodos.get("id");
+    centermap: function(placeId) {
+	    console.log(placeId);
+	    var supernodo = this.enlaces.supernodos.get(placeId);
 	    this.map.setCenter(supernodo.get("latlng"));
     },
 

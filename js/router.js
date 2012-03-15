@@ -32,8 +32,8 @@ define([
 	}
     },
  
-    centermap: function(supernodo) {
-	this.supernodo = supernodo;
+    centermap: function(placeId) {
+	this.placeId = placeId;
 	if (!this.enlaces.loaded) {
         	this.enlaces.on("reset", this.callmap);
 	} else {
@@ -42,7 +42,7 @@ define([
     },
 
     callmap: function() {
-	this.trigger("centermap", this.supernodo);
+	this.trigger("centermap", this.placeId);
     }, 
     showmodal: function(enlaceId) {
 	this.enlaceId = enlaceId

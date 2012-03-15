@@ -42,5 +42,5 @@ require([
   var boxView = new BoxView( { el: "#info-supernodo", router: router } );
   var helpView = new HelpView( { el: "#help", router: router } );
   var mapView = new MapView( { enlaces: listaEnlaces, router: router });
-  var searchView = new SearchView( { enlaces: listaEnlaces } );
+  var searchView = new SearchView( { el: "#search", enlaces: listaEnlaces, router: router } );
 });
