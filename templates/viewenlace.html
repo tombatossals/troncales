@@ -6,13 +6,13 @@
   <div class="modal-body">
     <p>Distancia: <strong><%= distance %> Km.</strong></p>
     <ul class="thumbnails">
-      <li><img src="/cacti/graph_image.php?local_graph_id=<%= bandwidth_graph_id %>" /></li>
-      <li><img src="/cacti/graph_image.php?local_graph_id=<%= traffic_graph_id %>"</li>
+      <li><img src="/cacti/graph_image.php?local_graph_id=<%= bandwidth %>" /></li>
+      <li><img src="/cacti/graph_image.php?local_graph_id=<%= traffic %>"</li>
     </ul>
   </div>
   <div class="modal-footer">
     <a href="#" class="btn btn-close">Tancar</a>
-    <a href="#" class="btn btn-primary">Editar</a>
+    <a href="#edit/enlace/<%= id %>" class="btn btn-primary">Editar</a>
     <a href="#" class="btn btn-danger">Esborrar</a>
   </div>
 </div>

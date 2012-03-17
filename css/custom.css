@@ -70,6 +70,10 @@ body {
 	height: 275px; min-height: 275px;
 }
 
+#modal .modal.editenlace {
+	height: 400px; min-height: 400px;
+}
+
 #modal .modal.help {
 	height: 360px; min-height: 360px;
 }

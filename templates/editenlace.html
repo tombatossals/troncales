@@ -1,7 +1,7 @@
-<div class="modal">
+<div class="modal editenlace">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">&times;</a>
-    <h2 class="name"><%= name %></h3>
+    <h2 class="name">Editar enlace <%= name %></h3>
   </div>
   <div class="modal-body">
 
@@ -10,14 +10,18 @@
 	</div>
 
           <div class="control-group">
-            <label class="control-label" for="editSupernodoName">Nombre del supernodo:</label>
+            <label class="control-label" for="editEnlaceName">Nombre del enlace:</label>
             <div class="controls">
-		    <input class="span4" type="text" id="editSupernodoName" value="<%= name %>" />
-            </div>
-            <label class="control-label" for="editSupernodoIp">IP del supernodo:</label>
+		    <input class="span4" type="text" id="editEnlaceName" value="<%= name %>" />
+	    </div>
+            <label class="control-label" for="editEnlaceBandwidth">Archivo RRDTool de ancho de banda:</label>
             <div class="controls">
-		    <input class="span4" type="text" id="editSupernodoIp" value="<%= ip %>" />
-            </div>
+		    <input class="span4" type="text" id="editEnlaceBandwidth" value="<%= bandwidth %>" />
+	    </div>
+            <label class="control-label" for="editEnlaceTraffic">Archivo RRDTool de trafico:</label>
+            <div class="controls">
+		    <input class="span4" type="text" id="editEnlaceTraffic" value="<%= traffic %>" />
+	    </div>
           </div>
 
   </div>

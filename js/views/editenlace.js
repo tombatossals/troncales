@@ -2,19 +2,19 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/editsupernodo.html',
+  'text!templates/editenlace.html',
   'depend!libs/bootstrap/bootstrap-modal[order!jquery]'
-], function($, _, Backbone, templateEditSupernodo) {
+], function($, _, Backbone, templateEditEnlace) {
 
-  var EditSupernodoView = Backbone.View.extend({
-  	template: _.template(templateEditSupernodo),
+  var EditEnlaceView = Backbone.View.extend({
+  	template: _.template(templateEditEnlace),
         events: {
-        	"click .save-supernodo": "save"
+        	"click .save-enlace": "save"
     	},
   	initialize: function(options) {
                 _.bindAll( this, "edit", "save", "close" );
 		this.router = options.router;
-		this.router.on("editsupernodo", this.edit);
+		this.router.on("editenlace", this.edit);
 		this.router.on("closeall", this.close);
 	},	
         render: function() {
@@ -31,12 +31,13 @@ define([
     	},
 	save: function() {
 		var attributes = { 
-			name: $("#editSupernodoName").val(),
-			ip: $("#editSupernodoIp").val()
+			name: $("#editEnlaceName").val(),
+			bandwidth: $("#editEnlaceBandWidth").val(),
+			traffic: $("#editEnlaceTraffic").val()
 		}
 		this.model.savedata(attributes);
 	}
   });
 
-  return EditSupernodoView;
+  return EditEnlaceView;
 });

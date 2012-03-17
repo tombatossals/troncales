@@ -42,9 +42,11 @@ define([
 		});
 		return data;
 	},
+
 	setactive: function(enlace) {
 		this.trigger("active", enlace);
 	},
+
 	setmodal: function(enlace) {
 		this.trigger("setmodal", enlace);
 	}

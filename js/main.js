@@ -33,9 +33,10 @@ require([
   'views/help',
   'views/search',
   'views/editsupernodo',
+  'views/editenlace',
   'depend!libs/bootstrap/bootstrap-dropdown[order!jquery]',
   'depend!libs/bootstrap/bootstrap-typeahead[order!jquery]'
-], function(ListaEnlaces, ListaSupernodos, AppRouter, ViewEnlaceView, BoxView, MapView, HelpView, SearchView, EditSupernodoView){
+], function(ListaEnlaces, ListaSupernodos, AppRouter, ViewEnlaceView, BoxView, MapView, HelpView, SearchView, EditSupernodoView, EditEnlaceView){
   var listaSupernodos =	new ListaSupernodos();
   var listaEnlaces = new ListaEnlaces( { supernodos: listaSupernodos } );
   var router = new AppRouter( { enlaces: listaEnlaces } );
@@ -44,5 +45,6 @@ require([
   var helpView = new HelpView( { el: "#modal", router: router } );
   var searchView = new SearchView( { el: "#search", enlaces: listaEnlaces, router: router } );
   var editSupernodoView = new EditSupernodoView ( { el: "#modal", router: router } );
+  var editEnlaceView = new EditEnlaceView ( { el: "#modal", router: router } );
   var boxView = new BoxView( { el: "#info-supernodo", router: router } );
 });

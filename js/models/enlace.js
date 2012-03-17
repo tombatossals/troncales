@@ -13,12 +13,18 @@ define([
                         id: null,
                         distance: null,
                         state: null, 
-                        graph_id: null,
-                        traffic_traph_id: null,
-                        poly: {},
+                        bandwidth: null,
+                        traffic: null,
                         supernodos: []
                 }
         },
+        initialize: function() {
+                _.bindAll(this, "savedata");
+        },
+        savedata: function(attributes) {
+                this.save(attributes);
+        }
+
   });
   return Enlace;
 });

@@ -16,6 +16,9 @@ define([
 		_.bindAll(this, "savedata");
 	},
   	savedata: function(attributes) {
+		if (!attributes["name"]) {
+			return;
+		}
                 this.save(attributes);
 	}
   });
