@@ -44,7 +44,8 @@ define([
 			    supernodo = s;
 		    }
 	    });
-	    this.map.setCenter(supernodo.get("latlng"));
+	    var p = supernodo.get("latlng");
+	    this.map.setCenter(new google.maps.LatLng(p["lat"], p["lng"]));
     },
 
     redraw: function() {
