@@ -10,7 +10,7 @@ define([
       'show/:supernodo': 'show',
       'viewenlace/:enlaceId': 'viewenlace',
       'centermap/:supernodo': 'centermap',
-      'edit/:supernodo': 'edit',
+      'edit/supernodo/:supernodo': 'edit',
       'help/:supernodo': 'help',
     
       // Default - catch all

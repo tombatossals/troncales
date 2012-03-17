@@ -81,7 +81,7 @@ define([
 
 	this.markers.push(marker);
 	var infowindow = new google.maps.InfoWindow({ 
-		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#edit/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Editar supernodo</a>" });
+		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#edit/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Editar supernodo</a> <a href=\"#delete/" + supernodo.get("id") + "\" class=\"btn btn-danger\">Borrar supernodo</a>" });
 
 	var ref = this;
 	google.maps.event.addListener(marker, 'click', function() { 

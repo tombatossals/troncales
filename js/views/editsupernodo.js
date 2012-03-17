@@ -9,7 +9,7 @@ define([
   var EditSupernodoView = Backbone.View.extend({
   	template: _.template(templateEditSupernodo),
         events: {
-        	"click .btn-danger": "save"
+        	"click .btn-primary": "save"
     	},
   	initialize: function(options) {
                 _.bindAll( this, "edit", "save", "close" );
@@ -30,7 +30,6 @@ define([
         	$(this.el).modal("hide");
     	},
 	save: function() {
-		console.log($("#editSupernodoIp").val());
 		var attributes = { 
 			name: $("#editSupernodoName").val(),
 			ip: $("#editSupernodoIp").val(),
