@@ -2,23 +2,23 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/modal.html',
+  'text!templates/viewenlace.html',
   'depend!libs/bootstrap/bootstrap-modal[order!jquery]'
-], function($, _, Backbone, templateModal) {
+], function($, _, Backbone, templateViewEnlace) {
 
-  var ModalView = Backbone.View.extend({
-  	template: _.template(templateModal),
+  var ViewEnlaceView = Backbone.View.extend({
+  	template: _.template(templateViewEnlace),
   	initialize: function(options) {
-                _.bindAll( this, "showmodal", "close" );
+                _.bindAll( this, "view", "close" );
 		this.router = options.router;
-		this.router.on("showmodal", this.showmodal);
+		this.router.on("viewenlace", this.view);
 		this.router.on("closeall", this.close);
 	},	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));
         	return this;
     	},
-  	showmodal: function(model) {
+  	view: function(model) {
 		this.model = model;
 		this.render();
 		$(this.el).modal();
@@ -28,5 +28,5 @@ define([
     	}
   });
 
-  return ModalView;
+  return ViewEnlaceView;
 });

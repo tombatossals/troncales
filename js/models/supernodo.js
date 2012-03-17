@@ -9,9 +9,6 @@ define([
 			id: null,
                         name: null,
                         ip: null,
-                        bandwidth: null,
-                        traffic: null,
-                        marker: {},
                         latlng: []
                 }
         },

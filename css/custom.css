@@ -66,6 +66,14 @@ body {
 	height: 570px; min-height: 570px;
 }
 
+#modal .modal.editsupernodo {
+	height: 275px; min-height: 275px;
+}
+
+#modal .modal.help {
+	height: 360px; min-height: 360px;
+}
+
 footer {
 	margin: .2em 1em;
 }

@@ -143,7 +143,7 @@ define([
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-                	ref.router.navigate("showmodal/" + enlace.get("id"), { trigger: true });
+                	ref.router.navigate("viewenlace/" + enlace.get("id"), { trigger: true });
                 };
             })(enlace)
         );

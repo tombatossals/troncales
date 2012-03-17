@@ -12,16 +12,16 @@ define([
         	"click .btn-danger": "save"
     	},
   	initialize: function(options) {
-                _.bindAll( this, "showmodal", "save", "close" );
+                _.bindAll( this, "edit", "save", "close" );
 		this.router = options.router;
-		this.router.on("editsupernodo", this.showmodal);
+		this.router.on("editsupernodo", this.edit);
 		this.router.on("closeall", this.close);
 	},	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));
         	return this;
     	},
-  	showmodal: function(model) {
+  	edit: function(model) {
 		this.model = model;
 		this.render();
 		$(this.el).modal();

@@ -11,8 +11,6 @@ define([
   	template: _.template(templateBox),
         events: {
         	"click .close": "close",
-        	"click .link-info": "modal",
-        	"click .help-info": "help"
     	},
   	initialize: function(options) {
 		_.bindAll( this, "loadEnlace" );
@@ -35,12 +33,6 @@ define([
 	loadEnlace: function(enlace) {
 		this.model = enlace;
 		this.show();
-	},
-  	modal: function() {
-		this.router.navigate("showmodal/" + this.model.get("id"), { trigger: true });
-	},
-  	help: function() {
-		this.router.navigate("help/" + this.model.get("id"), { trigger: true });
 	}
   });
 
