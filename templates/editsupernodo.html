@@ -1,0 +1,37 @@
+<div class="modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h2 class="name"><%= name %></h3>
+  </div>
+  <div class="modal-body">
+
+	<div class="alert alert-error">
+  	<a class="close" data-dismiss="alert">×</a>
+  	<strong>Cuidado!</strong> Esta es una operacion delicada.
+	</div>
+
+          <div class="control-group">
+            <label class="control-label" for="appendedPrependedInput">Nombre del supernodo:</label>
+            <div class="controls">
+		    <input class="span4" type="text" value="<%= name %>" />
+            </div>
+            <label class="control-label" for="appendedPrependedInput">IP del supernodo:</label>
+            <div class="controls">
+		    <input class="span4" type="text" value="<%= ip %>" />
+            </div>
+            <label class="control-label" for="appendedPrependedInput">RRDTool bandwidth file:</label>
+            <div class="controls">
+		    <input class="span4" type="text" value="<%= bandwidth %>" />
+            </div>
+            <label class="control-label" for="appendedPrependedInput">RRDTool traffic file:</label>
+            <div class="controls">
+		    <input class="span4" type="text" value="<%= traffic %>" />
+            </div>
+          </div>
+
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-close">Tancar</a>
+    <a href="#" class="btn btn-danger">Guardar</a>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+{ "_id" : { "$oid" : "4f62683a7f786cd23d5f3740" }, "name" : "castalia-laplana", "state" : 5, "bandwidth_graph_id" : 24, "traffic_graph_id" : 5, "supernodos" : [ "4f5fc24b81d6a14953ef44c9", "4f5fc25a81d6a14953ef44ca" ] }
+{ "_id" : { "$oid" : "4f6268467f786cd23d5f3741" }, "name" : "castalia-ujihumanas", "state" : 2, "bandwidth_graph_id" : 23, "traffic_graph_id" : 6, "supernodos" : [ "4f5fc24b81d6a14953ef44c9", "4f5fc26781d6a14953ef44cb" ] }
+{ "_id" : { "$oid" : "4f6268507f786cd23d5f3742" }, "name" : "riodanubio-laplana", "state" : 5, "bandwidth_graph_id" : 29, "traffic_graph_id" : 36, "supernodos" : [ "4f5fc27b81d6a14953ef44cd", "4f5fc25a81d6a14953ef44ca" ] }
+{ "_id" : { "$oid" : "4f62685c7f786cd23d5f3743" }, "name" : "fcatolico-pabello", "state" : 2, "bandwidth_graph_id" : 41, "traffic_graph_id" : 40, "supernodos" : [ "4f5fc27281d6a14953ef44cc", "4f5fc28481d6a14953ef44ce" ] }
+{ "_id" : { "$oid" : "4f62686a7f786cd23d5f3744" }, "name" : "2maig-ujihumanas", "state" : 2, "bandwidth_graph_id" : 46, "traffic_graph_id" : 42, "supernodos" : [ "4f62680212001f32cb4c188c", "4f5fc26781d6a14953ef44cb" ] }
+{ "_id" : { "$oid" : "4f6268737f786cd23d5f3745" }, "name" : "riodanubio-2maig", "state" : 5, "bandwidth_graph_id" : 45, "traffic_graph_id" : 44, "supernodos" : [ "4f5fc27b81d6a14953ef44cd", "4f62680212001f32cb4c188c" ] }
+{ "_id" : { "$oid" : "4f6268947f786cd23d5f3746" }, "name" : "riodanubio-pabello", "state" : 2, "bandwidth_graph_id" : 38, "traffic_graph_id" : 37, "supernodos" : [ "4f5fc27b81d6a14953ef44cd", "4f5fc28481d6a14953ef44ce" ] }
+{ "_id" : { "$oid" : "4f6268a17f786cd23d5f3747" }, "name" : "ujihumanas-pabello", "state" : 0, "bandwidth_graph_id" : 28, "traffic_graph_id" : 19, "supernodos" : [ "4f5fc26781d6a14953ef44cb", "4f5fc28481d6a14953ef44ce" ] }

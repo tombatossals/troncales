@@ -9,7 +9,7 @@ define([
 
   var ListaEnlaces = Backbone.Collection.extend({
         model: Enlace,
-        url: 'json/enlaces.json',
+        url: '/trunks/enlaces',
 
         initialize: function(options) {
 		_.bindAll( this, "supernodosLoaded" );
@@ -33,8 +33,11 @@ define([
                 	var s0 = ref.supernodos.get(element.supernodos[0]);
                 	var s1 = ref.supernodos.get(element.supernodos[1]);
                 	element.supernodos = [ s0, s1 ];
-			var p1 = s0.get("latlng"), p2 = s1.get("latlng");
-                	var distance = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
+			var point = s0.get("latlng")
+			var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
+			point = s1.get("latlng")
+			var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
+                	var distance = (google.maps.geometry.spherical.computeDistanceBetween(p0, p1) / 1000).toFixed(2);
                 	element.distance = distance;
 		});
 		return data;

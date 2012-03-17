@@ -8,13 +8,19 @@ define([
                 return {
 			id: null,
                         name: null,
+                        ip: null,
+                        bandwidth: null,
+                        traffic: null,
                         marker: {},
-                        latlng: {}
+                        latlng: []
                 }
         },
 	initialize: function() {
-                var latlng = this.get("latlng");
-                this.set("latlng", new google.maps.LatLng(latlng[0], latlng[1]));
+		_.bindAll(this, "savedata");
+	},
+  	savedata: function(attributes) {
+		console.log("save");
+                this.save(attributes);
 	}
   });
   return Supernodo;

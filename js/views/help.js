@@ -9,13 +9,13 @@ define([
   var HelpView = Backbone.View.extend({
   	template: _.template(templateHelp),
         events: {
-        	"click .close": "close",
         	"click .btn-primary": "close"
     	},
   	initialize: function(options) {
-                _.bindAll( this, "show" );
+                _.bindAll( this, "show", "close" );
 		this.router = options.router;
 		this.router.on("showhelp", this.show);
+		this.router.on("closeall", this.close);
 	},	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));
@@ -27,9 +27,7 @@ define([
 		$(this.el).modal();
 	},
         close: function(event) {
-        	event.stopPropagation();
         	$(this.el).modal("hide");
-		this.router.navigate("");
     	}
   });
 

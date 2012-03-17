@@ -10,6 +10,7 @@ define([
       'show/:supernodo': 'show',
       'showmodal/:enlaceId': 'showmodal',
       'centermap/:supernodo': 'centermap',
+      'edit/:supernodo': 'edit',
       'help/:supernodo': 'help',
     
       // Default - catch all
@@ -17,10 +18,24 @@ define([
     },
 
     initialize: function(options) {
-        _.bindAll( this, "loadmodal", "loadbox", "callmap" );
+        _.bindAll( this, "loadmodal", "loadbox", "callmap", "editsupernodo" );
 	this.enlaces = options.enlaces;
 	this.supernodos = options.supernodos;
  	Backbone.history.start();
+    },
+
+    edit: function(supernodoId) {
+	this.supernodoId = supernodoId
+	if (!this.enlaces.loaded) {
+        	this.enlaces.on("reset", this.editsupernodo);
+	} else {
+		this.editsupernodo();
+	}
+    },
+
+    editsupernodo: function() {
+	    var supernodo = this.enlaces.supernodos.get(this.supernodoId);
+	    this.trigger("editsupernodo", supernodo);
     },
 
     show: function(enlaceId) {
@@ -44,6 +59,7 @@ define([
     callmap: function() {
 	this.trigger("centermap", this.placeId);
     }, 
+
     showmodal: function(enlaceId) {
 	this.enlaceId = enlaceId
 	if (!this.enlaces.loaded) {
@@ -69,6 +85,7 @@ define([
     }, 
 
     defaultAction: function(actions){
+	    this.trigger("closeall");
     }
 
   });

@@ -20,13 +20,13 @@ define([
 	},	
         render: function() {
                 $(this.el).html(this.template());
-		this.source = this.enlaces.supernodos.pluck("id");
+		this.source = this.enlaces.supernodos.pluck("name");
 		$(".typeahead").typeahead( { source: this.source } );
 	},
   	centermap: function() {
-		var id = $(".typeahead").val();
-		if (_.include(this.source, id)) {
-                	this.router.navigate("centermap/" + id, { trigger: true } );
+		var supernodoId = $(".typeahead").val();
+		if (_.include(this.source, supernodoId)) {
+                	this.router.navigate("centermap/" + supernodoId, { trigger: true } );
 		}
 	}
   });

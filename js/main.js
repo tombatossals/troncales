@@ -32,9 +32,10 @@ require([
   'views/map',
   'views/help',
   'views/search',
+  'views/editsupernodo',
   'depend!libs/bootstrap/bootstrap-dropdown[order!jquery]',
   'depend!libs/bootstrap/bootstrap-typeahead[order!jquery]'
-], function(ListaEnlaces, ListaSupernodos, AppRouter, ModalView, BoxView, MapView, HelpView, SearchView){
+], function(ListaEnlaces, ListaSupernodos, AppRouter, ModalView, BoxView, MapView, HelpView, SearchView, EditSupernodoView){
   var listaSupernodos =	new ListaSupernodos();
   var listaEnlaces = new ListaEnlaces( { supernodos: listaSupernodos } );
   var router = new AppRouter( { enlaces: listaEnlaces } );
@@ -43,4 +44,5 @@ require([
   var helpView = new HelpView( { el: "#help", router: router } );
   var mapView = new MapView( { enlaces: listaEnlaces, router: router });
   var searchView = new SearchView( { el: "#search", enlaces: listaEnlaces, router: router } );
+  var editSupernodoView = new EditSupernodoView ( { el: "#edit", router: router } );
 });

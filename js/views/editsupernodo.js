@@ -2,16 +2,19 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/modal.html',
+  'text!templates/editsupernodo.html',
   'depend!libs/bootstrap/bootstrap-modal[order!jquery]'
-], function($, _, Backbone, templateModal) {
+], function($, _, Backbone, templateEditSupernodo) {
 
-  var ModalView = Backbone.View.extend({
-  	template: _.template(templateModal),
+  var EditSupernodoView = Backbone.View.extend({
+  	template: _.template(templateEditSupernodo),
+        events: {
+        	"click .btn-danger": "save"
+    	},
   	initialize: function(options) {
-                _.bindAll( this, "showmodal", "close" );
+                _.bindAll( this, "showmodal", "save", "close" );
 		this.router = options.router;
-		this.router.on("showmodal", this.showmodal);
+		this.router.on("editsupernodo", this.showmodal);
 		this.router.on("closeall", this.close);
 	},	
         render: function() {
@@ -25,8 +28,12 @@ define([
 	},
         close: function(event) {
         	$(this.el).modal("hide");
-    	}
+    	},
+	save: function() {
+		var attributes = { "ip": "10.228.144.161" }
+		this.model.savedata(attributes);
+	}
   });
 
-  return ModalView;
+  return EditSupernodoView;
 });
