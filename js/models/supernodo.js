@@ -19,7 +19,6 @@ define([
 		_.bindAll(this, "savedata");
 	},
   	savedata: function(attributes) {
-		console.log("save");
                 this.save(attributes);
 	}
   });

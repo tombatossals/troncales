@@ -30,7 +30,13 @@ define([
         	$(this.el).modal("hide");
     	},
 	save: function() {
-		var attributes = { "ip": "10.228.144.161" }
+		console.log($("#editSupernodoIp").val());
+		var attributes = { 
+			name: $("#editSupernodoName").val(),
+			ip: $("#editSupernodoIp").val(),
+			bandwidth: $("#editSupernodoBandWidth").val(),
+			traffic: $("#editSupernodoTraffic").val()
+		}
 		this.model.savedata(attributes);
 	}
   });
