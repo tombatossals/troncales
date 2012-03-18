@@ -119,10 +119,8 @@ define([
 	var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
 	var weight = enlace.get("bandwidth")*1.5;
-	var saturation = 10 - enlace.get("saturation");
-	console.log(saturation);
         var polyOptions = {
-                strokeColor: saturationColor[saturation],
+                strokeColor: saturationColor[10 - enlace.get("saturation")],
                 strokeOpacity: 1.0,
                 strokeWeight: weight,
                 map: this.map,
@@ -135,7 +133,7 @@ define([
         google.maps.event.addListener(poly, "mouseout",
             (function(enlace, ply) {
                 return function() {
-    			poly.setOptions({ strokeColor: saturationColor[enlace.get("saturation")] });
+    			poly.setOptions({ strokeColor: saturationColor[10 - enlace.get("saturation")] });
                 };
             })(enlace, poly)
         );
