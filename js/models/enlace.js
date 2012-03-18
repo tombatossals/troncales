@@ -12,8 +12,10 @@ define([
                 return {
                         id: null,
                         distance: null,
-                        state: null, 
+                        saturation: null, 
                         bandwidth: null,
+  			rrdtool_bandwidth_graph_id: null,
+  			rrdtool_traffic_graph_id: null,
                         traffic: null,
                         supernodos: []
                 }

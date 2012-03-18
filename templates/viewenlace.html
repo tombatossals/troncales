@@ -6,8 +6,8 @@
   <div class="modal-body">
     <p>Distancia: <strong><%= distance %> Km.</strong></p>
     <ul class="thumbnails">
-      <li><img src="/cacti/graph_image.php?local_graph_id=<%= bandwidth %>" /></li>
-      <li><img src="/cacti/graph_image.php?local_graph_id=<%= traffic %>"</li>
+      <li><img src="/cacti/graph_image.php?local_graph_id=<%= rrdtool_bandwidth_graph_id %>" /></li>
+      <li><img src="/cacti/graph_image.php?local_graph_id=<%= rrdtool_traffic_graph_id %>"</li>
     </ul>
   </div>
   <div class="modal-footer">
