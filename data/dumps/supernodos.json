@@ -1,7 +1,7 @@
-{ "_id" : { "$oid" : "4f5fc24b81d6a14953ef44c9" }, "name" : "castalia", "latlng" : { "lat": 39.995174, "lng": -0.036052 } }
-{ "_id" : { "$oid" : "4f5fc25a81d6a14953ef44ca" }, "name" : "laplana", "latlng" : { "lat": 39.996424, "lng": -0.000437 } }
-{ "_id" : { "$oid" : "4f5fc26781d6a14953ef44cb" }, "name" : "ujihumanas", "latlng" : { "lat": 39.995347, "lng": -0.07005 } }
-{ "_id" : { "$oid" : "4f5fc27281d6a14953ef44cc" }, "name" : "fcatolico", "latlng" : { "lat": 39.980505, "lng": -0.030588 } }
-{ "_id" : { "$oid" : "4f5fc27b81d6a14953ef44cd" }, "name" : "riodanubio", "latlng" : { "lat": 39.975539, "lng": -0.034238 } }
-{ "_id" : { "$oid" : "4f5fc28481d6a14953ef44ce" }, "name" : "pabello", "latlng" : { "lat": 39.974999, "lng": -0.055556 } }
-{ "_id" : { "$oid" : "4f62680212001f32cb4c188c" }, "name" : "2maig", "latlng" : { "lat": 39.951332, "lng": -0.06587800000000001 } }
+{ "_id" : { "$oid" : "4f5fc24b81d6a14953ef44c9" }, "id" : "4f5fc24b81d6a14953ef44c9", "name" : "castalia", "ip" : "10.228.144.161", "latlng" : { "lat" : 39.995174, "lng" : -0.036052 } }
+{ "_id" : { "$oid" : "4f5fc25a81d6a14953ef44ca" }, "name" : "laplana", "latlng" : { "lat" : 39.996424, "lng" : -0.000437 } }
+{ "_id" : { "$oid" : "4f5fc26781d6a14953ef44cb" }, "id" : "4f5fc26781d6a14953ef44cb", "name" : "ujihumanas", "ip" : "10.228.168.225", "latlng" : { "lat" : 39.995347, "lng" : -0.07005 } }
+{ "_id" : { "$oid" : "4f5fc27281d6a14953ef44cc" }, "id" : "4f5fc27281d6a14953ef44cc", "name" : "fcatolico", "ip" : "10.90.80.4", "latlng" : { "lat" : 39.980505, "lng" : -0.030588 } }
+{ "_id" : { "$oid" : "4f5fc27b81d6a14953ef44cd" }, "id" : "4f5fc27b81d6a14953ef44cd", "name" : "riodanubio", "ip" : "10.228.170.129", "latlng" : { "lat" : 39.975539, "lng" : -0.034238 } }
+{ "_id" : { "$oid" : "4f5fc28481d6a14953ef44ce" }, "id" : "4f5fc28481d6a14953ef44ce", "name" : "pabello", "ip" : "10.228.171.65", "latlng" : { "lat" : 39.974999, "lng" : -0.055556 } }
+{ "_id" : { "$oid" : "4f62680212001f32cb4c188c" }, "id" : "4f62680212001f32cb4c188c", "name" : "2maig", "ip" : "10.228.135.1", "latlng" : { "lat" : 39.951332, "lng" : -0.06587800000000001 } }

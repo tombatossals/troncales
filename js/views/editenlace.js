@@ -33,8 +33,8 @@ define([
 		console.log("hola");
 		var attributes = { 
 			name: $("#editEnlaceName").val(),
-			rrdtool_bandwidth_id: $("#editEnlaceBandWidth").val(),
-			rrdtool_traffic_id: $("#editEnlaceTraffic").val()
+			rrdtool_bandwidth_graph_id: $("#editEnlaceBandWidth").val(),
+			rrdtool_traffic_graph_id: $("#editEnlaceTraffic").val()
 		}
 		this.model.savedata(attributes);
 	}

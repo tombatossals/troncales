@@ -101,16 +101,10 @@ define([
     },
     renderLink: function(enlace) {
         var saturationColor = {
-                0: "#FF0000",
-                1: "#FF0000",
+                0: "#00FF00",
+                1: "#FFFF00",
                 2: "#FF8800",
-                3: "#FF8800",
-                4: "#FFd660",
-                5: "#FFd660",
-                6: "#AAFF00",
-                7: "#88FF00",
-                8: "#88FF00",
-                9: "#00FF00"
+                3: "#FF0000"
         };
 
 	var point = enlace.get("supernodos")[0].get("latlng");
@@ -118,9 +112,9 @@ define([
 	point = enlace.get("supernodos")[1].get("latlng");
 	var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
-	var weight = enlace.get("bandwidth")*1.5;
+	var weight = enlace.get("bandwidth")*.75 + 1;
         var polyOptions = {
-                strokeColor: saturationColor[10 - enlace.get("saturation")],
+                strokeColor: saturationColor[enlace.get("saturation")],
                 strokeOpacity: 1.0,
                 strokeWeight: weight,
                 map: this.map,
@@ -133,7 +127,7 @@ define([
         google.maps.event.addListener(poly, "mouseout",
             (function(enlace, ply) {
                 return function() {
-    			poly.setOptions({ strokeColor: saturationColor[10 - enlace.get("saturation")] });
+    			poly.setOptions({ strokeColor: saturationColor[enlace.get("saturation")] });
                 };
             })(enlace, poly)
         );
