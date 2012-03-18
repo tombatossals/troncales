@@ -30,10 +30,11 @@ define([
         	$(this.el).modal("hide");
     	},
 	save: function() {
+		console.log("hola");
 		var attributes = { 
 			name: $("#editEnlaceName").val(),
-			bandwidth: $("#editEnlaceBandWidth").val(),
-			traffic: $("#editEnlaceTraffic").val()
+			rrdtool_bandwidth_id: $("#editEnlaceBandWidth").val(),
+			rrdtool_traffic_id: $("#editEnlaceTraffic").val()
 		}
 		this.model.savedata(attributes);
 	}
