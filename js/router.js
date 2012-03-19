@@ -12,6 +12,7 @@ define([
       'centermap/:supernodo': 'centermap',
       'edit/supernodo/:supernodo': 'editsupernodo',
       'edit/enlace/:enlace': 'editenlace',
+      'new/enlace/': 'newenlace',
       'help/:supernodo': 'help',
     
       // Default - catch all
@@ -19,10 +20,22 @@ define([
     },
 
     initialize: function(options) {
-        _.bindAll( this, "modalenlace", "loadbox", "callmap", "calleditsupernodo", "calleditenlace" );
+        _.bindAll( this, "modalenlace", "loadbox", "callmap", "calleditsupernodo", "calleditenlace", "callnewenlace");
 	this.enlaces = options.enlaces;
 	this.supernodos = options.supernodos;
  	Backbone.history.start();
+    },
+
+    newenlace: function() {
+	if (!this.enlaces.loaded) {
+        	this.enlaces.on("reset", this.callnewenlace);
+	} else {
+	    	this.callnewenlace();
+	}
+    },
+
+    callnewenlace: function() {
+	    	this.trigger("newenlace");
     },
 
     editenlace: function(enlaceId) {
