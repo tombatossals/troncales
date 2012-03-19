@@ -7,8 +7,11 @@ define([
 
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
+    events: {
+            "click .save-marker": "newsupernodo"
+    },
     initialize: function(options) {
-	_.bindAll( this, "renderLinks", "redraw", "centermap", "closeall" );
+	_.bindAll( this, "renderLinks", "redraw", "centermap", "closeall", "addmarker" );
 	this.enlaces = options.enlaces;
 	this.supernodos = this.enlaces.supernodos;
 	this.router = options.router;
@@ -17,6 +20,7 @@ define([
 	this.enlaces.on("change", this.redraw);
 	this.router.on("centermap", this.centermap);
 	this.router.on("closeall", this.closeall);
+	this.router.on("addmarker", this.addmarker);
 	this.infowindows = new Array();
 	this.markers = new Array();
 	this.polylines = new Array();
@@ -36,6 +40,41 @@ define([
 
     render: function() {
         return this;
+    },
+
+    newsupernodo: function() {
+	    var position = this.newmarker.getPosition();
+	    this.enlaces.supernodos.create({ validated: false, name: "newnodo", latlng: { lat: position.lat(), lng: position.lng() } });
+	    this.newmarker.setMap(null);
+	    this.enlaces.supernodos.trigger("change");
+    },
+
+    addmarker: function() {
+	if (this.newmarker) {
+		this.newmarker.setMap(null);
+	}
+
+  	var marker = new google.maps.Marker({
+    		map: this.map,
+    		draggable: true,
+    		animation: google.maps.Animation.DROP,
+    		position: new google.maps.LatLng(40.000531,-0.039139)
+  	});	    
+	var infowindow = new google.maps.InfoWindow({ 
+		content: "Arrastra el marcador a la posicion del nuevo supernodo. <br />Una vez situado, pulsa el boton "  + "<a href=\"#\" class=\"btn btn-primary save-marker\">Guardar</a>" });
+	infowindow.open(this.map, marker); 
+	this.infowindows.push(infowindow);
+
+	var ref = this;
+	google.maps.event.addListener(marker, 'click', function() { 
+		_.each(ref.infowindows, function(i) {
+			i.close();
+		});
+		infowindow.open(this.map,marker); 
+	});
+
+	this.newmarker = marker;
+
     },
 
     centermap: function(placeId) {
@@ -82,7 +121,7 @@ define([
 
 	this.markers.push(marker);
 	var infowindow = new google.maps.InfoWindow({ 
-		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#edit/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Editar supernodo</a> <a href=\"#delete/" + supernodo.get("id") + "\" class=\"btn btn-danger\">Borrar supernodo</a>" });
+		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#edit/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Editar supernodo</a> <a href=\"#delete/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-danger\">Borrar supernodo</a>" });
 
 	var ref = this;
 	google.maps.event.addListener(marker, 'click', function() { 

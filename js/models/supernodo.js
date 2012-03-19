@@ -9,6 +9,7 @@ define([
 			id: null,
                         name: null,
                         ip: null,
+                        validated: false,
                         latlng: []
                 }
         },

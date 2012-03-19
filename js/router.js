@@ -11,7 +11,9 @@ define([
       'viewenlace/:enlaceId': 'viewenlace',
       'centermap/:supernodo': 'centermap',
       'edit/supernodo/:supernodo': 'editsupernodo',
+      'delete/supernodo/:supernodo': 'deletesupernodo',
       'edit/enlace/:enlace': 'editenlace',
+      'add/marker/': 'addmarker',
       'new/enlace/': 'newenlace',
       'help/:supernodo': 'help',
     
@@ -20,7 +22,7 @@ define([
     },
 
     initialize: function(options) {
-        _.bindAll( this, "modalenlace", "loadbox", "callmap", "calleditsupernodo", "calleditenlace", "callnewenlace");
+        _.bindAll( this, "modalenlace", "loadbox", "callmap", "calldeletesupernodo", "calleditsupernodo", "calleditenlace", "callnewenlace");
 	this.enlaces = options.enlaces;
 	this.supernodos = options.supernodos;
  	Backbone.history.start();
@@ -32,6 +34,10 @@ define([
 	} else {
 	    	this.callnewenlace();
 	}
+    },
+
+    addmarker: function() {
+	    this.trigger("addmarker");
     },
 
     callnewenlace: function() {
@@ -50,6 +56,23 @@ define([
     calleditenlace: function() {
 	    var enlace= this.enlaces.get(this.enlaceId);
 	    this.trigger("editenlace", enlace);
+    },
+
+    deletesupernodo: function(supernodoId) {
+	this.supernodoId = supernodoId;
+	if (!this.enlaces.loaded) {
+        	this.enlaces.on("reset", this.calldeletesupernodo);
+	} else {
+		this.calldeletesupernodo();
+	}
+    },
+
+    calldeletesupernodo: function() {
+	    var supernodo = this.enlaces.supernodos.get(this.supernodoId);
+	    if (!supernodo.get("validated")) {
+	    	this.enlaces.supernodos.remove(supernodo);
+		this.enlaces.supernodos.trigger("change");
+	    }
     },
 
     editsupernodo: function(supernodoId) {

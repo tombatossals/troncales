@@ -9,7 +9,7 @@ define([
   var HelpView = Backbone.View.extend({
   	template: _.template(templateHelp),
         events: {
-        	"click .close": "close"
+        	"click .help .close": "close"
     	},
   	initialize: function(options) {
                 _.bindAll( this, "show", "close" );

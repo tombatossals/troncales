@@ -33,9 +33,12 @@ define([
         	$(this.el).modal("hide");
     	},
 	save: function() {
-		var s1 = $("#select01").val();
-		var s2 = $("#select02").val();
-		this.enlaces.create( { supernodos: [ s1, s2 ] } );
+                var s1 = $("#select01").val();
+                var s2 = $("#select02").val();
+		var enlace = this.enlaces.create( { supernodos: [ s1, s2 ] } );
+		var s1 = this.enlaces.supernodos.get(s1);
+		var s2 = this.enlaces.supernodos.get(s2);
+		enlace.set("supernodos", [ s1, s2 ]);
 	}
   });
 

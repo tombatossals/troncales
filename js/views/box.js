@@ -10,7 +10,7 @@ define([
         className: "box",
   	template: _.template(templateBox),
         events: {
-        	"click .close": "close",
+        	"click #info-supernodo .close": "close",
     	},
   	initialize: function(options) {
 		_.bindAll( this, "loadEnlace" );
