@@ -9,7 +9,7 @@ define([
   var EditEnlaceView = Backbone.View.extend({
   	template: _.template(templateEditEnlace),
         events: {
-        	"click .save-enlace": "save"
+        	"click .editenlace .save-enlace": "save"
     	},
   	initialize: function(options) {
                 _.bindAll( this, "edit", "save", "close" );
@@ -30,7 +30,6 @@ define([
         	$(this.el).modal("hide");
     	},
 	save: function() {
-		console.log("hola");
 		var attributes = { 
 			name: $("#editEnlaceName").val(),
 			rrdtool_bandwidth_graph_id: $("#editEnlaceBandWidth").val(),

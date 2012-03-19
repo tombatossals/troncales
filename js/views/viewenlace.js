@@ -8,9 +8,13 @@ define([
 
   var ViewEnlaceView = Backbone.View.extend({
   	template: _.template(templateViewEnlace),
+        events: {
+                "click .viewenlace .delete-enlace": "delete"
+        },
   	initialize: function(options) {
-                _.bindAll( this, "view", "close" );
+                _.bindAll( this, "view", "close", "delete" );
 		this.router = options.router;
+		this.enlaces = options.enlaces;
 		this.router.on("viewenlace", this.view);
 		this.router.on("closeall", this.close);
 	},	
@@ -25,7 +29,15 @@ define([
 	},
         close: function(event) {
         	$(this.el).modal("hide");
-    	}
+    	},
+	delete: function() {
+		if (!this.model.get("validated")) {
+			this.model.destroy();
+			this.enlaces.trigger("change");
+		} else {
+			console.log("Este enlace no se puede borrar");
+		}
+	}
   });
 
   return ViewEnlaceView;

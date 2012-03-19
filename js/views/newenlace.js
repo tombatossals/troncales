@@ -9,16 +9,20 @@ define([
   var NewEnlaceView = Backbone.View.extend({
 	template: _.template(templateNewEnlace),
         events: {
-        	"click .save-enlace": "save"
+        	"click .newenlace .save-enlace": "save"
     	},
   	initialize: function(options) {
                 _.bindAll( this, "create", "save", "close" );
 		this.router = options.router;
+		this.enlaces = options.enlaces;
 		this.router.on("newenlace", this.create);
 		this.router.on("closeall", this.close);
 	},	
         render: function() {
-      		$(this.el).html(this.template({ supernodos: this.router.enlaces.supernodos.pluck("name") }));
+		var data = this.router.enlaces.supernodos.map(function(s) {
+			return { id: s.get("id"), name: s.get("name") }
+		});
+      		$(this.el).html(this.template({ supernodos: data }));
         	return this;
     	},
   	create: function() {
@@ -29,12 +33,9 @@ define([
         	$(this.el).modal("hide");
     	},
 	save: function() {
-		var attributes = { 
-			name: $("#editEnlaceName").val(),
-			bandwidth: $("#editEnlaceBandWidth").val(),
-			traffic: $("#editEnlaceTraffic").val()
-		}
-		this.model.savedata(attributes);
+		var s1 = $("#select01").val();
+		var s2 = $("#select02").val();
+		this.enlaces.create( { supernodos: [ s1, s2 ] } );
 	}
   });
 

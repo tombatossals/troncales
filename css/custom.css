@@ -74,6 +74,10 @@ body {
 	height: 510px; min-height: 510px;
 }
 
+#modal .modal.newenlace {
+	height: 220px; min-height: 220px;
+}
+
 #modal .modal.help {
 	height: 360px; min-height: 360px;
 }

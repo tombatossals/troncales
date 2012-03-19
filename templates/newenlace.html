@@ -1,4 +1,4 @@
-<div class="modal editenlace">
+<div class="modal newenlace">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">&times;</a>
     <h2 class="name">Nuevo enlace</h2>
@@ -6,30 +6,18 @@
   <div class="modal-body">
 
           <div class="control-group">
-            <label class="control-label">Establece los supernodos del enlace:</label>
-	    <div class="btn-group">
-  		<button class="btn">Supernodo origen</button>
-  		<button class="btn dropdown-toggle" data-toggle="dropdown">
-    		<span class="caret"></span>
-  		</button>
-  		<ul class="dropdown-menu">
-    		<!-- dropdown menu links -->
-  		</ul>
-	    </div>
-	    <div class="btn-group">
-  		<button class="btn">Supernodo destino</button>
-  		<button class="btn dropdown-toggle" data-toggle="dropdown">
-    		<span class="caret"></span>
-  		</button>
-		<ul class="dropdown-menu">
-		  <% _.each(supernodos, function(supernodo) { %> <li><a><%= supernodo %></a></li> <% }); %>
-  		</ul>
-	    </div>
+            <label class="control-label">Indica los supernodos implicados en el enlace:</label>
+            <select id="select01">
+	      <% _.each(supernodos, function(supernodo) { %> <option value="<%= supernodo.id %>"><%= supernodo.name %></option> <% }); %>
+            </select>
+            <select id="select02">
+	      <% _.each(supernodos, function(supernodo) { %> <option value="<%= supernodo.id %>"><%= supernodo.name %></option> <% }); %>
+            </select>
           </div>
 
   </div>
   <div class="modal-footer">
     <a href="#" class="btn btn-close">Tancar</a>
-    <a href="#" class="btn btn-danger">Guardar</a>
+    <a href="#" class="btn btn-danger save-enlace">Guardar</a>
   </div>
 </div>

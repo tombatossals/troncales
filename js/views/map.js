@@ -14,6 +14,7 @@ define([
 	this.router = options.router;
 	this.enlaces.on("reset", this.renderLinks);
 	this.enlaces.supernodos.on("change", this.redraw);
+	this.enlaces.on("change", this.redraw);
 	this.router.on("centermap", this.centermap);
 	this.router.on("closeall", this.closeall);
 	this.infowindows = new Array();
