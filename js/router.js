@@ -70,7 +70,7 @@ define([
     calldeletesupernodo: function() {
 	    var supernodo = this.enlaces.supernodos.get(this.supernodoId);
 	    if (!supernodo.get("validated")) {
-	    	this.enlaces.supernodos.remove(supernodo);
+	    	supernodo.destroy();
 		this.enlaces.supernodos.trigger("change");
 	    }
     },

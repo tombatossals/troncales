@@ -33,11 +33,16 @@ define([
         	$(this.el).modal("hide");
     	},
 	save: function() {
-                var s1 = $("#select01").val();
-                var s2 = $("#select02").val();
-		var enlace = this.enlaces.create( { supernodos: [ s1, s2 ] } );
-		var s1 = this.enlaces.supernodos.get(s1);
-		var s2 = this.enlaces.supernodos.get(s2);
+                var s1id = $("#select01").val();
+                var s2id = $("#select02").val();
+		var s1 = this.enlaces.supernodos.get(s1id);
+		var s2 = this.enlaces.supernodos.get(s2id);
+
+		console.log(s1);
+		console.log(s2);
+		if (!(s1 && s2)) return;
+
+		var enlace = this.enlaces.create( { supernodos: [ s1id, s2id ] } );
 		enlace.set("supernodos", [ s1, s2 ]);
 	}
   });
