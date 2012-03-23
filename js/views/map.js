@@ -159,7 +159,16 @@ define([
 	point = enlace.get("supernodos")[1].get("latlng");
 	var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
-	var weight = enlace.get("bandwidth")*.75 + 1;
+	var weight = 1;
+	if (enlace.get("bandwidth") > 30) {
+		weight = 10;
+	} else if (enlace.get("bandwidth") > 20) {
+		weight = 8;
+	} else if (enlace.get("bandwidth") > 10) {
+		weight = 5;
+	} else if (enlace.get("bandwidth") > 4) {
+		weight = 3;
+	}
         var polyOptions = {
                 strokeColor: saturationColor[enlace.get("saturation")],
                 strokeOpacity: 1.0,
