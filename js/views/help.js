@@ -12,20 +12,13 @@ define([
         	"click .help .close": "close"
     	},
   	initialize: function(options) {
-                _.bindAll( this, "show", "close" );
-		this.router = options.router;
-		this.router.on("showhelp", this.show);
-		this.router.on("closeall", this.close);
+                _.bindAll( this, "close" );
 	},	
         render: function() {
-      		$(this.el).html(this.template(this.model.toJSON()));
+      		$(this.el).html(this.template());
+		$(this.el).modal();
         	return this;
     	},
-  	show: function(model) {
-		this.model = model;
-		this.render();
-		$(this.el).modal();
-	},
         close: function(event) {
         	$(this.el).modal("hide");
     	}

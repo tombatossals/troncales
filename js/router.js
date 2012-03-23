@@ -2,19 +2,26 @@
 define([
   'jquery',
   'underscore',
-  'backbone'
-], function ($, _, Backbone) {
+  'backbone',
+  'collections/enlaces',
+  'collections/supernodos',
+  'views/viewenlace',
+  'views/box',
+  'views/map',
+  'views/help',
+  'views/search',
+  'views/editsupernodo',
+  'views/editenlace',
+  'views/addenlace',
+], function ($, _, Backbone, ListaEnlaces, ListaSupernodos, ViewEnlaceView, BoxView, MapView, HelpView, SearchView, EditSupernodoView, EditEnlaceView, AddEnlaceView) {
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Pages
-      'show/:supernodo': 'show',
-      'viewenlace/:enlaceId': 'viewenlace',
-      'centermap/:supernodo': 'centermap',
       'edit/supernodo/:supernodo': 'editsupernodo',
-      'delete/supernodo/:supernodo': 'deletesupernodo',
       'edit/enlace/:enlace': 'editenlace',
+      'view/enlace/:enlace': 'viewenlace',
       'add/marker/': 'addmarker',
-      'new/enlace/': 'newenlace',
+      'add/enlace/': 'addenlace',
       'help/:supernodo': 'help',
     
       // Default - catch all
@@ -22,121 +29,75 @@ define([
     },
 
     initialize: function(options) {
-        _.bindAll( this, "modalenlace", "loadbox", "callmap", "calldeletesupernodo", "calleditsupernodo", "calleditenlace", "callnewenlace");
-	this.enlaces = options.enlaces;
-	this.supernodos = options.supernodos;
- 	Backbone.history.start();
+        _.bindAll( this, "viewenlace", "editsupernodo", "editenlace", "activelink", "defaultAction");
+
+	var ref = this;
+	this.supernodos = new ListaSupernodos();
+	this.enlaces = new ListaEnlaces( { supernodos: this.supernodos } );
+	this.supernodos.fetch({ success: function() {
+		ref.enlaces.fetch( { success: function() {
+			Backbone.history.start();
+		} });
+	} });
+  	this.mapView = new MapView( { collection: this.enlaces });
+  	this.viewEnlaceView = new ViewEnlaceView ( { el: "#modal", collection: this.enlaces } );
+  	this.helpView = new HelpView( { el: "#modal" } );
+  	this.searchView = new SearchView( { el: "#search", collection: this.enlaces } );
+  	this.editSupernodoView = new EditSupernodoView ( { el: "#modal", collection: this.supernodos } );
+  	this.editEnlaceView = new EditEnlaceView ( { el: "#modal", collection: this.enlaces } );
+  	this.addEnlaceView = new AddEnlaceView ( { el: "#modal", collection: this.enlaces } );
+  	this.boxView = new BoxView( { el: "#info-supernodo" } );
+
+	this.mapView.on("viewenlace", this.viewenlace);
+	this.mapView.on("activelink", this.activelink);
+	this.mapView.on("closeall", this.defaultAction);
+	this.addEnlaceView.on("closeall", this.defaultAction);
+	this.editEnlaceView.on("closeall", this.defaultAction);
+	this.editEnlaceView.on("closeall", this.defaultAction);
     },
 
-    newenlace: function() {
-	if (!this.enlaces.loaded) {
-        	this.enlaces.on("reset", this.callnewenlace);
-	} else {
-	    	this.callnewenlace();
-	}
+    viewenlace: function(enlaceId) {
+	    this.navigate("view/enlace/" + enlaceId);
+	    var enlace = this.enlaces.get(enlaceId);
+	    this.viewEnlaceView.model = enlace;
+	    this.viewEnlaceView.render();
+    },
+
+    addenlace: function() {
+	    this.addEnlaceView.render();
     },
 
     addmarker: function() {
-	    this.trigger("addmarker");
-    },
-
-    callnewenlace: function() {
-	    	this.trigger("newenlace");
+	    this.mapView.addmarker();
     },
 
     editenlace: function(enlaceId) {
-	this.enlaceId = enlaceId;
-	if (!this.enlaces.loaded) {
-        	this.enlaces.on("reset", this.calleditenlace);
-	} else {
-		this.calleditenlace();
-	}
-    },
-
-    calleditenlace: function() {
-	    var enlace= this.enlaces.get(this.enlaceId);
-	    this.trigger("editenlace", enlace);
-    },
-
-    deletesupernodo: function(supernodoId) {
-	this.supernodoId = supernodoId;
-	if (!this.enlaces.loaded) {
-        	this.enlaces.on("reset", this.calldeletesupernodo);
-	} else {
-		this.calldeletesupernodo();
-	}
-    },
-
-    calldeletesupernodo: function() {
-	    var supernodo = this.enlaces.supernodos.get(this.supernodoId);
-	    if (!supernodo.get("validated")) {
-	    	supernodo.destroy();
-		this.enlaces.supernodos.trigger("change");
-	    }
+    	var enlace = this.enlaces.get(enlaceId);
+    	this.editEnlaceView.model = enlace;
+    	this.editEnlaceView.render();
     },
 
     editsupernodo: function(supernodoId) {
-	this.supernodoId = supernodoId;
-	if (!this.enlaces.loaded) {
-        	this.enlaces.on("reset", this.calleditsupernodo);
-	} else {
-		this.calleditsupernodo();
-	}
+  	var supernodo = this.supernodos.get(supernodoId);
+    	this.editSupernodoView.model = supernodo;
+    	this.editSupernodoView.render();
     },
 
-    calleditsupernodo: function() {
-	    var supernodo = this.enlaces.supernodos.get(this.supernodoId);
-	    this.trigger("editsupernodo", supernodo);
-    },
-
-    show: function(enlaceId) {
-	this.enlaceId = enlaceId
-	if (!this.enlaces.loaded) {
-        	this.enlaces.on("reset", this.loadbox);
-	} else {
-		this.loadbox();
-	}
-    },
- 
     centermap: function(placeId) {
-	this.placeId = placeId;
-	if (!this.enlaces.loaded) {
-        	this.enlaces.on("reset", this.callmap);
-	} else {
-		this.callmap();
-	}
-    },
-
-    callmap: function() {
-	this.trigger("centermap", this.placeId);
+	this.trigger("centermap", placeId);
     }, 
 
-    viewenlace: function(enlaceId) {
-	this.enlaceId = enlaceId;
-	if (!this.enlaces.loaded) {
-        	this.enlaces.on("reset", this.modalenlace);
-	} else {
-		this.modalenlace();
-	}
+    help: function() {
+	this.helpView.render();
     },
  
-    help: function(enlaceId) {
-	var enlace = this.enlaces.get(this.enlaceId);
-	this.trigger("showhelp", enlace);
-    },
- 
-    loadbox: function() {
-	    var enlace = this.enlaces.get(this.enlaceId);
-	    this.trigger("showbox", enlace);
-    }, 
-
-    modalenlace: function() {
-	    var enlace = this.enlaces.get(this.enlaceId);
-	    this.trigger("viewenlace", enlace);
+    activelink: function(enlace) {
+	    this.boxView.model = enlace;
+	    this.boxView.render();
     }, 
 
     defaultAction: function(actions){
-	    this.trigger("closeall");
+	    this.mapView.closeall();
     }
 
   });

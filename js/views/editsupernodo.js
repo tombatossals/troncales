@@ -9,25 +9,20 @@ define([
   var EditSupernodoView = Backbone.View.extend({
   	template: _.template(templateEditSupernodo),
         events: {
-        	"click .save-supernodo": "save"
+        	"click .save-supernodo": "save",
+        	"click .btn-close": "close"
     	},
   	initialize: function(options) {
-                _.bindAll( this, "edit", "save", "close" );
-		this.router = options.router;
-		this.router.on("editsupernodo", this.edit);
-		this.router.on("closeall", this.close);
+                _.bindAll( this, "save", "close" );
 	},	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));
+		$(this.el).modal();
         	return this;
     	},
-  	edit: function(model) {
-		this.model = model;
-		this.render();
-		$(this.el).modal();
-	},
         close: function(event) {
         	$(this.el).modal("hide");
+		this.trigger("closeall");
     	},
 	save: function() {
 		var attributes = { 
@@ -35,6 +30,8 @@ define([
 			ip: $("#editSupernodoIp").val()
 		}
 		this.model.savedata(attributes);
+		this.collection.fetch();
+		this.close();
 	}
   });
 

@@ -14,9 +14,6 @@ define([
         template: _.template(templateSearch),
   	initialize: function(options) {
 		_.bindAll( this, "render", "centermap" );
-		this.enlaces = options.enlaces;
-		this.router = options.router;
-		this.enlaces.on("reset", this.render);
 	},	
         render: function() {
                 $(this.el).html(this.template());

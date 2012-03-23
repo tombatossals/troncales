@@ -24,29 +24,9 @@ require.config({
 
 // Let's kick off the application
 require([
-  'collections/enlaces',
-  'collections/supernodos',
   'router',
-  'views/viewenlace',
-  'views/box',
-  'views/map',
-  'views/help',
-  'views/search',
-  'views/editsupernodo',
-  'views/editenlace',
-  'views/newenlace',
   'depend!libs/bootstrap/bootstrap-dropdown[order!jquery]',
   'depend!libs/bootstrap/bootstrap-typeahead[order!jquery]'
-], function(ListaEnlaces, ListaSupernodos, AppRouter, ViewEnlaceView, BoxView, MapView, HelpView, SearchView, EditSupernodoView, EditEnlaceView, NewEnlaceView){
-  var listaSupernodos =	new ListaSupernodos();
-  var listaEnlaces = new ListaEnlaces( { supernodos: listaSupernodos } );
-  var router = new AppRouter( { enlaces: listaEnlaces } );
-  var mapView = new MapView( { enlaces: listaEnlaces, router: router });
-  var viewEnlaceView = new ViewEnlaceView ( { el: "#modal", router: router, enlaces: listaEnlaces } );
-  var helpView = new HelpView( { el: "#modal", router: router } );
-  var searchView = new SearchView( { el: "#search", enlaces: listaEnlaces, router: router } );
-  var editSupernodoView = new EditSupernodoView ( { el: "#modal", router: router } );
-  var editEnlaceView = new EditEnlaceView ( { el: "#modal", router: router } );
-  var newEnlaceView = new NewEnlaceView ( { el: "#modal", router: router, enlaces: listaEnlaces } );
-  var boxView = new BoxView( { el: "#info-supernodo", router: router } );
+], function(AppRouter){
+  var router = new AppRouter();
 });

@@ -8,19 +8,13 @@ define([
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
     events: {
-            "click .save-marker": "newsupernodo"
+            "click .save-marker": "newsupernodo",
+            "click .delete-supernodo": "deletesupernodo"
     },
     initialize: function(options) {
-	_.bindAll( this, "renderLinks", "redraw", "centermap", "closeall", "addmarker" );
-	this.enlaces = options.enlaces;
-	this.supernodos = this.enlaces.supernodos;
-	this.router = options.router;
-	this.enlaces.on("reset", this.renderLinks);
-	this.enlaces.supernodos.on("change", this.redraw);
-	this.enlaces.on("change", this.redraw);
-	this.router.on("centermap", this.centermap);
-	this.router.on("closeall", this.closeall);
-	this.router.on("addmarker", this.addmarker);
+	_.bindAll( this, "renderLinks", "redraw", "closeall", "newsupernodo", "deletesupernodo" );
+	this.collection.on("reset", this.redraw);
+	this.collection.supernodos.on("reset", this.redraw);
 	this.infowindows = new Array();
 	this.markers = new Array();
 	this.polylines = new Array();
@@ -42,11 +36,21 @@ define([
         return this;
     },
 
+    deletesupernodo: function(event) {
+	    var supernodoId = event.target.hash.replace("#delete/supernodo/", "");
+	    var supernodo = this.collection.supernodos.get(supernodoId);
+            if (supernodo && !supernodo.get("validated")) {
+                supernodo.destroy();
+                this.collection.supernodos.fetch();
+                this.trigger("closeall");
+            }
+    },
+
     newsupernodo: function() {
 	    var position = this.newmarker.getPosition();
-	    this.enlaces.supernodos.create({ validated: false, name: "newnodo", latlng: { lat: position.lat(), lng: position.lng() } });
+	    this.collection.supernodos.create({ validated: false, name: "newnodo", latlng: { lat: position.lat(), lng: position.lng() } });
 	    this.newmarker.setMap(null);
-	    this.enlaces.supernodos.trigger("change");
+	    this.collection.supernodos.fetch();
     },
 
     addmarker: function() {
@@ -74,7 +78,6 @@ define([
 	});
 
 	this.newmarker = marker;
-
     },
 
     centermap: function(placeId) {
@@ -100,11 +103,15 @@ define([
 
     renderLinks: function(enlaces, supernodos) {
 	var ref = this;
-	this.supernodos.each(function(supernodo) {
+	this.collection.supernodos.each(function(supernodo) {
 		ref.renderMarker(supernodo);
 	});
-	this.enlaces.each(function(enlace) {
-		ref.renderLink(enlace);
+	this.collection.each(function(enlace) {
+		if (enlace.get("id")) {
+			ref.renderLink(enlace);
+		} else {
+			enlace.destroy();
+		}
 	});
     },
 
@@ -121,7 +128,7 @@ define([
 
 	this.markers.push(marker);
 	var infowindow = new google.maps.InfoWindow({ 
-		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#edit/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Editar supernodo</a> <a href=\"#delete/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-danger\">Borrar supernodo</a>" });
+		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#edit/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Editar supernodo</a> <a href=\"#delete/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-danger delete-supernodo\">Borrar supernodo</a>" });
 
 	var ref = this;
 	google.maps.event.addListener(marker, 'click', function() { 
@@ -174,7 +181,7 @@ define([
         google.maps.event.addListener(poly, "mouseover",
             (function(enlace, poly) {
                 return function() {
-			ref.router.navigate("show/" + enlace.get("id"), { trigger: true });
+			ref.trigger("activelink", enlace);
     			poly.setOptions({ strokeColor: "#FFFFFF" });
                 };
             })(enlace, poly)
@@ -182,7 +189,7 @@ define([
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-                	ref.router.navigate("viewenlace/" + enlace.get("id"), { trigger: true });
+			ref.trigger("viewenlace", enlace.get("id"));
                 };
             })(enlace)
         );

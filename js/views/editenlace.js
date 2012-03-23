@@ -12,22 +12,15 @@ define([
         	"click .editenlace .save-enlace": "save"
     	},
   	initialize: function(options) {
-                _.bindAll( this, "edit", "save", "close" );
-		this.router = options.router;
-		this.router.on("editenlace", this.edit);
-		this.router.on("closeall", this.close);
+                _.bindAll( this, "save", "close" );
 	},	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));
         	return this;
     	},
-  	edit: function(model) {
-		this.model = model;
-		this.render();
-		$(this.el).modal();
-	},
         close: function(event) {
         	$(this.el).modal("hide");
+		this.trigger("closeall");
     	},
 	save: function() {
 		var attributes = { 
@@ -36,6 +29,7 @@ define([
 			rrdtool_traffic_graph_id: $("#editEnlaceTraffic").val()
 		}
 		this.model.savedata(attributes);
+		this.close();
 	}
   });
 

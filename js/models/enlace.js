@@ -20,11 +20,15 @@ define([
   			rrdtool_traffic_id: null,
                         traffic: null,
                         validated: false,
-                        supernodos: []
+  			supernodos: []
                 }
         },
         initialize: function() {
                 _.bindAll(this, "savedata");
+		var supernodos = this.get("supernodos");
+		if (supernodos[0] == undefined || supernodos[1] == undefined) {
+			this.destroy();
+		}
         },
         savedata: function(attributes) {
                 this.save(attributes);
