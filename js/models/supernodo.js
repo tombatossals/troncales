@@ -8,6 +8,7 @@ define([
                 return {
 			id: null,
                         name: null,
+                        email: null,
                         ip: null,
                         validated: false,
                         latlng: []

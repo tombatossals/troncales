@@ -6,6 +6,15 @@ RX=$(rrdtool graph xxx -s $(date -d yesterday +%s) -e $(date +%s) DEF:val1=$F:tr
 TX=$(rrdtool graph xxx -s $(date -d yesterday +%s) -e $(date +%s) DEF:val1=$F:traffic_out:MAX PRINT:val1:MAX:%lf| tail -1)
 VAL=$(echo $RX | cut -f1 -d".")
 VAL2=$(echo $TX | cut -f1 -d".")
+
+if [ "$VAL" = "-nan" ]; then
+	VAL=0
+fi
+
+if [ "$VAL2" = "-nan" ]; then
+	VAL2=0
+fi
+
 if [ $VAL -lt $VAL2 ]; then
 	VAL=$VAL2
 fi

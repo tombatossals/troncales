@@ -27,6 +27,7 @@ define([
 	save: function() {
 		var attributes = { 
 			name: $("#editSupernodoName").val(),
+			email: $("#editSupernodoEmail").val(),
 			ip: $("#editSupernodoIp").val()
 		}
 		this.model.savedata(attributes);
