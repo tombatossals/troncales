@@ -6,6 +6,7 @@ Este proyecto pretende representar en un mapa los supernodos y los enlaces que c
 Cómo añadir tu supernodo a las gráficas
 ==========================================
 Los requisitos para poder añadir tu supernodo al mapa y que se visualicen las gráficas son las siguientes:
+
 * Supernodo con routerboard (Mikrotik).
 * Routerboard 5.11 o en adelante.
 * Activado el SNMP en el supernodo.
