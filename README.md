@@ -28,3 +28,8 @@ add name=bandwidth policy=ftp,reboot,read,write,policy,test,winbox,password,snif
 
 </pre>
 
+* Tener un usuario guest sin contraseña (sólo acceso en modo lectura). Puedes añadirlo fácilmente así:
+<pre>
+/user 
+add address="" comment="Guest user" disabled=no group=read name=guest
+</pre>
