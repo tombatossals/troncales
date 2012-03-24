@@ -16,6 +16,8 @@ for enlace in db.enlaces.find():
 		bandwidth_id = enlace.get("rrdtool_bandwidth_id")
 		traffic_id = enlace.get("rrdtool_traffic_id")
 
+		if not bandwidth_id or not traffic_id: continue
+
 		bandwidth = subprocess.check_output("%s %s" % (BANDWIDTH_SCRIPT, bandwidth_id), shell=True)
 		bandwidth = bandwidth.strip().decode("utf-8")
 		traffic = subprocess.check_output("%s %s" % (TRAFFIC_SCRIPT, traffic_id), shell=True)

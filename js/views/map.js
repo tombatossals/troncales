@@ -62,7 +62,7 @@ define([
     		map: this.map,
     		draggable: true,
     		animation: google.maps.Animation.DROP,
-    		position: new google.maps.LatLng(40.000531,-0.039139)
+    		position: this.map.getCenter()
   	});	    
 	var infowindow = new google.maps.InfoWindow({ 
 		content: "Arrastra el marcador a la posicion del nuevo supernodo. <br />Una vez situado, pulsa el boton "  + "<a href=\"#\" class=\"btn btn-primary save-marker\">Guardar</a>" });

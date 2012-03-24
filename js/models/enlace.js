@@ -26,7 +26,7 @@ define([
         initialize: function() {
                 _.bindAll(this, "savedata");
 		var supernodos = this.get("supernodos");
-		if (supernodos[0] == undefined || supernodos[1] == undefined) {
+		if (this.get("id") == null || supernodos[0] == undefined || supernodos[1] == undefined) {
 			this.destroy();
 		}
         },

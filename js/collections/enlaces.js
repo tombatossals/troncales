@@ -21,7 +21,7 @@ define([
                 	var s0 = ref.supernodos.get(element.supernodos[0]);
                 	var s1 = ref.supernodos.get(element.supernodos[1]);
                 	element.supernodos = [ s0, s1 ];
-			if (s0 && s1 ) {
+			if (s0 && s1 && !element.distance) {
 				var point = s0.get("latlng")
 				var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
 				point = s1.get("latlng")
