@@ -9,10 +9,11 @@ define([
     el: "#map_canvas",
     events: {
             "click .save-marker": "newsupernodo",
+            "click .delete-newmarker": "deletenewmarker",
             "click .delete-supernodo": "deletesupernodo"
     },
     initialize: function(options) {
-	_.bindAll( this, "renderLinks", "redraw", "closeall", "newsupernodo", "deletesupernodo" );
+	_.bindAll( this, "renderLinks", "redraw", "closeall", "deletenewmarker", "newsupernodo", "deletesupernodo" );
 	this.collection.on("reset", this.redraw);
 	this.collection.supernodos.on("reset", this.redraw);
 	this.infowindows = new Array();
@@ -46,6 +47,10 @@ define([
             }
     },
 
+    deletenewmarker: function() {
+	    this.newmarker.setMap(null);
+    },
+
     newsupernodo: function() {
 	    var position = this.newmarker.getPosition();
 	    this.collection.supernodos.create({ validated: false, name: "newnodo", latlng: { lat: position.lat(), lng: position.lng() } });
@@ -65,7 +70,7 @@ define([
     		position: this.map.getCenter()
   	});	    
 	var infowindow = new google.maps.InfoWindow({ 
-		content: "Arrastra el marcador a la posicion del nuevo supernodo. <br />Una vez situado, pulsa el boton "  + "<a href=\"#\" class=\"btn btn-primary save-marker\">Guardar</a>" });
+		content: "Arrastra el marcador a la posicion del nuevo supernodo. <br />Una vez situado, pulsa el boton "  + "<a href=\"#\" class=\"btn btn-primary save-marker\">Guardar</a> <a href=\"#\" class=\"btn btn-danger delete-newmarker\">Quitar</a>" });
 	infowindow.open(this.map, marker); 
 	this.infowindows.push(infowindow);
 
