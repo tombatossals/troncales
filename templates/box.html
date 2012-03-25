@@ -2,10 +2,14 @@
     <a class="close">&times;</a>
     <h2><%= name %></h2>
     <p>Distancia: <strong><%= distance %> Km.</strong></p>
-    <% if (rrdtool_bandwidth_graph_id && rrdtool_traffic_graph_id) { %>
+    <% if (rrdtool_bandwidth_graph_id || rrdtool_traffic_graph_id) { %>
     <ul class="thumbnails">
+    <% if (rrdtool_bandwidth_graph_id) { %>
       <li><img src="/cacti/graph_image.php?local_graph_id=<%= rrdtool_bandwidth_graph_id %>" /></li>
+    <% } %>
+    <% if (rrdtool_traffic_graph_id) { %>
       <li><img src="/cacti/graph_image.php?local_graph_id=<%= rrdtool_traffic_graph_id %>"</li>
+    <% } %>
     </ul>
     <% } %>
     <p><a href="#view/enlace/<%= id %>" class="btn btn-success">Ver mas informacion de este enlace</a></p>

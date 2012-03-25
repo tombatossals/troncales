@@ -19,7 +19,7 @@ define([
 	this.markers = new Array();
 	this.polylines = new Array();
         var myOptions = {
-                zoom: 13,
+                zoom: 12,
                 center: new google.maps.LatLng(40.000531,-0.039139),
                 mapTypeId: google.maps.MapTypeId.HYBRID,
 	  	zoomControl: true,
@@ -154,9 +154,9 @@ define([
                 3: "#FF0000"
         };
 
-	var point = enlace.get("supernodos")[0].get("latlng");
+	var point = this.collection.supernodos.get(enlace.get("supernodos")[0]).get("latlng");
 	var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
-	point = enlace.get("supernodos")[1].get("latlng");
+	point = this.collection.supernodos.get(enlace.get("supernodos")[1]).get("latlng");
 	var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
 	var weight = 1;

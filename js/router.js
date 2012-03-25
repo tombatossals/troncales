@@ -36,6 +36,7 @@ define([
 	this.enlaces = new ListaEnlaces( { supernodos: this.supernodos } );
 	this.supernodos.fetch({ success: function() {
 		ref.enlaces.fetch( { success: function() {
+			ref.enlaces.calculateDistances();
 			Backbone.history.start();
 		} });
 	} });

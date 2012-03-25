@@ -31,7 +31,6 @@ define([
 		}
         },
         savedata: function(attributes) {
-		attributes.supernodos = [ this.get("supernodos")[0].get("id"), this.get("supernodos")[1].get("id") ]
                 this.save(attributes);
         }
 

@@ -15,28 +15,22 @@ define([
 		this.supernodos = options.supernodos
         },
 
-  	parse: function(data) {
-		var ref = this;
-		_.each(data, function(element) {
-                	var s0 = ref.supernodos.get(element.supernodos[0]);
-                	var s1 = ref.supernodos.get(element.supernodos[1]);
-                	element.supernodos = [ s0, s1 ];
-			if (s0 && s1 && !element.distance) {
-				var point = s0.get("latlng")
-				var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
-				point = s1.get("latlng")
-				var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
-                		var distance = (google.maps.geometry.spherical.computeDistanceBetween(p0, p1) / 1000).toFixed(2);
-                		element.distance = distance;
-			}
-		});
-		return data;
-	},
-
 	setactive: function(enlace) {
 		this.trigger("active", enlace);
 	},
-
+  	calculateDistances: function() {
+	    var ref = this;
+	    this.each(function(enlace) {
+		if (!ref.get("distance")) {
+            		var point = ref.supernodos.get(enlace.get("supernodos")[0]).get("latlng")
+            		var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
+            		point = ref.supernodos.get(enlace.get("supernodos")[1]).get("latlng")
+            		var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
+            		var distance = (google.maps.geometry.spherical.computeDistanceBetween(p0, p1) / 1000).toFixed(2);
+            		enlace.set("distance", distance);
+		}
+	    });
+	}
   });
 
   return ListaEnlaces;
