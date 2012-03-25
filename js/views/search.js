@@ -17,13 +17,13 @@ define([
 	},	
         render: function() {
                 $(this.el).html(this.template());
-		this.source = this.enlaces.supernodos.pluck("name");
+		this.source = this.collection.pluck("name");
 		$(".typeahead").typeahead( { source: this.source } );
 	},
   	centermap: function() {
 		var supernodoId = $(".typeahead").val();
 		if (_.include(this.source, supernodoId)) {
-                	this.router.navigate("centermap/" + supernodoId, { trigger: true } );
+                	this.trigger("centermap", supernodoId);
 		}
 	}
   });

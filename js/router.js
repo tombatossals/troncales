@@ -29,7 +29,7 @@ define([
     },
 
     initialize: function(options) {
-        _.bindAll( this, "viewenlace", "editsupernodo", "editenlace", "activelink", "defaultAction");
+        _.bindAll( this, "viewenlace", "editsupernodo", "editenlace", "activelink", "defaultAction", "centermap");
 
 	var ref = this;
 	this.supernodos = new ListaSupernodos();
@@ -43,7 +43,7 @@ define([
   	this.mapView = new MapView( { collection: this.enlaces });
   	this.viewEnlaceView = new ViewEnlaceView ( { el: "#modal", collection: this.enlaces } );
   	this.helpView = new HelpView( { el: "#modal" } );
-  	this.searchView = new SearchView( { el: "#search", collection: this.enlaces } );
+  	this.searchView = new SearchView( { el: "#search", collection: this.supernodos } );
   	this.editSupernodoView = new EditSupernodoView ( { el: "#modal", collection: this.supernodos } );
   	this.editEnlaceView = new EditEnlaceView ( { el: "#modal", collection: this.enlaces } );
   	this.addEnlaceView = new AddEnlaceView ( { el: "#modal", collection: this.enlaces } );
@@ -52,9 +52,11 @@ define([
 	this.mapView.on("viewenlace", this.viewenlace);
 	this.mapView.on("activelink", this.activelink);
 	this.mapView.on("closeall", this.defaultAction);
+	this.searchView.on("centermap", this.centermap);
 	this.addEnlaceView.on("closeall", this.defaultAction);
 	this.editEnlaceView.on("closeall", this.defaultAction);
 	this.editEnlaceView.on("closeall", this.defaultAction);
+	this.enlaces.on("reset", this.searchView.render);
     },
 
     viewenlace: function(enlaceId) {
@@ -85,7 +87,7 @@ define([
     },
 
     centermap: function(placeId) {
-	this.trigger("centermap", placeId);
+	this.mapView.centermap(placeId);
     }, 
 
     help: function() {

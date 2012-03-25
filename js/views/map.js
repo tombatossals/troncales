@@ -87,7 +87,7 @@ define([
 
     centermap: function(placeId) {
 	    var supernodo = undefined;
-	    this.enlaces.supernodos.each(function(s) {
+	    this.collection.supernodos.each(function(s) {
 		    if (placeId === s.get("name")) {
 			    supernodo = s;
 		    }
