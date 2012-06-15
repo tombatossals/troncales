@@ -1,6 +1,6 @@
 # Obtiene la media ancho de banda en 24h
 [ $# -eq 1 ] || exit -3
-F=$(ls /srv/http/cacti/rra/*_$1.rrd 2>/dev/null)
+F=$(ls /usr/share/webapps/cacti/rra/*_$1.rrd 2>/dev/null)
 [ ! -z "$F" ] || exit -2
 RX=$(rrdtool graph xxx -s $(date -d yesterday +%s) -e $(date +%s) DEF:val1=$F:traffic_in:MAX PRINT:val1:MAX:%lf| tail -1)
 TX=$(rrdtool graph xxx -s $(date -d yesterday +%s) -e $(date +%s) DEF:val1=$F:traffic_out:MAX PRINT:val1:MAX:%lf| tail -1)

@@ -8,7 +8,7 @@ BANDWIDTH_SCRIPT=os.path.join(os.path.abspath(os.path.dirname(__file__)), "rrdto
 TRAFFIC_SCRIPT=os.path.join(os.path.abspath(os.path.dirname(__file__)), "rrdtool_traffic.sh" )
 
 connection = Connection()
-db = connection.trunks
+db = connection.troncales
 
 for enlace in db.enlaces.find():
 
@@ -17,7 +17,6 @@ for enlace in db.enlaces.find():
 		traffic_id = enlace.get("rrdtool_traffic_id")
 
 		if bandwidth_id and traffic_id:
-
 			bandwidth = subprocess.check_output("%s %s" % (BANDWIDTH_SCRIPT, bandwidth_id), shell=True)
 			bandwidth = bandwidth.strip().decode("utf-8")
 			traffic = subprocess.check_output("%s %s" % (TRAFFIC_SCRIPT, traffic_id), shell=True)

@@ -1,0 +1,22 @@
+{
+  "name": "guifi-gps",
+  "preferGlobal": "false",
+  "version": "0.0.1",
+  "author": "David Rubert <david.rubert@gmail.com>",
+  "description": "REST interface to the Mongo DB squema of data of the gps DB",
+  "dependencies" : {
+    "express"   :  "*",
+    "mongoose"   :  "*",
+    "string"   :  "*",
+    "forever"   :  "*"
+  },
+  "keywords": [
+    "node",
+    "mongo",
+    "server"
+  ],
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.6"
+  }
+}

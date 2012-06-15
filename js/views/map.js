@@ -13,20 +13,20 @@ define([
             "click .delete-supernodo": "deletesupernodo"
     },
     initialize: function(options) {
-	_.bindAll( this, "renderLinks", "redraw", "closeall", "deletenewmarker", "newsupernodo", "deletesupernodo" );
-	this.collection.on("reset", this.redraw);
-	this.collection.supernodos.on("reset", this.redraw);
-	this.infowindows = new Array();
-	this.markers = new Array();
-	this.polylines = new Array();
+	    _.bindAll( this, "renderLinks", "redraw", "closeall", "deletenewmarker", "newsupernodo", "deletesupernodo" );
+	    this.collection.on("reset", this.redraw);
+	    this.collection.supernodos.on("reset", this.redraw);
+	    this.infowindows = new Array();
+	    this.markers = new Array();
+	    this.polylines = new Array();
         var myOptions = {
                 zoom: 12,
                 center: new google.maps.LatLng(40.000531,-0.039139),
                 mapTypeId: google.maps.MapTypeId.HYBRID,
-	  	zoomControl: true,
-  		panControl: false,
-  		streetViewControl: false,
-  		zoomControlOptions: {
+	  	        zoomControl: true,
+  		        panControl: false,
+  		        streetViewControl: false,
+  		        zoomControlOptions: {
 	      		style: google.maps.ZoomControlStyle.SMALL
 	    	}
         };
@@ -159,10 +159,10 @@ define([
                 3: "#FF0000"
         };
 
-	var point = this.collection.supernodos.get(enlace.get("supernodos")[0]).get("latlng");
-	var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
-	point = this.collection.supernodos.get(enlace.get("supernodos")[1]).get("latlng");
-	var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
+	    var point = this.collection.supernodos.get(enlace.get("supernodos")[0]).get("latlng");
+	    var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
+	    point = this.collection.supernodos.get(enlace.get("supernodos")[1]).get("latlng");
+	    var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
 	var weight = 1;
 	if (enlace.get("bandwidth") > 30) {
