@@ -56,14 +56,16 @@ body {
     color: white;
 }
 
-div#origin {
-    position: absolute;
-    top: 3em;
-    right: .5em;
-    width: 30em;
+div.box {
+    border-radius: 14px;
+    box-shadow: 5px 5px 5px #222;
+    background: white;
+    padding: 1em;
 }
 
-div.box {
-    border: 4px solid #AAA;
-    background: white;
+div#infobox {
+    position: absolute;
+    top: 3em;
+    right: 3em;
+    width: 30em;
 }

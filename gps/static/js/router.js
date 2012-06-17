@@ -5,9 +5,11 @@ define([
   'backbone',
   'views/map',
   'views/box',
+  'views/splash',
   'collections/enlaces',
-  'collections/supernodos'
-], function ($, _, Backbone, MapView, BoxView, ListaEnlaces, ListaSupernodos) {
+  'collections/supernodos',
+  'models/camino'
+], function ($, _, Backbone, MapView, BoxView, SplashView, ListaEnlaces, ListaSupernodos, CaminoModel) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -17,38 +19,92 @@ define([
       '*actions': 'defaultAction'
     },
 
+    initialize: function(options) {
+        _.bindAll( this, "setroute", "removenode", "init");
+        this.supernodos = new ListaSupernodos();
+        this.enlaces = new ListaEnlaces( { supernodos: this.supernodos } );
+        this.camino = new CaminoModel();
+        var ref = this;
+        this.supernodos.fetch({ success: function() {
+            Backbone.history.start();
+        } });
+        this.mapView = new MapView( { collection: this.enlaces });
+        this.boxView = new BoxView( { el: "#infobox" });
+        this.splashView = new SplashView( { el: "#infobox" });
+        this.mapView.on("setnode", this.setroute);
+        this.mapView.on("removenode", this.removenode);
+        this.boxView.on("close", this.init);
+        //this.splashView.on("splashclose", this.mapView.detectnode);
+    },
+
     setroute: function(node) {
-        if (!this.mapView.node) {
+        var supernodos = this.camino.get("supernodos");
+        if (supernodos.length == 2) {
+            supernodos.pop()
+        }
+
+        if (supernodos.length > 0) {
+
             var supernodo = this.supernodos.get(node);
-            console.log(supernodo);
-            this.boxView = new BoxView( { model: supernodo, el: "#origin" });
+            supernodos.push(supernodo);
+            this.camino.set("supernodos", supernodos);
+            this.mapView.highlightNodes( [ supernodos[0].id, node ] );
+
+            this.enlaces.url = "/api/getroute/" + supernodos[0].id + "/" + supernodos[1].id;
+            var ref = this;
+            this.enlaces.fetch( { success: function() {
+                ref.enlaces.calculateDistances();
+                ref.mapView.renderLinks();
+            } });
+
+            this.boxView.model = this.camino;
             this.boxView.render();
-            this.mapView.node = node;
-            this.mapView.closeall();
+            this.navigate("/show/route/" + supernodos[0].id + "/" + supernodos[1].id);
+
         } else {
-            this.mapView.destiny = node;
-            this.navigate("show/route/" + this.mapView.node + "/" + node, { trigger: true });
+            var supernodo = this.supernodos.get(node);
+            this.camino.set("supernodos", [ supernodo ]);
+            this.mapView.highlightNodes( [ node ] );
+            this.boxView.model = this.camino;
+            this.boxView.render();
+            this.navigate("/set/route/" + supernodo.id);
+        }
+    },
+
+    removenode: function(node) {
+        var supernodos = this.camino.get("supernodos");
+        var supernodo = this.supernodos.get(node);
+
+        var idx = supernodos.indexOf(supernodo);
+        supernodos.splice(idx, 1);
+
+        this.mapView.clearLinks();
+        this.camino.set("supernodos", supernodos);
+        if (supernodos.length == 0) {
+            this.camino = new CaminoModel();
+            this.boxView.close();
+            this.mapView.clearall();
+            this.navigate("/");
+        } else {
+            this.camino.set("supernodos", supernodos);
+            this.navigate("/set/route/" + supernodos[0].id);
+            this.boxView.render();
         }
     },
 
     showroute: function() {
     },
 
-    initialize: function(options) {
-        //_.bindAll( this, "show", "filter");
-        this.supernodos = new ListaSupernodos();
-        this.enlaces = new ListaEnlaces( { supernodos: this.supernodos } );
-        var ref = this;
-        this.supernodos.fetch({ success: function() {
-            ref.enlaces.fetch( { success: function() {
-                ref.enlaces.calculateDistances();
-                Backbone.history.start();
-            } });
-        } });
-        this.mapView = new MapView( { collection: this.enlaces });
+    init: function() {
+        this.camino = new CaminoModel();
+        //this.boxView.close();
+        this.mapView.clearall();
+        this.navigate("/");
     },
 
     defaultAction: function(event) {
+        this.init();
+        this.splashView.render();
     }
 
   });

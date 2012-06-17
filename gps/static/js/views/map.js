@@ -7,13 +7,9 @@ define([
 
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
-    events: {
-            "click .btn-close": "closeall"
-    },
     initialize: function(options) {
-	    _.bindAll( this, "renderSupernodes", "closeall" );
-	    this.infowindows = new Array();
-        var node = undefined;
+	    _.bindAll( this, "renderSupernodes", "clearall", "detectnode", "clearLinks" );
+        this.selectedMarkers = [];
 	    this.markers = new Object();
 	    this.polylines = new Array();
         var myOptions = {
@@ -29,80 +25,114 @@ define([
         };
         this.map = new google.maps.Map(this.el, myOptions);
         this.collection.supernodos.on("reset", this.renderSupernodes);
+        this.wifiIcon = new google.maps.MarkerImage("img/wifi.png", null, null, new google.maps.Point(16, 16));
+        this.wifiRedIcon = new google.maps.MarkerImage("img/wifiRed.png", null, null, new google.maps.Point(16, 16));
     },
 
-    setInitialNode: function(id) {
-        var supernodo = this.collection.supernodos.get(id);
-        var marker = this.markers[id];
-        marker.setIcon("img/wifiRed.png");
-	    var p = supernodo.get("latlng");
-	    this.map.setCenter(new google.maps.LatLng(p["lat"], p["lng"]));
-        var infowindow = new google.maps.InfoWindow({
-            maxWidth: 300,
-            content: '<p style="font-size: 1.2em; padding: .5em;">Este es el supernodo al que te conectas y el inicio del camino que vamos a medir. Pulsa sobre otro supernodo para averiguar cuál es el camino que seguirá tu tráfico.</p><p style="font-size: 1.2em; padding: .5em;">Puedes cambiar el marcador de inicio a otro supernodo si quieres visualizar otras rutas pulsando el botón de "<strong>Cambia punto de partida</strong> que encontrarás en la caja de información de cada supernodo</p>'  + '<p style="float: right;"><a href="#" class="btn btn-primary btn-close">Aceptar</a></p>' });
-        infowindow.open(this.map, marker); 
-        this.infowindows.push(infowindow);
-
+    highlightNodes: function(nodes) {
         var ref = this;
-        google.maps.event.addListener(marker, 'click', function() {
-            ref.closeall();
-            infowindow.open(this.map,marker);
+        _.each(nodes, function(node) {
+            var marker = ref.markers[node];
+            marker.setIcon(ref.wifiRedIcon);
+            if (!_.include(ref.selectedMarkers, marker)) {
+                ref.selectedMarkers.push(marker);
+            }
         });
     },
 
-    centermap: function(placeId) {
-	    var supernodo = undefined;
-	    this.collection.supernodos.each(function(s) {
-		    if (placeId === s.get("name")) {
-			    supernodo = s;
-		    }
-	    });
-	    var p = supernodo.get("latlng");
-	    this.map.setCenter(new google.maps.LatLng(p["lat"], p["lng"]));
+    clearall: function() {
+        _.each(this.polylines, function(poly) {
+            poly.setMap(null);
+        });
+        _.each(this.selectedMarkers, function(marker) {
+            marker.setIcon(this.wifiIcon);
+        });
+        this.selectedMarkes = [];
+        this.polylinks = [];
     },
 
+    clearLinks: function() {
+        _.each(this.polylines, function(poly) {
+            poly.setMap(null);
+        });
+    },
+ 
     renderSupernodes: function() {
 	    var ref = this;
 	    this.collection.supernodos.each(function(supernodo) {
 		    ref.renderMarker(supernodo);
 	    });
+    },
+
+    detectnode: function() {
         $.ajax({ url: "/api/getsupernode", context: this }).done(function(id) {
             if (id) {
-                this.setInitialNode(id);
+                this.trigger("setnode", id);
+                this.selectedMarkers.push(this.markers[id]);
+                var supernodo = this.collection.supernodos.get(id);
+                var p = supernodo.get("latlng");
+	            this.map.setCenter(new google.maps.LatLng(p["lat"], p["lng"]));
             }
         });
     },
 
     // renders new marker to map
     renderMarker: function(supernodo) {
-        var icon = new google.maps.MarkerImage("img/wifi.png", null, null, new google.maps.Point(16, 16));
 	    var point = supernodo.get("latlng");
 	    var position = new google.maps.LatLng(point["lat"], point["lng"]);
         var marker = new google.maps.Marker({
             map: this.map,
             position: position,
-            icon: icon
+            icon: this.wifiIcon
         });
 
 	    this.markers[supernodo.id] = marker;
-	    var infowindow = new google.maps.InfoWindow({ 
-		    content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#set/route/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Establecer destino</a>"
-        });
 
 	    var ref = this;
 	    google.maps.event.addListener(marker, 'click', function() { 
-            ref.closeall();
-		    infowindow.open(this.map,marker); 
+            if (_.include(ref.selectedMarkers, marker)) {
+                var idx = ref.selectedMarkers.indexOf(marker);
+                var removedMarker = ref.selectedMarkers.splice(idx, 1);
+                removedMarker[0].setIcon(ref.wifiIcon);
+                ref.trigger("removenode", supernodo.id);
+            } else {
+                if (ref.selectedMarkers.length == 2) {
+                    var removedMarker = ref.selectedMarkers.pop();
+                    removedMarker.setIcon(ref.wifiIcon);
+                }
+                marker.setIcon(ref.wifiRedIcon);
+                ref.selectedMarkers.push(marker);
+                ref.trigger("setnode", supernodo.id);
+            }
 	    });
 
-	    this.infowindows.push(infowindow);
+	    google.maps.event.addListener(marker, 'mouseover', function() { 
+            marker.setIcon(ref.wifiRedIcon);
+	    });
+
+	    google.maps.event.addListener(marker, 'mouseout', function() { 
+            if (!_.include(ref.selectedMarkers, marker)) {
+                marker.setIcon(ref.wifiIcon);
+            }
+	    });
     },
 
-    closeall: function() {
-	    _.each(this.infowindows, function(i) {
-		    i.close();
-	    });
-        return false;
+    redraw: function() {
+        _.each(this.markers, function(marker) {
+            marker.setMap(null);
+        });
+        this.renderLinks();
+    },
+
+    renderLinks: function(enlaces, supernodos) {
+        var ref = this;
+        this.collection.each(function(enlace) {
+            if (enlace.get("id")) {
+                ref.renderLink(enlace);
+            } else {
+                enlace.destroy();
+            }
+        });
     },
 
     renderLink: function(enlace) {
@@ -157,7 +187,7 @@ define([
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-			ref.trigger("viewenlace", enlace.get("id"));
+			        ref.trigger("viewenlace", enlace.get("id"));
                 };
             })(enlace)
         );

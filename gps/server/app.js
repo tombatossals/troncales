@@ -53,9 +53,9 @@ function getSupernodo(req, callback) {
     var child = exec('ipcalc ' + ip_address + '/27 -n | grep HostMin | sed -e s/"  *"/" "/g | cut -f2 -d" "', function(error, stdout, stderr) {
         var supernode_ip = S(stdout).trim().s;
         console.log(ip_address, supernode_ip);
-        SupernodeModel.findOne({ 'ip': supernode_ip }, function(err, supernodos) {
-            if (supernodos) {
-                callback(supernodos[0].id);
+        SupernodeModel.findOne({ 'ip': supernode_ip }, function(err, supernodo) {
+            if (supernodo) {
+                callback(supernodo.id);
             } else {
                 return callback(null);
             }
@@ -69,16 +69,35 @@ app.listen(2424);
 
 var Schema = mongoose.Schema;  
 
+var Enlace = new Schema({  
+        id: { type: String, required: true },  
+        distance: { type: String, required: true },  
+        saturation: { type: String, required: true },
+        bandwidth: { type: String, required: true },
+        supernodos: [ { type: String } ]
+});
+
+var EnlaceModel = mongoose.model('enlaces', Enlace);  
+
 var Supernode = new Schema({  
         id: { type: String, required: true },  
         name: { type: String, required: true },  
         email: { type: String },
         ip: { type: String },
-        validated: { type: Boolean },
         latlng: { lat: Number, lng: Number }
 });
 
 var SupernodeModel = mongoose.model('supernodos', Supernode);  
+
+app.get('/api/getroute/:origin/:final', function (req, res) {
+ return EnlaceModel.find( { supernodos: req.params.origin }, function (err, enlaces) {
+    if (!err) {
+      return res.send(enlaces);
+    } else {
+      return console.log(err);
+    }
+  });
+});
 
 app.get('/api/supernodos', function (req, res){
 

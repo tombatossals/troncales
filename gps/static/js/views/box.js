@@ -16,13 +16,19 @@ define([
     },
 
     render: function() {
-        $(this.el).html(this.template(this.model.toJSON()));
+        var supernodos = this.model.get("supernodos");
+
+        var origen = supernodos[0];
+        var destino = supernodos[1];
+
+        $(this.el).html(this.template( { "origen": origen, "destino": destino } ));
         $(this.el).show();
         return this;
     },
 
     close: function() {
         $(this.el).hide();
+        this.trigger("close");
     }
 
   });
