@@ -9,7 +9,7 @@ define([
 
   var ListaEnlaces = Backbone.Collection.extend({
         model: Enlace,
-        url: 'http://10.228.144.163/troncales/enlaces',
+        url: '/api/getroute/4f5fc24b81d6a14953ef44c9/4f5fc25a81d6a14953ef44ca',
 
         initialize: function(options) {
 		    this.supernodos = options.supernodos

@@ -22,13 +22,13 @@ define([
     initialize: function(options) {
         _.bindAll( this, "setroute", "removenode", "init");
         this.supernodos = new ListaSupernodos();
-        this.enlaces = new ListaEnlaces( { supernodos: this.supernodos } );
         this.camino = new CaminoModel();
         var ref = this;
         this.supernodos.fetch({ success: function() {
             Backbone.history.start();
         } });
-        this.mapView = new MapView( { collection: this.enlaces });
+        this.enlaces = new ListaEnlaces( { supernodos: this.supernodos });
+        this.mapView = new MapView( { collection: this.supernodos } );
         this.boxView = new BoxView( { el: "#infobox" });
         this.splashView = new SplashView( { el: "#infobox" });
         this.mapView.on("setnode", this.setroute);
@@ -54,7 +54,9 @@ define([
             var ref = this;
             this.enlaces.fetch( { success: function() {
                 ref.enlaces.calculateDistances();
-                ref.mapView.renderLinks();
+                ref.enlaces.forEach(function(enlace) {
+                    ref.mapView.renderLink(enlace);
+                });
             } });
 
             this.boxView.model = this.camino;

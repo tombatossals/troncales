@@ -24,7 +24,7 @@ define([
 	    	}
         };
         this.map = new google.maps.Map(this.el, myOptions);
-        this.collection.supernodos.on("reset", this.renderSupernodes);
+        this.collection.on("reset", this.renderSupernodes);
         this.wifiIcon = new google.maps.MarkerImage("img/wifi.png", null, null, new google.maps.Point(16, 16));
         this.wifiRedIcon = new google.maps.MarkerImage("img/wifiRed.png", null, null, new google.maps.Point(16, 16));
     },
@@ -41,11 +41,13 @@ define([
     },
 
     clearall: function() {
+
+        var ref = this;
         _.each(this.polylines, function(poly) {
             poly.setMap(null);
         });
         _.each(this.selectedMarkers, function(marker) {
-            marker.setIcon(this.wifiIcon);
+            marker.setIcon(ref.wifiIcon);
         });
         this.selectedMarkes = [];
         this.polylinks = [];
@@ -59,7 +61,7 @@ define([
  
     renderSupernodes: function() {
 	    var ref = this;
-	    this.collection.supernodos.each(function(supernodo) {
+	    this.collection.each(function(supernodo) {
 		    ref.renderMarker(supernodo);
 	    });
     },
@@ -69,7 +71,7 @@ define([
             if (id) {
                 this.trigger("setnode", id);
                 this.selectedMarkers.push(this.markers[id]);
-                var supernodo = this.collection.supernodos.get(id);
+                var supernodo = this.collection.get(id);
                 var p = supernodo.get("latlng");
 	            this.map.setCenter(new google.maps.LatLng(p["lat"], p["lng"]));
             }
@@ -124,9 +126,9 @@ define([
         this.renderLinks();
     },
 
-    renderLinks: function(enlaces, supernodos) {
+    renderLinks: function(enlaces) {
         var ref = this;
-        this.collection.each(function(enlace) {
+        _.each(enlaces, function(enlace) {
             if (enlace.get("id")) {
                 ref.renderLink(enlace);
             } else {
@@ -143,9 +145,9 @@ define([
                 3: "#FF0000"
         };
 
-	    var point = this.collection.supernodos.get(enlace.get("supernodos")[0]).get("latlng");
+	    var point = this.collection.get(enlace.get("supernodos")[0]).get("latlng");
 	    var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
-	    point = this.collection.supernodos.get(enlace.get("supernodos")[1]).get("latlng");
+	    point = this.collection.get(enlace.get("supernodos")[1]).get("latlng");
 	    var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
 	    var weight = 1;

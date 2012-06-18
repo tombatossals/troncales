@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from pymongo import Connection
+from bson.objectid import ObjectId
 import subprocess
 import os
 import sys
@@ -19,13 +20,31 @@ def getips():
     return ips
 
 
-ips = getips()
+supernodos = [ s.get("name") for s in db.supernodos.find() ]
 
-for origin in ips:
+db.caminos.remove()
 
-    for destiny in ips:
+for origin in db.supernodos.find( { "name": "castalia" } ):
+    for destiny in db.supernodos.find():
+        if origin.get("name") != destiny.get("name"): 
+            ippath = subprocess.check_output(TRACEROUTE_CMD % (origin.get("mainip"), destiny.get("mainip")), shell=True)
+            ippath = [ ip.decode("utf-8") for ip in ippath.split() ]
+            path = dict()
+            path['supernodos'] = [ origin.get("_id"), destiny.get("_id") ]
+            path['enlaces'] = list()
 
-        if origin != destiny:
-            path = subprocess.check_output(TRACEROUTE_CMD % (origin, destiny), shell=True)
-            print(path)
-            sys.exit()
+            main = origin
+            for ip in ippath:
+                next = db.supernodos.find_one( { 'ips': ip } )
+                if next:
+                    enlace = db.enlaces.find_one( { "supernodos": { "$all": [ ObjectId(main.get("_id")), ObjectId(next.get("_id")) ] } });
+                    if enlace:
+                        path['enlaces'].append(enlace.get("_id"))
+                    else:
+                        pass
+                        print(main.get("name"), next.get("name"), ippath)
+                else:
+                    print(ip)
+                main = next
+            db.caminos.save(path)
+

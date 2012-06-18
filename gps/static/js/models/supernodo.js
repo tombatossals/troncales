@@ -3,9 +3,9 @@ define([
   'backbone'
 ], function(_, Backbone) {
   var Supernodo = Backbone.Model.extend({
+        idAttribute: "_id",
         defaults: function() {
             return {
-			    id: null,
                 name: null,
                 email: null,
                 ip: null,

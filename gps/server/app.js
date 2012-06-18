@@ -12,7 +12,7 @@ var app = express.createServer();
 
 // Database
 
-mongoose.connect('mongodb://localhost/trunks');
+mongoose.connect('mongodb://localhost/troncales');
 
 // Config
 
@@ -53,7 +53,7 @@ function getSupernodo(req, callback) {
     var child = exec('ipcalc ' + ip_address + '/27 -n | grep HostMin | sed -e s/"  *"/" "/g | cut -f2 -d" "', function(error, stdout, stderr) {
         var supernode_ip = S(stdout).trim().s;
         console.log(ip_address, supernode_ip);
-        SupernodeModel.findOne({ 'ip': supernode_ip }, function(err, supernodo) {
+        Supernodo.findOne({ 'ip': supernode_ip }, function(err, supernodo) {
             if (supernodo) {
                 callback(supernodo.id);
             } else {
@@ -67,9 +67,10 @@ function getSupernodo(req, callback) {
 
 app.listen(2424);
 
-var Schema = mongoose.Schema;  
+var  Schema = mongoose.Schema
+    ,ObjectId = Schema.ObjectId;
 
-var Enlace = new Schema({  
+var EnlaceSchema = new Schema({  
         id: { type: String, required: true },  
         distance: { type: String, required: true },  
         saturation: { type: String, required: true },
@@ -77,9 +78,9 @@ var Enlace = new Schema({
         supernodos: [ { type: String } ]
 });
 
-var EnlaceModel = mongoose.model('enlaces', Enlace);  
+var Enlace = mongoose.model('enlaces', EnlaceSchema);  
 
-var Supernode = new Schema({  
+var SupernodoSchema = new Schema({  
         id: { type: String, required: true },  
         name: { type: String, required: true },  
         email: { type: String },
@@ -87,21 +88,44 @@ var Supernode = new Schema({
         latlng: { lat: Number, lng: Number }
 });
 
-var SupernodeModel = mongoose.model('supernodos', Supernode);  
+var Supernodo = mongoose.model('supernodos', SupernodoSchema);  
+
+var CaminoSchema = new Schema({
+    supernodos: [ { type: ObjectId, ref: "supernodos" } ],
+    enlaces: [ { type: ObjectId, ref: "enlaces" } ]
+});
+
+var Camino = mongoose.model('caminos', CaminoSchema);  
 
 app.get('/api/getroute/:origin/:final', function (req, res) {
- return EnlaceModel.find( { supernodos: req.params.origin }, function (err, enlaces) {
+ var o = mongoose.Types.ObjectId(req.params.origin);
+ var f = mongoose.Types.ObjectId(req.params.final);
+
+ return Camino.findOne( { "supernodos" : { "$all" : [ o, f ] } }).populate("enlaces").exec(function(err, camino) {
+     if (!err) {
+        return res.send(camino.enlaces);
+     } else {
+         return console.log(err);
+     }
+ });
+
+});
+
+app.get('/api/enlaces', function (req, res){
+
+ return Enlace.find(function (err, enlaces) {
     if (!err) {
       return res.send(enlaces);
     } else {
       return console.log(err);
     }
   });
+
 });
 
 app.get('/api/supernodos', function (req, res){
 
- return SupernodeModel.find(function (err, supernodos) {
+ return Supernodo.find(function (err, supernodos) {
     if (!err) {
       return res.send(supernodos);
     } else {
