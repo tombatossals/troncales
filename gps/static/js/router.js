@@ -5,11 +5,12 @@ define([
   'backbone',
   'views/map',
   'views/box',
+  'views/graph',
   'views/splash',
   'collections/enlaces',
   'collections/supernodos',
   'models/camino'
-], function ($, _, Backbone, MapView, BoxView, SplashView, ListaEnlaces, ListaSupernodos, CaminoModel) {
+], function ($, _, Backbone, MapView, BoxView, GraphView, SplashView, ListaEnlaces, ListaSupernodos, CaminoModel) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -20,7 +21,7 @@ define([
     },
 
     initialize: function(options) {
-        _.bindAll( this, "setroute", "removenode", "init");
+        _.bindAll( this, "setroute", "removenode", "init", "showgraph", "hidegraph");
         this.supernodos = new ListaSupernodos();
         this.camino = new CaminoModel();
         var ref = this;
@@ -30,15 +31,28 @@ define([
         this.enlaces = new ListaEnlaces( { supernodos: this.supernodos });
         this.mapView = new MapView( { collection: this.supernodos } );
         this.boxView = new BoxView( { el: "#infobox" });
+        this.graphView = new GraphView( { el: "#graph" });
         this.splashView = new SplashView( { el: "#infobox" });
         this.mapView.on("setnode", this.setroute);
         this.mapView.on("removenode", this.removenode);
+        this.mapView.on("hidegraph", this.hidegraph);
+        this.mapView.on("showgraph", this.showgraph);
         this.boxView.on("close", this.init);
         //this.splashView.on("splashclose", this.mapView.detectnode);
     },
 
+    showgraph: function(enlace) {
+        this.graphView.model = enlace;
+        this.graphView.render();
+    },
+
+    hidegraph: function() {
+        this.graphView.close();
+    },
+
     setroute: function(node) {
         var supernodos = this.camino.get("supernodos");
+        this.mapView.clearLinks();
         if (supernodos.length == 2) {
             supernodos.pop()
         }
@@ -64,6 +78,7 @@ define([
             this.navigate("/show/route/" + supernodos[0].id + "/" + supernodos[1].id);
 
         } else {
+            this.graphView.close();
             var supernodo = this.supernodos.get(node);
             this.camino.set("supernodos", [ supernodo ]);
             this.mapView.highlightNodes( [ node ] );
@@ -81,6 +96,7 @@ define([
         supernodos.splice(idx, 1);
 
         this.mapView.clearLinks();
+        this.graphView.close();
         this.camino.set("supernodos", supernodos);
         if (supernodos.length == 0) {
             this.camino = new CaminoModel();

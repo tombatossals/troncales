@@ -8,7 +8,8 @@ define([
   var BoxView = Backbone.View.extend({
     template: _.template(templateBox),
     events: {
-        "click .close": "close"
+        "click .close": "close",
+        "click .btn-close": "close"
     },
 
     initialize: function(options) {

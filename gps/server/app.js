@@ -102,7 +102,7 @@ app.get('/api/getroute/:origin/:final', function (req, res) {
  var f = mongoose.Types.ObjectId(req.params.final);
 
  return Camino.findOne( { "supernodos" : { "$all" : [ o, f ] } }).populate("enlaces").exec(function(err, camino) {
-     if (!err) {
+     if (!err && camino) {
         return res.send(camino.enlaces);
      } else {
          return console.log(err);
@@ -125,7 +125,7 @@ app.get('/api/enlaces', function (req, res){
 
 app.get('/api/supernodos', function (req, res){
 
- return Supernodo.find(function (err, supernodos) {
+ return Supernodo.find({ 'validated': true }, function (err, supernodos) {
     if (!err) {
       return res.send(supernodos);
     } else {

@@ -60,7 +60,7 @@ div.box {
     border-radius: 14px;
     box-shadow: 5px 5px 5px #222;
     background: white;
-    padding: 1em;
+    padding: .5em 1em;
 }
 
 div#infobox {
@@ -68,4 +68,20 @@ div#infobox {
     top: 3em;
     right: 3em;
     width: 30em;
+}
+
+div.mini {
+    padding: 1em;
+    margin: 1em;
+    border-radius: 14px;
+    background: white;
+}
+
+div#graph {
+    position: absolute;
+    top: 3em;
+    left: 3em;
+    width: 30em;
+    background: white;
+    display: none;
 }

@@ -7,5 +7,5 @@ import sys
 connection = Connection()
 db = connection.troncales
 
-for s in db.supernodos.find():
+for s in db.supernodos.find( { "validated": True } ):
     print(s.get("name"))

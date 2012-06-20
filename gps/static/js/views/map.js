@@ -90,6 +90,10 @@ define([
 
 	    this.markers[supernodo.id] = marker;
 
+        var infowindow = new google.maps.InfoWindow({
+            content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />IP: <strong>" + supernodo.get("mainip") + "</strong>"
+        });
+
 	    var ref = this;
 	    google.maps.event.addListener(marker, 'click', function() { 
             if (_.include(ref.selectedMarkers, marker)) {
@@ -109,10 +113,12 @@ define([
 	    });
 
 	    google.maps.event.addListener(marker, 'mouseover', function() { 
+            infowindow.open(ref.map, marker);
             marker.setIcon(ref.wifiRedIcon);
 	    });
 
 	    google.maps.event.addListener(marker, 'mouseout', function() { 
+            infowindow.close();
             if (!_.include(ref.selectedMarkers, marker)) {
                 marker.setIcon(ref.wifiIcon);
             }
@@ -160,6 +166,7 @@ define([
 	    } else if (enlace.get("bandwidth") > 4) {
 		    weight = 3;
 	    }
+
         var polyOptions = {
                 strokeColor: saturationColor[enlace.get("saturation")],
                 strokeOpacity: 1.0,
@@ -174,15 +181,17 @@ define([
         google.maps.event.addListener(poly, "mouseout",
             (function(enlace, ply) {
                 return function() {
-    			poly.setOptions({ strokeColor: saturationColor[enlace.get("saturation")] });
+			        //ref.trigger("hidegraph");
+    			    poly.setOptions({ strokeColor: saturationColor[enlace.get("saturation")] });
                 };
             })(enlace, poly)
         );
         google.maps.event.addListener(poly, "mouseover",
             (function(enlace, poly) {
                 return function() {
-			ref.trigger("activelink", enlace);
-    			poly.setOptions({ strokeColor: "#FFFFFF" });
+			        ref.trigger("showgraph", enlace);
+    			    poly.setOptions({ strokeColor: "#FFFFFF" });
+                    $("div#graph").show();
                 };
             })(enlace, poly)
         );

@@ -1,11 +1,10 @@
 <div class="well">
     <a class="close">&times;</a>
     <% if (origen) { %>
-    <strong>Nodo origen</strong>
-    <h2 style="padding: 0;"><% print(origen.get("name")); %></h2>
+    <h2><span style="font-size: .6em;">Nodo origen:</span> <% print(origen.get("name")); %></h2>
     <% } %>
     <% if (destino) { %>
-    <strong>Nodo destino</strong>
-    <h2 style="padding: 0;"><% print(destino.get("name")); %></h2>
+    <h2><span style="font-size: .6em;">Nodo destino:</span> <% print(destino.get("name")); %></h2>
+    <p>Pasa por encima de los enlaces para ver el rendimiento.</p>
     <% } %>
 </div>
