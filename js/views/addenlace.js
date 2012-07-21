@@ -16,7 +16,7 @@ define([
 	},	
         render: function() {
 		var data = this.collection.supernodos.map(function(s) {
-			return { id: s.get("id"), name: s.get("name") }
+			return { id: s.get("_id"), name: s.get("name") }
 		});
       		$(this.el).html(this.template({ supernodos: data }));
 		$(this.el).modal();

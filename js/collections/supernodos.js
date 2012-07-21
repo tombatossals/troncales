@@ -7,7 +7,7 @@ define([
 
   var ListaSupernodos = Backbone.Collection.extend({
         model: Supernodo,
-        url: '/troncales/supernodos'
+        url: '/api/supernodos'
   });
 
   return ListaSupernodos;

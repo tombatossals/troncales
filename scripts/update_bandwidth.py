@@ -12,7 +12,7 @@ db = connection.troncales
 
 for enlace in db.enlaces.find():
 
-	if enlace.get("validated"):
+	#if enlace.get("validated"):
 		bandwidth_id = enlace.get("rrdtool_bandwidth_id")
 		traffic_id = enlace.get("rrdtool_traffic_id")
 

@@ -8,7 +8,8 @@
     "express"   :  "*",
     "mongoose"   :  "*",
     "string"   :  "*",
-    "forever"   :  "*"
+    "underscore" :  "*",
+    "forever"   :  ">=0.8"
   },
   "keywords": [
     "node",
@@ -17,6 +18,6 @@
   ],
   "license": "MIT",
   "engine": {
-    "node": ">=0.6"
+    "node": ">=0.8"
   }
 }

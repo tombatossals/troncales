@@ -6,5 +6,7 @@
     <% if (destino) { %>
     <h2><span style="font-size: .6em;">Nodo destino:</span> <% print(destino.get("name")); %></h2>
     <p>Pasa por encima de los enlaces para ver el rendimiento.</p>
+    <p>Distancia total del camino: <strong style="font-size: 1.4em;"><% print(camino.distancia) %>km.</strong></p>
+    <p>Peor enlace del camino: <strong style="font-size: 1.4em;"><% print(camino.bandwidth) %>Mbits.</strong></p>
     <% } %>
 </div>

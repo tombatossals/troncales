@@ -6,6 +6,8 @@ requirejs.config({
         backbone: 'libs/backbone/backbone-min',
         d3: 'libs/d3/d3.v2.min',
         async: 'libs/require/async',
+        bootstrap: 'libs/bootstrap/bootstrap.min',
+        qtip: 'libs/qtip/jquery.qtip.min',
 
         // Require.js plugins
         text: 'libs/require/text',
@@ -24,6 +26,14 @@ requirejs.config({
         'backbone': {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
+        },
+
+        'bootstrap': {
+            deps: [ 'jquery' ]
+        },
+
+        'qtip': {
+            deps: [ 'jquery' ]
         }
     }
 
@@ -31,7 +41,8 @@ requirejs.config({
 
 // Let's kick off the application
 require([
-    'app'
+    'app',
+    'bootstrap'
 ], function(App){
     App.initialize();
 });

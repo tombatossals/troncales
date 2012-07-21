@@ -12,9 +12,9 @@ define([
         	"click .editenlace .save-enlace": "save",
                 "click .btn-close": "close"
     	},
-  	initialize: function(options) {
+  	    initialize: function(options) {
                 _.bindAll( this, "save", "close" );
-	},	
+	    },	
         render: function() {
       		$(this.el).html(this.template(this.model.toJSON()));
         	return this;
@@ -23,17 +23,17 @@ define([
         	$(this.el).modal("hide");
 		this.trigger("closeall");
     	},
-	save: function() {
-		var attributes = { 
-			name: $("#editEnlaceName").val(),
-			rrdtool_bandwidth_graph_id: $("#editEnlaceBandwidthGraph").val(),
-			rrdtool_traffic_graph_id: $("#editEnlaceTrafficGraph").val(),
-			rrdtool_bandwidth_id: $("#editEnlaceBandwidth").val(),
-			rrdtool_traffic_id: $("#editEnlaceTraffic").val()
-		}
-		this.model.savedata(attributes);
-		this.close();
-	}
+	    save: function() {
+		    var attributes = { 
+			    name: $("#editEnlaceName").val(),
+			    rrdtool_bandwidth_graph_id: $("#editEnlaceBandwidthGraph").val(),
+			    rrdtool_traffic_graph_id: $("#editEnlaceTrafficGraph").val(),
+			    rrdtool_bandwidth_id: $("#editEnlaceBandwidth").val(),
+			    rrdtool_traffic_id: $("#editEnlaceTraffic").val()
+		    }
+		    this.model.savedata(attributes);
+		    this.close();
+	    }
   });
 
   return EditEnlaceView;

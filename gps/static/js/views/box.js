@@ -22,7 +22,19 @@ define([
         var origen = supernodos[0];
         var destino = supernodos[1];
 
-        $(this.el).html(this.template( { "origen": origen, "destino": destino } ));
+        var camino = { "distancia": 0, "bandwidth": 0 };
+        if (this.model.get("enlaces").length > 0 ) {
+            this.model.get("enlaces").forEach(function(enlace) {
+                camino.distancia += parseFloat(enlace.get("distance"));
+                if (camino.bandwidth == 0) {
+                    camino.bandwidth = parseFloat(enlace.get("bandwidth"));
+                } else if (camino.bandwidth > parseFloat(enlace.get("bandwidth"))) {
+                    camino.bandwidth = parseFloat(enlace.get("bandwidth"));
+                }
+            })
+        }
+
+        $(this.el).html(this.template( { "origen": origen, "destino": destino, "camino": camino } ));
         $(this.el).show();
         return this;
     },

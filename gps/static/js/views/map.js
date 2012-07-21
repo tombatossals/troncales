@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'async!http://maps.google.com/maps/api/js?sensor=false&libraries=geometry'
-], function($, _, Backbone){
+  'async!http://maps.google.com/maps/api/js?sensor=false&libraries=geometry',
+  'qtip'
+], function($, _, Backbone, LoadingTemplate){
 
   var MapView = Backbone.View.extend({
     el: "#map_canvas",
@@ -13,7 +14,7 @@ define([
 	    this.markers = new Object();
 	    this.polylines = new Array();
         var myOptions = {
-                zoom: 14,
+                zoom: 13,
                 center: new google.maps.LatLng(40.000531, -0.039139),
                 mapTypeId: google.maps.MapTypeId.HYBRID,
 	  	        zoomControl: true,
@@ -27,6 +28,19 @@ define([
         this.collection.on("reset", this.renderSupernodes);
         this.wifiIcon = new google.maps.MarkerImage("img/wifi.png", null, null, new google.maps.Point(16, 16));
         this.wifiRedIcon = new google.maps.MarkerImage("img/wifiRed.png", null, null, new google.maps.Point(16, 16));
+
+        // All this junk below is for getting pixel coordinates for a lat/lng  =/
+        MyOverlay.prototype = new google.maps.OverlayView();
+        MyOverlay.prototype.onAdd = function() { }
+        MyOverlay.prototype.onRemove = function() { }
+        MyOverlay.prototype.draw = function() { }
+        function MyOverlay(map) { this.setMap(map); }
+        var overlay = new MyOverlay(this.map);
+        var ref = this;
+        google.maps.event.addListener(this.map, 'idle', function() {
+            ref.projection = overlay.getProjection();
+        })
+
     },
 
     highlightNodes: function(nodes) {
@@ -112,10 +126,50 @@ define([
             }
 	    });
 
-	    google.maps.event.addListener(marker, 'mouseover', function() { 
-            infowindow.open(ref.map, marker);
-            marker.setIcon(ref.wifiRedIcon);
-	    });
+	    google.maps.event.addListener(marker, 'mouseover', (function(supernodo) {
+          return function(event) { 
+            //infowindow.open(ref.map, marker);
+            //marker.setIcon(ref.wifiRedIcon);
+
+            var pixel = ref.projection.fromLatLngToContainerPixel(event.latLng);
+            var pos = [ pixel.x, pixel.y ];
+
+
+            marker.tooltip = $('<div />').qtip({
+                content: {
+                    text: supernodo.get("mainip"),
+                    title: {
+                        text: supernodo.get("name"),
+                        button: true
+                    }
+                },
+                style: {
+                    classes: 'ui-tooltip-bootstrap ui-tooltip-shadow'
+                },
+                position: {
+                    at: "right center",
+                    my: "left center",
+                    adjust: {
+                        method: "flip shift",
+                        x: 15
+                    },
+                    target: pos,
+                    container: $('#map_canvas')
+                },
+                show: {
+                    ready: true,
+                    event: false,
+                    solo: true
+                },
+                hide: {
+                    fixed: true,
+                    delay: 100,
+                    event: 'mouseleave unfocus',
+                    inactive: 6000
+                }
+            })
+            .qtip('api');
+          } })(supernodo));
 
 	    google.maps.event.addListener(marker, 'mouseout', function() { 
             infowindow.close();
@@ -183,18 +237,28 @@ define([
                 return function() {
 			        //ref.trigger("hidegraph");
     			    poly.setOptions({ strokeColor: saturationColor[enlace.get("saturation")] });
+			        ref.trigger("hidegraph");
                 };
             })(enlace, poly)
         );
+
+        google.maps.event.addListener(poly, "mousemove", function(event) {
+            var pixel = ref.projection.fromLatLngToContainerPixel(event.latLng);
+            var pos = { x: pixel.x, y: pixel.y };
+			ref.trigger("movegraph", pos);
+        });
+
         google.maps.event.addListener(poly, "mouseover",
             (function(enlace, poly) {
-                return function() {
-			        ref.trigger("showgraph", enlace);
+                return function(event) {
     			    poly.setOptions({ strokeColor: "#FFFFFF" });
-                    $("div#graph").show();
+                    var pixel = ref.projection.fromLatLngToContainerPixel(event.latLng);
+                    var pos = { x: pixel.x, y: pixel.y };
+			        ref.trigger("showgraph", enlace, pos);
                 };
             })(enlace, poly)
         );
+        /*
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
@@ -202,6 +266,7 @@ define([
                 };
             })(enlace)
         );
+        */
     }
 
   });

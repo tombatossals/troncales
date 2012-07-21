@@ -40,11 +40,11 @@ define([
     deletesupernodo: function(event) {
 	    var supernodoId = event.target.hash.replace("#delete/supernodo/", "");
 	    var supernodo = this.collection.supernodos.get(supernodoId);
-            if (supernodo && !supernodo.get("validated")) {
-                supernodo.destroy();
-                this.collection.supernodos.fetch();
-                this.trigger("closeall");
-            }
+        if (supernodo && supernodo.get("validated")) {
+            supernodo.destroy();
+            this.collection.supernodos.fetch();
+            this.trigger("closeall");
+        }
     },
 
     deletenewmarker: function() {
@@ -107,24 +107,24 @@ define([
     },
 
     renderLinks: function(enlaces, supernodos) {
-	var ref = this;
-	this.collection.supernodos.each(function(supernodo) {
-		ref.renderMarker(supernodo);
-	});
-	this.collection.each(function(enlace) {
-		if (enlace.get("id")) {
-			ref.renderLink(enlace);
-		} else {
-			enlace.destroy();
-		}
-	});
+	    var ref = this;
+	    this.collection.supernodos.each(function(supernodo) {
+		    ref.renderMarker(supernodo);
+	    });
+	    this.collection.each(function(enlace) {
+		    if (enlace.get("_id")) {
+			    ref.renderLink(enlace);
+		    } else {
+			    enlace.destroy();
+		    }
+	    });
     },
 
     // renders new marker to map
     renderMarker: function(supernodo) {
         var icon = new google.maps.MarkerImage("img/wifi.png", null, null, new google.maps.Point(16, 16));
-	var point = supernodo.get("latlng");
-	var position = new google.maps.LatLng(point["lat"], point["lng"]);
+	    var point = supernodo.get("latlng");
+	    var position = new google.maps.LatLng(point["lat"], point["lng"]);
         var marker = new google.maps.Marker({
                         map: this.map,
                         position: position,
@@ -133,7 +133,7 @@ define([
 
 	this.markers.push(marker);
 	var infowindow = new google.maps.InfoWindow({ 
-		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />Responsable: <strong>" + supernodo.get("email") + "</strong> <br />IP: <strong>" + supernodo.get("ip") + "</strong><br /><a href=\"#edit/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-primary\">Editar supernodo</a> <a href=\"#delete/supernodo/" + supernodo.get("id") + "\" class=\"btn btn-danger delete-supernodo\">Borrar supernodo</a>" });
+		content: "Supernodo <strong>" + supernodo.get("name") + "</strong> <br />Responsable: <strong>" + supernodo.get("email") + "</strong> <br />IP: <strong>" + supernodo.get("mainip") + "</strong><br /><a href=\"#edit/supernodo/" + supernodo.get("_id") + "\" class=\"btn btn-primary\">Editar supernodo</a> <a href=\"#delete/supernodo/" + supernodo.get("_id") + "\" class=\"btn btn-danger delete-supernodo\">Borrar supernodo</a>" });
 
 	var ref = this;
 	google.maps.event.addListener(marker, 'click', function() { 
@@ -159,21 +159,25 @@ define([
                 3: "#FF0000"
         };
 
+        if (!this.collection.supernodos.get(enlace.get("supernodos")[0])) {
+            return;
+        }
+
 	    var point = this.collection.supernodos.get(enlace.get("supernodos")[0]).get("latlng");
 	    var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
 	    point = this.collection.supernodos.get(enlace.get("supernodos")[1]).get("latlng");
 	    var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
-	var weight = 1;
-	if (enlace.get("bandwidth") > 30) {
-		weight = 10;
-	} else if (enlace.get("bandwidth") > 20) {
-		weight = 8;
-	} else if (enlace.get("bandwidth") > 10) {
-		weight = 5;
-	} else if (enlace.get("bandwidth") > 4) {
-		weight = 3;
-	}
+	    var weight = 1;
+	    if (enlace.get("bandwidth") > 30) {
+		    weight = 10;
+	    } else if (enlace.get("bandwidth") > 20) {
+		    weight = 8;
+	    } else if (enlace.get("bandwidth") > 10) {
+		    weight = 5;
+	    } else if (enlace.get("bandwidth") > 4) {
+		    weight = 3;
+	    }
         var polyOptions = {
                 strokeColor: saturationColor[enlace.get("saturation")],
                 strokeOpacity: 1.0,
@@ -183,8 +187,8 @@ define([
         };
         var poly = new google.maps.Polyline(polyOptions);
 
-	this.polylines.push(poly);
-	var ref = this;
+	    this.polylines.push(poly);
+	    var ref = this;
         google.maps.event.addListener(poly, "mouseout",
             (function(enlace, ply) {
                 return function() {
@@ -203,7 +207,7 @@ define([
         google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-			ref.trigger("viewenlace", enlace.get("id"));
+			ref.trigger("viewenlace", enlace.get("_id"));
                 };
             })(enlace)
         );

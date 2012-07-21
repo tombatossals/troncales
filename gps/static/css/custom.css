@@ -85,3 +85,29 @@ div#graph {
     background: white;
     display: none;
 }
+
+div.loading {
+    position: absolute;
+    bottom: 3.5em;
+    right: 1em;
+    z-index: 10;
+    background: black;
+    font-size: 1.8em;
+    color: white;
+    font-weight: bold;
+    padding: .5em;
+    border-radius: 14px;
+    box-shadow: 5px 5px 5px #222;
+    opacity: .7;
+}
+
+div.well {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 5px 5px 5px #222;
+    opacity: .9;
+}
+
+div.well h2 {
+    line-height: 24px;
+}
