@@ -34,6 +34,7 @@ define([
             })
         }
 
+        camino.distancia = camino.distancia.toFixed(2);
         $(this.el).html(this.template( { "origen": origen, "destino": destino, "camino": camino } ));
         $(this.el).show();
         return this;

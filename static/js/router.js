@@ -8,10 +8,11 @@ define([
   'views/graph',
   'views/splash',
   'views/loading',
+  'views/error',
   'collections/enlaces',
   'collections/supernodos',
   'models/camino'
-], function ($, _, Backbone, MapView, BoxView, GraphView, SplashView, LoadingView, ListaEnlaces, ListaSupernodos, CaminoModel) {
+], function ($, _, Backbone, MapView, BoxView, GraphView, SplashView, LoadingView, ErrorView, ListaEnlaces, ListaSupernodos, CaminoModel) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -43,6 +44,7 @@ define([
         //this.splashView.on("splashclose", this.mapView.detectnode);
 
         this.loadingView = new LoadingView( { el: "#loading" });
+        this.errorView = new ErrorView( { el: "#error" });
 
         var ref = this;
         $("#all-links").click(function() {
@@ -79,23 +81,27 @@ define([
     },
 
     setroute: function(node1, node2) {
+
         var supernodos = this.camino.get("supernodos");
         this.mapView.clearLinks();
+
+        if (supernodos.length == 2) {
+            supernodos.pop();
+        }
+
+        if (node1 !== undefined) {
+            supernodos.push(this.supernodos.get(node1));
+        }
 
         if (node2 !== undefined) {
             supernodos.push(this.supernodos.get(node2));
         }
 
+
         if (supernodos.length == 2) {
-            supernodos.pop()
-        }
 
-        if (supernodos.length > 0) {
-
-            var supernodo = this.supernodos.get(node1);
-            supernodos.push(supernodo);
             this.camino.set("supernodos", supernodos);
-            this.mapView.highlightNodes( [ supernodos[0].id, node1 ] );
+            this.mapView.highlightNodes( [ supernodos[0].id, supernodos[1].id ] );
 
             this.enlaces.url = "/api/getroute/" + supernodos[0].id + "/" + supernodos[1].id;
             var ref = this;
@@ -108,17 +114,24 @@ define([
                 ref.camino.set("enlaces", ref.enlaces);
                 ref.boxView.model = ref.camino;
                 ref.boxView.render();
+            }, error: function() {
+                ref.loadingView.close();
+                ref.errorView.render();
+                if (node2) {
+                    ref.removenode(node2);
+                } else {
+                    ref.removenode(node1);
+                }
             } });
 
             this.navigate("/set/route/" + supernodos[0].id + "/" + supernodos[1].id);
 
         } else {
-            var supernodo = this.supernodos.get(node1);
-            this.camino.set("supernodos", [ supernodo ]);
-            this.mapView.highlightNodes( [ node1 ] );
+            this.camino.set("supernodos", supernodos);
+            this.mapView.highlightNodes( [ supernodos[0].id ] );
             this.boxView.model = this.camino;
             this.boxView.render();
-            this.navigate("/set/route/" + supernodo.id);
+            this.navigate("/set/route/" + supernodos[0].id);
         }
     },
 
@@ -131,6 +144,7 @@ define([
         supernodos.splice(idx, 1);
 
         this.mapView.clearLinks();
+        this.mapView.resetNodes([ node ]);
         this.camino.set("supernodos", supernodos);
         if (supernodos.length == 0) {
             this.camino = new CaminoModel();

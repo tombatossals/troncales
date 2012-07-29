@@ -43,6 +43,17 @@ define([
 
     },
 
+    resetNodes: function(nodes) {
+        var ref = this;
+        _.each(nodes, function(node) {
+            var marker = ref.markers[node];
+            marker.setIcon(ref.wifiIcon);
+            if (_.include(ref.selectedMarkers, marker)) {
+                ref.selectedMarkers.pop(marker);
+            }
+        });
+    },
+
     highlightNodes: function(nodes) {
         var ref = this;
         _.each(nodes, function(node) {
@@ -165,7 +176,7 @@ define([
                     fixed: true,
                     delay: 100,
                     event: 'mouseleave unfocus',
-                    inactive: 6000
+                    inactive: 2000
                 }
             })
             .qtip('api');
