@@ -1,0 +1,28 @@
+{
+  "name": "guifi-gps-collectd",
+  "preferGlobal": "false",
+  "version": "0.0.1",
+  "author": "David Rubert <david.rubert@gmail.com>",
+  "description": "Collectd management of the supernode/links",
+  "dependencies" : {
+    "mongoose"   : "*",
+    "optimist"   : "*",
+    "winston"    : "*",
+    "netmask"    : "*",
+    "ssh2"    : "*",
+    "mikronode"  : "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tombatossals/troncales.git"
+  },
+  "keywords": [
+    "node",
+    "mongo",
+    "server"
+  ],
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.8"
+  }
+}

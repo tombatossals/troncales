@@ -10,7 +10,15 @@ var db = mongoose.connect(conn);
 
 Supernodo.find(function(err, supernodos) {
     if (err) { throw err };
+
     var count = supernodos.length;
+    function end() {
+        count--;
+        if (count === 0) {
+            mongoose.connection.close();
+        }
+    }
+
     supernodos.forEach(function(supernodo) {
       if (supernodo.system === "mikrotik") {
           var password = supernodo.password || "";
@@ -28,11 +36,5 @@ Supernodo.find(function(err, supernodos) {
         end();
       }
 
-      function end() {
-	  count--;
-          if (count === 0) {
-              mongoose.connection.close();
-          }
-      }
     });
 });

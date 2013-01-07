@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 var mongoose = require("mongoose"),
-    Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    Schema = mongoose.Schema;
 
 var SupernodoSchema = new Schema({
     name: {
