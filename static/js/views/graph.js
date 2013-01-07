@@ -20,9 +20,8 @@ define([
         this.timeout = null;
     },
 
-    render: function(enlace, pos) {
-
-        if (! enlace.get("rrdtool_bandwidth_graph_id") ) {
+    render: function(enlace, pos, origen, destino) {
+        if (!enlace.get("rrdtool_bandwidth_graph_id") ) {
             return;
         }
 
@@ -33,7 +32,8 @@ define([
         $(this.el).css("left", pos.x + "px");
         if ($(this.el).css('display') == 'none' || this.model != enlace) {
             this.model = enlace;
-            $(this.el).html(this.template( { "graph_id": this.model.get("rrdtool_bandwidth_graph_id") } ));
+	    
+            $(this.el).html(this.template( { "graph_id": this.model.get("rrdtool_bandwidth_id"), "traffic_graph_id": this.model.get("rrdtool_traffic_id"), origen: origen, destino: destino } ));
             $(this.el).show(200);
             return this;
         }

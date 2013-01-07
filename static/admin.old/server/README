@@ -1,2 +1,0 @@
-$ npm install
-$ node_modules/forever/bin/forever start -a -l /tmp/node.log app.js

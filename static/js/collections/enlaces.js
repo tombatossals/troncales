@@ -1,27 +1,26 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'models/enlace',
-  'views/map',
-  'async!http://maps.google.com/maps/api/js?sensor=false&libraries=geometry'
-], function($, _, Backbone, Enlace, MapView){
+define(['jquery', 'underscore', 'backbone', 'models/enlace', 'views/map', 'async!http://maps.google.com/maps/api/js?sensor=false&libraries=geometry'], function($, _, Backbone, Enlace, MapView) {
 
-  var ListaEnlaces = Backbone.Collection.extend({
+    var ListaEnlaces = Backbone.Collection.extend({
         model: Enlace,
-        url: '/api/getroute/4f5fc24b81d6a14953ef44c9/4f5fc25a81d6a14953ef44ca',
+        url: '/api/enlaces',
 
         initialize: function(options) {
-		    this.supernodos = options.supernodos
+            this.supernodos = options.supernodos
         },
 
-	    setactive: function(enlace) {
-		    this.trigger("active", enlace);
-	    },
+        setactive: function(enlace) {
+            this.trigger("active", enlace);
+        },
 
         obtainGraphIds: function() {
             var ref = this;
             this.each(function(enlace) {
+                if (!ref.supernodos.get(enlace.get("supernodos")[0]) || !ref.supernodos.get(enlace.get("supernodos")[1])) {
+                    console.log(enlace);
+                    enlace.destroy();
+                    return;
+                }
+
                 if (!enlace.get("rrdtool_bandwidth_graph_id")) {
                     var s1 = ref.supernodos.get(enlace.get("supernodos")[0]).get("name");
                     var s2 = ref.supernodos.get(enlace.get("supernodos")[1]).get("name");
@@ -57,7 +56,7 @@ define([
             });
         }
 
-  });
+    });
 
-  return ListaEnlaces;
+    return ListaEnlaces;
 });

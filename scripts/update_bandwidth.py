@@ -12,7 +12,6 @@ db = connection.troncales
 
 for enlace in db.enlaces.find():
 
-	#if enlace.get("validated"):
 		bandwidth_id = enlace.get("rrdtool_bandwidth_id")
 		traffic_id = enlace.get("rrdtool_traffic_id")
 
@@ -21,6 +20,7 @@ for enlace in db.enlaces.find():
 			bandwidth = bandwidth.strip().decode("utf-8")
 			traffic = subprocess.check_output("%s %s" % (TRAFFIC_SCRIPT, traffic_id), shell=True)
 			traffic = traffic.strip().decode("utf-8")
+            
 			if int(float(bandwidth)) == 0:
 				saturation = 100
 			else:

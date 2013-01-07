@@ -1,2 +1,5 @@
 node_modules
 tmp
+log
+data/dumps
+scripts/traceroute.sh

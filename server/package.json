@@ -9,7 +9,16 @@
     "mongoose"   :  "*",
     "string"   :  "*",
     "underscore" :  "*",
+    "passport"   :  "*",
+    "nodemon"   :  "*",
+    "session-mongoose"   :  "*",
+    "passport-google"   :  "*",
+    "jade"   :  "*",
     "forever"   :  ">=0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tombatossals/troncales.git"
   },
   "keywords": [
     "node",

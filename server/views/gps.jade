@@ -1,0 +1,75 @@
+!!! 5
+html
+  head
+    meta(charset='utf-8')
+    title= typeof(title) !== 'undefined' ? title : 'Estado de los enlaces de la troncal de La Plana Alta'
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(description='GPS.guifi')
+    meta(author='David Rubert')
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', href='/css/custom.css')
+    link(rel='stylesheet', href='/css/jquery.qtip.min.css')
+    script(src='/js/libs/require/require.js', data-main='/js/main')
+    //if lt IE 9
+    script(src='//html5shim.googlecode.com/svn/trunk/html5.js')
+    link(rel='shortcut icon', href='/images/favicon.ico')
+    link(rel='apple-touch-icon', href='/images/apple-touch-icon.png')
+    link(rel='apple-touch-icon', sizes='72x72', href='/images/apple-touch-icon-72x72.png')
+    link(rel='apple-touch-icon', sizes='114x114', href='/images/apple-touch-icon-114x114.png')
+
+  body
+    div.container#header.span8
+        div.navbar
+            div.navbar-inner
+                div.container
+                    a.brand(href='#') Troncal de La Plana Alta
+                    div.nav-collapse
+                        ul.nav.pull-right
+                            li#search
+                            - if (user)
+                                li
+                                    div.btn-group
+                                        button.btn.btn-primary.dropdown-toggle(data-toggle='dropdown')
+                                            i.icon-plus.icon-white
+                                            |&nbsp;Afegir&nbsp;
+                                            span.caret
+                                        ul.dropdown-menu
+                                            li
+                                                a(href='#add/marker')
+                                                    i.icon-star-empty
+                                                    |&nbspAfegir un nou supernode
+                                            li.addenlace
+                                                a(href='#add/enlace')
+                                                    i.icon-resize-horizontal
+                                                    |&nbsp;Afegir un nou enllaç
+
+    div#map_canvas
+
+    div.navbar.navbar-fixed-bottom
+        div.navbar-inner
+            div.container-fluid
+                a.brand(href='#') GPS.guifi
+                span(style='line-height: 40px;') Averigua el camino y la velocidad a un nodo
+                ul.nav.pull-right
+                    li
+                        a(href='https://github.com/tombatossals/troncales')
+                            i.icon-asterisk.icon-white
+                            |&nbsp; https://github.com/tombatossals/troncales
+                div.pull-right
+                    button.btn.btn-primary#all-links(data-toggle='button') Ver todos los enlaces
+                    if (user)
+                        a.btn.btn-danger(href='/logout') Logout
+                    else
+                        a.btn.btn-primary(href='/admin') Administrar
+
+    div#infobox
+    div#loading
+    div#error
+    div#graph
+    div#modal
+
+    - if (user)
+        div#user #{user.displayname}
+
+    script(data-main='js/main', src='js/libs/require/require.js')
