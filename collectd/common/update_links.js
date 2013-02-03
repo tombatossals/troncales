@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-var getips    = require("./mikrotik").getips,
-    logger    = require("./log"),
+var logger    = require("./log"),
     mongoose  = require('mongoose'),
     Netmask   = require('netmask').Netmask,
     Enlace    = require("../models/enlace").Enlace,
@@ -11,7 +10,7 @@ var getips    = require("./mikrotik").getips,
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);
 
-Enlace.find().exec(function(err, enlaces) {
+Enlace.find(function(err, enlaces) {
     if (err) { throw err };
 
     if (!enlaces) {

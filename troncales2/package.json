@@ -1,18 +1,18 @@
 {
-  "name": "guifi-gps-collectd",
+  "name": "guifi-gps",
   "preferGlobal": "false",
   "version": "0.0.1",
   "author": "David Rubert <david.rubert@gmail.com>",
-  "description": "Collectd management of the supernode/links",
+  "description": "REST interface to the Mongo DB squema of data of the gps DB",
   "dependencies" : {
-    "mongoose"   : "*",
-    "optimist"   : "*",
-    "winston"    : "*",
-    "netmask"    : "*",
-    "time"    : "*",
-    "ssh2"    : "*",
-    "cron"    : "*",
-    "mikronode"  : "*"
+    "express"   :  "latest",
+    "mongoose"   :  "latest",
+    "string"   :  "latest",
+    "underscore" :  "latest",
+    "passport"   :  "latest",
+    "session-mongoose"   :  "latest",
+    "passport-google"   :  "latest",
+    "jade"   :  "latest"
   },
   "repository": {
     "type": "git",

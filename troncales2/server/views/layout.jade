@@ -1,0 +1,33 @@
+!!! 5
+html
+  head
+    meta(charset='utf-8')
+    title= typeof(locals.title) !== 'undefined' ? locals.title : "Troncal de La Plana"
+    link(rel="stylesheet", href=urls.base + "components/bootstrap.css/css/bootstrap.min.css")
+    link(rel="stylesheet", href=urls.base + "components/bootstrap.css/css/bootstrap-responsive.min.css")
+    link(rel="stylesheet", href=urls.base + "components/qtip/jquery.qtip.min.css")
+    link(rel="stylesheet", href=urls.base + "styles/main.css")
+    script(src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en")
+    script(src=urls.base + "js/main.js")
+
+  body(ng-controller=locals.angular_controller, ng-cloak)
+    div.container
+      header
+        div.navbar.navbar-fixed-top.mainmenu
+          div.navbar-inner
+            a.brand(href=urls.base) Troncal de La Plana
+            ul.nav.pull-right
+              li
+                button.btn.btn-primary(id="all-links", ng-click="showLinks()", data-toggle="button") Ver todos los enlaces
+              if (locals.username)
+                li
+                  a(href=urls.logout)
+                    i.icon-unlock
+                    |Logout
+              else
+                li
+                  a(href=urls.login)
+                      i.icon-user
+                      |Login
+
+    block main

@@ -1,0 +1,153 @@
+/* Will be compiled down to a single stylesheet with your sass files */
+.angular-google-map {
+    height: 100%;
+    border: 1px #ccc solid;
+    margin-bottom: 20px;
+    display: block;
+    background: #EEE;
+    width: 100%;
+}
+
+.angular-google-map img {
+	max-width: inherit !important;
+}
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #ddeefe;
+}
+
+div.mainzone {
+    height: 100%;
+    width: 100%;
+}
+
+path {
+  fill: #FFF;
+  fill-opacity: 0;
+}
+
+path:hover {
+  cursor: pointer;
+  fill: #FFF;
+  fill-opacity: .4;
+}
+
+[ng-cloak] {
+  display: none;
+}
+
+a.home {
+  line-height: 1em;
+  font-size: 3em;
+  position: absolute;
+  top: .3em;
+  left: 0;
+  z-index: 10;
+  background: white;
+  border-radius: 0 8px 8px 0;
+  padding: .1em .3em;
+  opacity: .7; 
+  box-shadow: 0 0 5px 5px #AAA;
+}
+
+a.home:hover {
+  text-decoration: none;
+  opacity: 1; 
+}
+
+.leaflet-control-fullscreen {
+  background-image: url(../img/icon-fullscreen.png);
+  margin-bottom: 5px;
+}
+
+.leaflet-fullscreen {
+  margin: 0;
+}
+
+.leaflet-container {
+  background: #ddeefe;
+}
+
+div.mainmenu {
+  margin-top: 1em;
+  opacity: .8;
+  width: 70%;
+  margin: 1em auto 0 auto;
+}
+
+.navbar a.brand {
+  font-size: 2.4em;
+  font-weight: bold;
+  padding-left: 1em;
+}
+
+.navbar a.brand:hover {
+  color: #222;
+}
+
+.navbar a.brand i {
+  margin-right: .2em;
+}
+
+.navbar .navbar-inner {
+  border-radius: 6px;
+  border: 1px solid #BBB;
+}
+
+.discovermenu {
+  width: 70%;
+  margin: 4.5em auto 0 auto;
+}
+
+.nav-pills > li:not(.active) > a {
+  background-color: white;
+  color: #111;
+  opacity: .7;
+  border: 1px solid #BBB;
+}
+
+.navbar-inverse .nav > li > a:hover {
+  opacity: 1;
+  background-color: white;
+  color: #111;
+}
+
+div#graph {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

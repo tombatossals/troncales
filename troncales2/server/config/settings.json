@@ -1,0 +1,16 @@
+{
+
+    "public_hostname": "geo.qui.guifi.net",
+    "server_hostname": "localhost",
+    "server_port": 3001,
+    "base_url": "/",
+    "mongo": {
+    	"hostname": "localhost",
+    	"port": 27017,
+    	"username": "",
+    	"password": "",
+    	"name": "",
+    	"db": "troncales"
+    }
+
+}

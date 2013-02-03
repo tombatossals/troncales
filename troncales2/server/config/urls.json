@@ -1,0 +1,9 @@
+{
+    "logout": "logout",
+    "login" : "login",
+    "api": {
+        "supernodos": "api/supernodos",
+        "enlaces": "api/enlaces"
+    },
+    "graph": "graph/:s1/:s2"
+}

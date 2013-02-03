@@ -1,0 +1,12 @@
+{
+  "name": "troncales",
+  "version": "1.0.0",
+  "main": "./app/styles/main.css",
+  "dependencies": {
+      "jquery": "1.8",
+      "angular": "latest",
+      "bootstrap.css": "latest",
+      "underscore": "latest",
+      "font-awesome": "latest"
+    }
+}
