@@ -8,8 +8,11 @@
     "express"   :  "latest",
     "mongoose"   :  "latest",
     "string"   :  "latest",
+    "nodemon"  :  "latest",
     "underscore" :  "latest",
+    "mongoose-findorcreate" :  "latest",
     "passport"   :  "latest",
+    "passport-google-oauth"   :  "latest",
     "session-mongoose"   :  "latest",
     "passport-google"   :  "latest",
     "jade"   :  "latest"

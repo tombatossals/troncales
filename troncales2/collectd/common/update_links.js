@@ -10,7 +10,13 @@ var logger    = require("./log"),
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);
 
+//process.on('uncaughtException', function(err) {  
+//    mongoose.connection.close();  
+//    process.exit(-1);  
+//});  
+
 Enlace.find(function(err, enlaces) {
+
     if (err) { throw err };
 
     if (!enlaces) {
@@ -35,6 +41,7 @@ Enlace.find(function(err, enlaces) {
             var s1 = supernodos[0];
             var s2 = supernodos[1];
 	    if (s1.system === "mikrotik" && s2.system === "mikrotik") {
+                var found = false;
                 for (var i=0; i<s1.interfaces.length; i++) {
                     var interface = s1.interfaces[i];
                     if (interface.address.search("172.16") === 0) {
@@ -44,6 +51,7 @@ Enlace.find(function(err, enlaces) {
                             if (interface2.address.search("172.16") === 0) {
                                 var address = interface2.address.split("/")[0];
                                 if (network.contains(address)) {
+                                    found = true;
                                     enlace.s1_interface = interface.name;
                                     enlace.s2_interface = interface2.name;
                                     enlace.network = network.base + "/" + network.bitmask;
@@ -57,6 +65,12 @@ Enlace.find(function(err, enlaces) {
                         }
                     }
                 }
+
+                if (!found) {
+      		  logger.error(util.format("Link not found: %s-%s", s1.name, s2.name));
+                  end();
+                }
+
 	    } else {
       		logger.warn(util.format("Link not updated: %s-%s", s1.name, s2.name));
                 end();

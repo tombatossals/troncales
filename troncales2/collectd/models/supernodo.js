@@ -11,10 +11,10 @@ var SupernodoSchema = new Schema({
     email: {
         type: String
     },
-    username: {
+    guest_username: {
         type: String
     },
-    password: {
+    guest_password: {
         type: String
     },
     mainip: {

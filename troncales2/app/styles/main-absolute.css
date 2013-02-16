@@ -1,4 +1,17 @@
 /* Will be compiled down to a single stylesheet with your sass files */
+.angular-google-map {
+    height: 100%;
+    border: 1px #ccc solid;
+    margin-bottom: 20px;
+    display: block;
+    background: #EEE;
+    width: 100%;
+}
+
+.angular-google-map img {
+	max-width: inherit !important;
+}
+/* app css stylesheet */
 
 .menu {
   list-style: none;
@@ -27,6 +40,19 @@
 .menu > li:nth-child(1):before {
   content: "";
   padding: 0;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    /*background: #ddeefe;*/
+}
+
+div.mainzone {
+    height: 100%;
+    width: 100%;
 }
 
 path {

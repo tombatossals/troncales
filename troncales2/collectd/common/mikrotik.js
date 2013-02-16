@@ -1,6 +1,16 @@
-var api = require('mikronode');
+var api = require('mikronode'),
+    logger = require('./log'),
+    util = require('util');
 
 function getips(ip, username, password, callback) {
+
+    //process.on('uncaughtException', function(err) {
+    process.on('error', function(err) {
+        logger.error(err, ip);
+        logger.error(util.format("FATAL: Can't connect to the API: %s %s %s", ip, username, password));
+        //process.exit(0);
+    });
+
     var connection = new api(ip, username, password);
     connection.connect(function(conn) {
         var chan=conn.openChannel();

@@ -1,0 +1,11 @@
+extends layout-absolute
+block main
+  google-map(center="center", draggable="true", zoom="zoom", markers="markers", links="links", graph="graph", newmarker="newmarker")
+
+  div(modal="shouldBeOpen", close="close()")
+    div.modal-header
+      h4 I'm a modal!
+    div.modal-body
+      with some content...
+    div.modal-footer
+      button.btn.btn-warning.cancel(ng-click="close()") Cancel

@@ -1,13 +1,11 @@
 "use strict";
 
-var exec = require('child_process').exec;
+var exec = require('child_process').exec,
+    util = require("util"),
+    Supernodo = require("../models/supernodo"),
+    ensureAuthenticated = require('../common/google_auth').ensureAuthenticated;
 
 module.exports = function(app, urls) {
-
-    function ensureAuthenticated(req, res, next) {
-        if (req.isAuthenticated()) { return next(); }
-        res.redirect(urls.login);
-    }
 
     if (urls.base !== "/") {
         app.get("/", function(req, res) {
@@ -15,10 +13,37 @@ module.exports = function(app, urls) {
         });
     }
 
+    app.get(urls.user, ensureAuthenticated, function(req, res) {
+	var title = "User account management";
+	res.render("user", { locals: {
+            angular_controller: "UserController",
+            user: req.user,
+            title: title
+        } });
+    });
+
     app.get(urls.base, function(req, res) {
 	var title = "Troncal de la plana";
-	res.render("home", { locals: {
+	res.render("map", { locals: {
             angular_controller: "MapController",
+            username: req.user,
+            title: title
+        } });
+    });
+
+    app.get(urls.supernodo, function(req, res) {
+	var title = "Troncal de la plana";
+        res.render("supernodo", { locals: {
+            angular_controller: "SupernodoController",
+            username: req.user,
+            title: title,
+        } });
+    });
+
+    app.get(urls.enlace, function(req, res) {
+        var title = "Troncal de la plana";
+        res.render("enlace", { locals: {
+            angular_controller: "EnlaceController",
             username: req.user,
             title: title
         } });
@@ -28,12 +53,24 @@ module.exports = function(app, urls) {
 
         var o = req.params.s1;
         var d = req.params.s2;
+        var interval = req.query.interval;
+
         var a = "/var/lib/collectd/" + o + "/links/bandwidth-" + d + ".rrd";
         var b = "/var/lib/collectd/castalia/snmp/if_octets-wlan2.rrd";
 
-        var command = '/usr/bin/rrdtool graph - --imgformat=PNG --start=-86400 ' +
+        var start = -86400;
+
+        if (interval == "weekly") {
+            start = -604800;
+        } else if (interval == "monthly") {
+            start = -18144000;
+        } else if (interval == "year") {
+            start = -31536000;
+        }
+
+        var command = '/usr/bin/rrdtool graph - --imgformat=PNG --start=' + start + ' ' +
                       '--end=-1200 --title="' + o + '- ' + d + ' - Bandwidth meter" ' +
-                      '--base=1000 --height=140 --width=500 --alt-autoscale-max --lower-limit="0" ' +
+                      '--base=1000 --height=280 --width=900 --alt-autoscale-max --lower-limit="0" ' +
                       '--vertical-label="bits per second" --slope-mode --font TITLE:10: ' +
                       '--font AXIS:7: --font LEGEND:8: --font UNIT:7: DEF:a="' + a + '":"rx":AVERAGE ' +
                       'DEF:b="' + a + '":"tx":AVERAGE DEF:c="' + b + '":"rx":AVERAGE ' +

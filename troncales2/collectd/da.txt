@@ -1,0 +1,91 @@
+10.228.144.161 guest 
+10.228.168.225 guest 
+10.90.80.225 guest 
+10.90.80.1 guest 
+10.90.81.1 guest 
+10.228.145.1 guest 
+10.228.171.65 guest 
+10.228.169.225 netadmin latroncal01
+10.228.130.33 guest 
+10.228.133.97 guest 
+10.228.135.1 guest 
+10.228.133.33 guest 
+10.228.168.185 guest 
+10.228.133.1 netadmin latroncal01
+10.228.171.225 guest 
+10.90.81.97 guest 
+10.90.81.161 netadmin latroncal01
+DEBUG: LoginHandler: Connecting : 10.228.144.161
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.228.169.225
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.90.81.161
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.228.168.225
+DEBUG: Sending Login
+DEBUG: write: sending /login
+14 Feb 19:08:32 - Connection error: Error: connect ECONNREFUSED10.228.145.1
+DEBUG: LoginHandler: Connecting : 10.90.81.97
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Sending Login : 10.228.169.225
+DEBUG: Got !done. Need challenge
+DEBUG: LoginHandler: Sending Login : 10.228.169.225
+DEBUG: Sending Credentials
+DEBUG: write: sending /login
+DEBUG: write: sending =name=netadmin
+DEBUG: write: sending =response=00403b9a8b960ed0a408d832c0a1ddcb8d
+DEBUG: LoginHandler: Connecting : 10.228.133.33
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.228.135.1
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.228.133.97
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Sending Login : 10.228.144.161
+DEBUG: Got !done. Need challenge
+DEBUG: LoginHandler: Sending Login : 10.228.144.161
+DEBUG: Sending Credentials
+DEBUG: write: sending /login
+DEBUG: write: sending =name=guest
+DEBUG: write: sending =response=0079292104e28fd4415b476d3418050aaa
+DEBUG: LoginHandler: Connecting : 10.228.171.65
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.228.130.33
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.90.80.1
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Sending Login : 10.90.81.161
+DEBUG: Got !done. Need challenge
+DEBUG: LoginHandler: Sending Login : 10.90.81.161
+DEBUG: Sending Credentials
+DEBUG: write: sending /login
+DEBUG: write: sending =name=netadmin
+DEBUG: write: sending =response=00870b301e50195843f1a8416b11a8884c
+DEBUG: LoginHandler: Sending Login : 10.228.168.225
+DEBUG: Got !done. Need challenge
+DEBUG: LoginHandler: Sending Login : 10.228.168.225
+DEBUG: Sending Credentials
+DEBUG: write: sending /login
+DEBUG: write: sending =name=guest
+DEBUG: write: sending =response=009ce8983d38e3ee3e482695ad329d763c
+DEBUG: LoginHandler: Connecting : 10.228.133.1
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.228.171.225
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.228.168.185
+DEBUG: Sending Login
+DEBUG: write: sending /login
+DEBUG: LoginHandler: Connecting : 10.90.81.1
+DEBUG: Sending Login
+DEBUG: write: sending /login

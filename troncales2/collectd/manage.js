@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 var util = require("util");
-var argv = require("optimist").usage("Usage: $0 [monitor|update [interfaces|links]]").demand(2).check(check_parameters).argv;
+var argv = require("optimist").usage("Usage: $0 [generate collectd|monitor links|update [interfaces|links]]").demand(2).check(check_parameters).argv;
 
 
 function check_parameters(argv) {
-    var sections = [ [ "monitor", "update" ], [ "interfaces", "links" ] ];
+    var sections = [ [ "generate", "monitor", "update" ], [ "collectd", "interfaces", "links" ] ];
     for (var i=0; i<argv._.length; i++) { 
         var section = sections[i];
         var argument = argv._[i];

@@ -1,5 +1,0 @@
-extends layout
-block main
-  google-map(center="center", draggable="true", zoom="zoom", markers="markers", links="links", graph="graph")
-  div#graph(ng-style="graph.style")
-    img(ng-src="{{ graph.img }}")

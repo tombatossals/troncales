@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var findOrCreate = require('mongoose-findorcreate')
 
 // Define schema
 var UserSchema = new Schema({
@@ -15,6 +16,10 @@ var UserSchema = new Schema({
             required: true
         }
     },
+    phone: {
+        type: String,
+        unique: true
+    },
     displayName: {
         type: String,
         unique: true,
@@ -27,4 +32,5 @@ var UserSchema = new Schema({
     }]
 });
 
+UserSchema.plugin(findOrCreate);
 module.exports = mongoose.model('User', UserSchema);

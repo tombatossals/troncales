@@ -1,0 +1,26 @@
+extends layout
+block main
+  div.offset2.span8(style="margin-top: 3em; margin-bottom: 3em;", ng-show="supernodo")
+    h2(style="border-bottom: 2px solid #888; margin-bottom: .2em;", ng-bind="title") Supernodo
+    div.pull-right
+      button.btn.btn-info(ng-click="openModal()", style="margin-right: .5em;") Enlazar con otro supernodo
+      button.btn.btn-danger(ng-click="openModal()") Remove supernodo
+
+    table.table.table-striped
+      thead
+        tr
+          th Enlaces establecidos desde este supernodo
+      tbody
+        tr(ng-repeat="s in supernodos")
+          td
+            strong {{ s.name }}
+          td(style="text-align: right;")
+            a.btn(type="submit", style="margin-right: 1em;", ng-click="goto(s)") Detalles
+
+  div(modal="shouldBeOpen", close="close()")
+    div.modal-header
+      h4 Remove supernode
+    div.modal-body Are you sure you want to to this?
+    div.modal-footer
+      button.btn.btn-danger.cancel(ng-click="removeSupernodo()") Yes, do it
+      button.btn(ng-click="close()") Cancel

@@ -11,17 +11,33 @@ function MapController($scope, $location, $http) {
 	},
 	markers: [],
 	links: [],
-	graph: {},
 	zoom: 13,
+        showLinks: false,
+        newmarker: false
     });
 
     $http.get("/api/supernodos/").success(function(response) {
         $scope.markers = response;
     });
 
-    $scope.showLinks = function() {
-        $http.get("/api/enlaces/").success(function(response) {
-            $scope.links = response;
-        });
+    $scope.openModal = function() {
+        console.log("hoal");
+        $scope.shouldBeOpen = true;
+    };
+
+    $scope.close = function() {
+        $scope.shouldBeOpen = false;
+    };
+
+    $scope.toggleLinks = function() {
+        $scope.showLinks = !$scope.showLinks;
+
+        if ($scope.showLinks) {
+            $http.get("/api/enlaces/").success(function(response) {
+               $scope.links = response;
+            });
+        } else {
+            $scope.links = [];
+        }
     };
 }

@@ -1,8 +1,8 @@
 {
 
-    "public_hostname": "geo.qui.guifi.net",
+    "public_hostname": "gps.qui.guifi.net",
     "server_hostname": "localhost",
-    "server_port": 3001,
+    "server_port": 2424,
     "base_url": "/",
     "mongo": {
     	"hostname": "localhost",
@@ -11,6 +11,7 @@
     	"password": "",
     	"name": "",
     	"db": "troncales"
-    }
-
+    },
+    "GOOGLE_CLIENT_ID": "936919750992.apps.googleusercontent.com",
+    "GOOGLE_CLIENT_SECRET": "suJgZB4-vIp3-SigA0EUuyFx"
 }

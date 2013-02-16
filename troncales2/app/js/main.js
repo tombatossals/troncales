@@ -19,9 +19,9 @@
 
 // load all of the dependencies asynchronously.
 $script('/components/jquery/jquery.min.js', function() {
-    $script([ '/components/angular/angular.js', '/components/underscore/underscore-min.js' ],function() {
-        $script([ '/components/qtip/jquery.qtip.min.js', '/js/directives/angular-google-maps.js', '/js/controllers/map.js' ], function() {
-	    angular.module('mainApp', ['google-maps']);
+    $script([ '/components/angular/angular.js', '/components/underscore/underscore-min.js', '/components/bootstrap/docs/assets/js/bootstrap.js' ],function() {
+        $script([ '/components/qtip/jquery.qtip.min.js', '/js/directives/modal.js', '/js/directives/angular-google-maps.js', '/js/controllers/map.js', '/js/controllers/user.js', '/js/controllers/enlace.js', '/js/controllers/supernodo.js' ], function() {
+	    angular.module('mainApp', ['google-maps', 'ui.bootstrap']);
             angular.bootstrap(document, ['mainApp']);
         });
     });

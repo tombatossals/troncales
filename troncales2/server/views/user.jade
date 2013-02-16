@@ -1,0 +1,26 @@
+extends layout
+block main
+  div.offset3.span6(style="margin-top: 3em;")
+    h2(style="border-bottom: 2px solid #888; margin-bottom: 0em;") Account settings
+    form.form-horizontal(ng-submit="saveUser()")
+      table.table.table-striped
+        tbody 
+          tr
+            td
+              strong Name
+            td #{locals.user.displayName}
+          tr
+            td
+              strong Email
+            td #{locals.user.email}
+          tr
+            td
+              strong Phone
+            td
+              input(type="text", ng-model="phone")
+          tr
+            td
+            td
+              button.btn(type="submit", style="margin-right: 1em;") Save
+              span.label.label-success(ng-cloak, ng-show="messageOk") Changes saved!
+       

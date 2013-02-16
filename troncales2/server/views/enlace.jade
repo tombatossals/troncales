@@ -1,0 +1,39 @@
+extends layout
+block main
+  div.offset2.span8(style="margin-top: 3em; margin-bottom: 3em;", ng-show="enlace")
+    h2(style="border-bottom: 2px solid #888; margin-bottom: .2em;", ng-bind="title") Enlace
+    div.pull-right
+      button.btn.btn-danger(ng-click="openModal()") Remove link
+
+    table.table.table-striped
+      thead
+        tr
+          th Supernodos
+      tbody
+        tr
+          td
+            strong {{ s1.name }}
+          td(style="text-align: right;")
+            a.btn(type="submit", style="margin-right: 1em;", ng-click="goto(s1)") Detalles
+        tr
+          td
+            strong {{ s2.name }}
+          td(style="text-align: right;")
+            a.btn(type="submit", style="margin-right: 1em;", ng-click="goto(s2)") Detalles
+
+    h3 Daily graph
+    img(ng-src="{{ graph_image_url }}")
+    h3 Weekly graph
+    img(ng-src="{{ graph_image_url_weekly }}")
+    h3 Monthly graph
+    img(ng-src="{{ graph_image_url_monthly }}")
+    h3 Year graph
+    img(ng-src="{{ graph_image_url_year }}")
+
+  div(modal="shouldBeOpen", close="close()")
+    div.modal-header
+      h4 Remove link
+    div.modal-body Are you sure you want to to this?
+    div.modal-footer
+      button.btn.btn-danger.cancel(ng-click="removeLink()") Yes, do it
+      button.btn(ng-click="close()") Cancel

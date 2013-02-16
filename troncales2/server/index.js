@@ -13,9 +13,10 @@ var express = require('express'),
 var SessionMongoose = require('session-mongoose')(express),
     app = express();
 
-google_auth.configure();
-
 var urls = urls_constructor(settings.base_url, relative_urls);
+
+google_auth.configure(urls.authcallback, urls.login);
+
 
 if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
@@ -59,6 +60,6 @@ app.configure('production', function(){
 });
 
 require('./routes')(app, urls);
-app.listen(2425);
+app.listen(settings.server_port);
 
 module.exports = app;

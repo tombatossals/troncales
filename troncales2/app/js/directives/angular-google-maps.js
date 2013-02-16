@@ -79,6 +79,7 @@
       this.selector = o.container;
       this.markers = [];
       this.links = [];
+      this.polylines = [];
       
       this.draw = function () {
         
@@ -172,7 +173,11 @@
           }          
         }
       };
-     
+    
+      this.addmarker = function() {
+          console.log("oye");
+      };
+ 
       this.getById = function(id) {
           for (var i=0; i<_supernodos.length; i++) {
               var s = _supernodos[i];
@@ -180,6 +185,12 @@
                   return s;
               }
           }
+      };
+
+      this.clearLinks = function() {
+          angular.forEach(this.polylines, function(poly) {
+              poly.setMap(null);
+          });
       };
  
       this.renderLink = function(enlace) {
@@ -218,63 +229,62 @@
           };
           var poly = new google.maps.Polyline(polyOptions);
 
+          this.polylines.push(poly);
+
           google.maps.event.addListener(poly, "mouseout", (function(enlace, ply) {
               return function() {
                   poly.setOptions({
                       strokeColor: saturationColor[enlace.saturation]
                   });
-                  var scope = o.scope;
-                  scope.$apply(function() {
-                      scope.graph = {
-                          img: "",
-                          style: {
-                              display: "none"
-                          }
-                      };
-                  });
               };
           })(enlace, poly));
-
-          google.maps.event.addListener(poly, "mousemove", function(event) {
-              var pixel = that.projection.fromLatLngToContainerPixel(event.latLng);
-              var pos = {
-                  left: Math.floor(pixel.x) + "px",
-                  top: Math.floor(pixel.y) + "px",
-                  display: "normal"
-              };
-              var scope = o.scope;
-              scope.$apply(function() {
-                  scope.graph = {
-                      style: pos
-                  };
-              });
-          });
 
           google.maps.event.addListener(poly, "mouseover", (function(enlace, poly) {
               return function(event) {
                   poly.setOptions({
                       strokeColor: "#FFFFFF"
                   });
-                  var pixel = that.projection.fromLatLngToContainerPixel(event.latLng);
-                  var pos = {
-                      left: Math.floor(pixel.x) + "px",
-                      top: Math.floor(pixel.y) + "px",
-                      display: "normal"
-                  };
-                  var scope = o.scope;
                   var s1 = that.getById(enlace.supernodos[0]);
                   var s2 = that.getById(enlace.supernodos[1]);
-                  scope.graph = {
-                      img: "/graph/" + s1.name + "/" + s2.name,
-                      style: pos
-                  };
+
+                  var pixel = that.projection.fromLatLngToContainerPixel(event.latLng);
+            	  var pos = [pixel.x, pixel.y];
+                  poly.tooltip = $('<div />').qtip({
+                      content: '<a href="/enlace/' + s1.name + '/' + s2.name + '"><img src="' + "/graph/" + s1.name + "/" + s2.name + '" /></a>',
+                      style: {
+                          classes: 'ui-tooltip-bootstrap ui-tooltip-shadow graph'
+                      },
+                      position: {
+                          at: "right center",
+                          my: "left center",
+                          adjust: {
+                              method: "flip shift",
+                              x: 15
+                          },
+                          target: pos
+                      },
+                      show: {
+                          ready: true,
+                          event: false,
+                          solo: true
+                      },
+                      hide: {
+                          fixed: true,
+                          delay: 100,
+                          event: 'mouseleave unfocus',
+                          inactive: 2000
+                      }
+                  }).qtip('api');
+
               };
           })(enlace, poly));
 
           google.maps.event.addListener(poly, "click",
             (function(enlace) {
                 return function() {
-                    console.log(enlace);
+                    var s1 = that.getById(enlace.supernodos[0]);
+                    var s2 = that.getById(enlace.supernodos[1]);
+                    window.location = "/enlace/#/" + s1.name + "/" + s2.name;
                 };
             })(enlace)
           );
@@ -342,8 +352,7 @@
                         method: "flip shift",
                         x: 15
                     },
-                    target: pos,
-                    container: $('#map_canvas')
+                    target: pos
                 },
                 show: {
                     ready: true,
@@ -360,6 +369,14 @@
 
 	});
  
+        google.maps.event.addListener(marker, "click",
+            (function(supernodo) {
+                return function() {
+                    window.location = "/supernodo/#/" + supernodo.name;
+                };
+           })(supernodo)
+        );
+
         // Cache marker 
         _markers.unshift(marker);
         
@@ -451,8 +468,8 @@
       scope: {
         center: "=center", // required
         markers: "=markers", // optional
+        newmarker: "=newmarker", // optional
         links: "=links", // optional
-        graph: "=graph", // optional
         latitude: "=latitude", // required
         longitude: "=longitude", // required
         zoom: "=zoom", // optional, default 8
@@ -487,7 +504,6 @@
                   scope.center.lng),
               
           draggable: attrs.draggable == "true",
-          scope: scope, 
           zoom: scope.zoom
         });       
      
@@ -575,6 +591,7 @@
         }
       
         scope.$watch("links", function(newArray, oldArray) {
+            _m.clearLinks();
             if (newArray.length > 0) {
                 angular.forEach(newArray, function(enlace) {
                     _m.renderLink(enlace);
@@ -647,6 +664,12 @@
           }
         }, true);
         
+        scope.$watch("newmarker", function (newValue, oldValue) {
+            if (newValue === true) {
+                _m.addmarker();
+            }
+        });
+
         scope.$watch("zoom", function (newValue, oldValue) {
           if (newValue === oldValue) {
             return;

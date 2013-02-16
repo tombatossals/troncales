@@ -14,6 +14,12 @@ var EnlaceSchema = new Schema({
     bandwidth: {
         type: String
     },
+    s1_interface: {
+        type: String
+    },
+    s2_interface: {
+        type: String
+    },
     supernodos: [{
         type: ObjectId
     }],
