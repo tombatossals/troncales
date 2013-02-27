@@ -1,6 +1,6 @@
 extends layout-absolute
 block main
-  google-map(center="center", draggable="true", zoom="zoom", markers="markers", links="links", graph="graph", newmarker="newmarker")
+  google-map(center="center", zoom="zoom", markers="markers", links="links", newmarker="newmarker")
 
   div(modal="shouldBeOpen", close="close()")
     div.modal-header
@@ -9,3 +9,16 @@ block main
       with some content...
     div.modal-footer
       button.btn.btn-warning.cancel(ng-click="close()") Cancel
+
+  div(ng-show="step1", style="position: absolute; top: 5em; left: 3em; z-index: 100;")
+    div.alert.alert-block
+      | Select the initial supernode
+
+  div(ng-show="newmarker", style="position: absolute; top: 5em; left: 3em; z-index: 100; width: 300px;")
+    div.alert.alert-block(style="overflow: hidden;")
+      button.close(type="button", data-dismiss="alert") &times;
+      h4 Add supernode
+      p Drag the marker to the position where the supernode must reside. Click on the save button below to accept the changes.
+      p.pull-right(ng-show="newmarker.latitude")
+          button.btn.btn-primary(ng-click="postMarker();") Save
+      

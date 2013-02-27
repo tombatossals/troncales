@@ -6,8 +6,9 @@ html
     link(rel="stylesheet", href=urls.base + "components/bootstrap/docs/assets/css/bootstrap.css")
     link(rel="stylesheet", href=urls.base + "components/bootstrap/docs/assets/css/bootstrap-responsive.css")
     link(rel="stylesheet", href=urls.base + "components/qtip/jquery.qtip.min.css")
+    link(rel="stylesheet", href=urls.base + "components/select2/select2.css")
     link(rel="stylesheet", href=urls.base + "styles/main-absolute.css")
-    script(src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en")
+    script(src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry&language=es")
     script(src=urls.base + "js/main.js")
 
   body(ng-controller=locals.angular_controller, ng-cloak)
@@ -16,22 +17,26 @@ html
         div.navbar.navbar-fixed-top.mainmenu
           div.navbar-inner
             a.brand(href=urls.base) Troncal de La Plana
+            div.pull-right(style="margin: .4em .5em .4em 0;")
+              input.bigdrop.search.span2(type="hidden")
+
             div.pull-right.navmenu
+              <!--button.btn.btn-success(ng-click="gps()", data-toggle="button", style="margin-right: .5em;") GPS-->
               button.btn.btn-primary(id="all-links", ng-click="toggleLinks()", data-toggle="button", style="margin-right: .5em;") Ver enlaces
-              if (locals.username)
+              if (locals.user)
                 div.btn-group
-                  a.btn.btn-danger(href=urls.user) #{locals.username.displayName}
+                  a.btn.btn-danger(href=urls.user) #{locals.user.displayName}
                   a.btn.btn-danger.dropdown-toggle(data-toggle="dropdown")
                     span.caret
                   ul.dropdown-menu
                     li
-                      a(ng-click="newmarker=true", href="#")
+                      a(ng-click="addMarker();", href="#")
                         i.icon-star-empty
                         |&nbspAfegir un nou supernode
                     li.addenlace
-                      a(href='#add/enlace')
+                      a(ng-click="updateLinks();", href="#")
                         i.icon-resize-horizontal
-                        |&nbsp;Afegir un nou enllaç
+                        |&nbsp;Actualizar enlaces
                     li
                       a(href=urls.logout) Logout
               else

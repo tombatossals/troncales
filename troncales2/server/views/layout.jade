@@ -6,15 +6,19 @@ html
     link(rel="stylesheet", href=urls.base + "components/bootstrap/docs/assets/css/bootstrap.css")
     link(rel="stylesheet", href=urls.base + "components/bootstrap/docs/assets/css/bootstrap-responsive.css")
     link(rel="stylesheet", href=urls.base + "styles/main.css")
-    script(src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en")
+    link(rel="stylesheet", href=urls.base + "components/qtip/jquery.qtip.min.css")
+    link(rel="stylesheet", href=urls.base + "components/select2/select2.css")
+    script(src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry&language=es")
     script(src=urls.base + "js/main.js")
 
   body(ng-controller=locals.angular_controller, ng-cloak)
     div.container
       header
         div.navbar.mainmenu
-          div.navbar-inner.span7(style="padding: 0;")
+          div.navbar-inner(style="padding: 0;")
             a.brand(href=urls.base) Troncal de La Plana
+            div.pull-right(style="margin: .4em .5em .4em 0;")
+              input.bigdrop.search.span2(type="hidden")
             div.pull-right.navmenu
               a.btn.btn-success(href=urls.base, style="margin-right: .5em;") Map
               if (locals.user)
@@ -26,6 +30,6 @@ html
                     li
                       a(href=urls.logout) Logout
               else
-                a.btn.btn-warning(href=urls.login) Login
+                a.btn.btn-warning(ng-href=urls.login + "?return={{ hash }}") Login
 
-    block main
+      block main

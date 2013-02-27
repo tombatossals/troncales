@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
-var getips = require("./mikrotik").getips,
-    logger = require("./log"),
+var logger = require("./log"),
     mongoose = require('mongoose'),
     Supernodo = require("../models/supernodo");
 
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);
 
-Supernodo.find({ system : "mikrotik" }, function(err, supernodos) {
+Supernodo.find(function(err, supernodos) {
     if (err) { throw err };
 
     console.log("LoadPlugin snmp");

@@ -1,15 +1,11 @@
 /** User Schema for CrowdNotes **/
 
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema,
-    ObjectId = Schema.Types.ObjectId;
+var Schema = mongoose.Schema;
 
 var EnlaceSchema = new Schema({
     distance: {
         type: String
-    },
-    active: {
-        type: Boolean
     },
     saturation: {
         type: String
@@ -17,22 +13,20 @@ var EnlaceSchema = new Schema({
     network: {
         type: String
     },
-    s1_interface : {
+    id: {
         type: String
     },
-    s2_interface : {
-        type: String
-    },
-    bandwidth: {
-        type: String
+    active: {
+        type: Boolean
     },
     supernodos: [ {
-        type: ObjectId
+        id: {
+            type: String
+        },
+        iface: {
+            type: String
+        }
     }],
-
-    rrdfile: {
-        type: String
-    }
 });
 
 module.exports.EnlaceSchema = EnlaceSchema;

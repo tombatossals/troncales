@@ -1,80 +1,33 @@
-/**!
- * The MIT License
- * 
- * Copyright (c) 2010-2012 Google, Inc. http://angularjs.org
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- * 
- * angular-google-maps
- * https://github.com/nlaplante/angular-google-maps
- * 
- * @author Nicolas Laplante https://plus.google.com/108189012221374960701
- */
-
 (function () {
   
   "use strict";
   
-  /*
-   * Utility functions
-   */
-  
-  /**
-   * Check if 2 floating point numbers are equal
-   * 
-   * @see http://stackoverflow.com/a/588014
-   */
+  var saturationColor = {
+      0: "#00FF00",
+      1: "#FFFF00",
+      2: "#FF8800",
+      3: "#FF0000"
+  };
+
   function floatEqual (f1, f2) {
     return (Math.abs(f1 - f2) < 0.000001);
   }
   
-  /* 
-   * Create the model in a self-contained class where map-specific logic is 
-   * done. This model will be used in the directive.
-   */
-  
   var MapModel = (function () {
     
-    var _defaults = { 
-        zoom: 8,
-        draggable: false,
-        container: null
-      };
-    
-    /**
-     * 
-     */
     function PrivateMapModel(opts) {
       
       var _instance = null,
         _markers = [],  // caches the instances of google.maps.Marker
-        _handlers = [], // event handlers
-        _enlaces = [],  
+        _infowindow = null,  
         _supernodos = [],
         overlay = undefined,
-        o = angular.extend({}, _defaults, opts),
+        o = opts,
         that = this;
-     
+      
+      this.zoom = opts.zoom || 15;    
       this.center = opts.center;
       this.position = new google.maps.LatLng(0, 0); 
-      this.zoom = o.zoom;
-      this.draggable = o.draggable;
       this.dragging = false;
       this.selector = o.container;
       this.markers = [];
@@ -95,9 +48,10 @@
           _instance = new google.maps.Map(that.selector, {
             center: that.center,
             zoom: that.zoom,
-            draggable: that.draggable,
+            draggable: true,
             panControl: false,
             streetViewControl: false,
+            mapTypeControl: false,
             mapTypeId: google.maps.MapTypeId.HYBRID,
             zoomControlOptions: {
                 style: google.maps.ZoomControlStyle.SMALL
@@ -109,55 +63,11 @@
       	  overlay.setMap(_instance); 
           this.projection = undefined;
 
-          google.maps.event.addListener(_instance, "dragstart",
-              
-              function () {
-                that.dragging = true;
-              }
-          );
-         
-          google.maps.event.addListener(_instance, "idle",
-              
-              function () {
-                that.dragging = false;
-      		that.projection = overlay.getProjection();
-              }
-          );
-          
-          google.maps.event.addListener(_instance, "drag",
-              
-              function () {
-                that.dragging = true;   
-              }
-          );  
-          
-          google.maps.event.addListener(_instance, "zoom_changed",
-              
-              function () {
-                that.zoom = _instance.getZoom();
-                that.center = _instance.getCenter();
-              }
-          );
-          
-          google.maps.event.addListener(_instance, "center_changed",
-              
-              function () {
-                that.center = _instance.getCenter();
-              }
-          );
-          
-          // Attach additional event listeners if needed
-          if (_handlers.length) {
-            
-            angular.forEach(_handlers, function (h, i) {
-              
-              google.maps.event.addListener(_instance, 
-                  h.on, h.handler);
-            });
-          }
+          google.maps.event.addListener(_instance, "idle", function () {
+      	      that.projection = overlay.getProjection();
+          });
         }
         else {
-          
           // Refresh the existing instance
           google.maps.event.trigger(_instance, "resize");
           
@@ -173,18 +83,50 @@
           }          
         }
       };
-    
-      this.addmarker = function() {
-          console.log("oye");
+   
+      this.clearInfo = function() {
+          if (_infowindow) {
+              _infowindow.setMap(null);
+          }
       };
  
+      this.newMarker = function() {
+        _infowindow = new google.maps.InfoWindow({
+            content: "Drag me to the new location.<br />Click <strong>Save</strong> when done."
+        });
+
+        var icon = new google.maps.MarkerImage("/img/star.png", null, null, new google.maps.Point(16, 16));
+        var marker = new google.maps.Marker({
+          position: _instance.getCenter(),
+          draggable: true,
+          map: _instance,
+          icon: icon
+        });
+        _infowindow.open(_instance, marker);
+
+        return marker;
+
+      }; 
+ 
       this.getById = function(id) {
-          for (var i=0; i<_supernodos.length; i++) {
+          for (var i=0; i< _supernodos.length; i++) {
               var s = _supernodos[i];
               if (s._id == id) {
                   return s;
               }
           }
+      };
+
+      this.clearMap = function() {
+          this.clearInfo();
+          this.clearMarkers();
+          this.clearLinks();
+      };
+
+      this.clearMarkers = function() {
+          angular.forEach(_markers, function(marker) {
+              marker.setMap(null);
+          });
       };
 
       this.clearLinks = function() {
@@ -194,29 +136,19 @@
       };
  
       this.renderLink = function(enlace) {
-          var saturationColor = {
-              0: "#00FF00",
-              1: "#FFFF00",
-              2: "#FF8800",
-              3: "#FF0000"
-          };
-
-          if (this.getById(enlace.supernodos[0]).system != "mikrotik") return;
-          if (this.getById(enlace.supernodos[1]).system != "mikrotik") return;
-
-          var point = this.getById(enlace.supernodos[0]).latlng;
+          var point = this.getById(enlace.supernodos[0].id).latlng;
           var p0 = new google.maps.LatLng(point["lat"], point["lng"]);
-          point = this.getById(enlace.supernodos[1]).latlng;
+          point = this.getById(enlace.supernodos[1].id).latlng;
           var p1 = new google.maps.LatLng(point["lat"], point["lng"]);
 
           var weight = 3;
-          if (enlace.bandwidth > 30) {
+          if (enlace.bandwidth > 50) {
               weight = 10;
-          } else if (enlace.bandwidth > 20) {
+          } else if (enlace.bandwidth > 30) {
               weight = 8;
-          } else if (enlace.bandwidth > 10) {
+          } else if (enlace.bandwidth > 20) {
               weight = 5;
-          } else if (enlace.bandwidth > 4) {
+          } else if (enlace.bandwidth > 10) {
               weight = 3;
           }
 
@@ -227,67 +159,12 @@
               map: _instance,
               path: [p0, p1]
           };
+
           var poly = new google.maps.Polyline(polyOptions);
 
           this.polylines.push(poly);
 
-          google.maps.event.addListener(poly, "mouseout", (function(enlace, ply) {
-              return function() {
-                  poly.setOptions({
-                      strokeColor: saturationColor[enlace.saturation]
-                  });
-              };
-          })(enlace, poly));
-
-          google.maps.event.addListener(poly, "mouseover", (function(enlace, poly) {
-              return function(event) {
-                  poly.setOptions({
-                      strokeColor: "#FFFFFF"
-                  });
-                  var s1 = that.getById(enlace.supernodos[0]);
-                  var s2 = that.getById(enlace.supernodos[1]);
-
-                  var pixel = that.projection.fromLatLngToContainerPixel(event.latLng);
-            	  var pos = [pixel.x, pixel.y];
-                  poly.tooltip = $('<div />').qtip({
-                      content: '<a href="/enlace/' + s1.name + '/' + s2.name + '"><img src="' + "/graph/" + s1.name + "/" + s2.name + '" /></a>',
-                      style: {
-                          classes: 'ui-tooltip-bootstrap ui-tooltip-shadow graph'
-                      },
-                      position: {
-                          at: "right center",
-                          my: "left center",
-                          adjust: {
-                              method: "flip shift",
-                              x: 15
-                          },
-                          target: pos
-                      },
-                      show: {
-                          ready: true,
-                          event: false,
-                          solo: true
-                      },
-                      hide: {
-                          fixed: true,
-                          delay: 100,
-                          event: 'mouseleave unfocus',
-                          inactive: 2000
-                      }
-                  }).qtip('api');
-
-              };
-          })(enlace, poly));
-
-          google.maps.event.addListener(poly, "click",
-            (function(enlace) {
-                return function() {
-                    var s1 = that.getById(enlace.supernodos[0]);
-                    var s2 = that.getById(enlace.supernodos[1]);
-                    window.location = "/enlace/#/" + s1.name + "/" + s2.name;
-                };
-            })(enlace)
-          );
+          return poly;
       };
 
       this.fit = function () {
@@ -303,13 +180,6 @@
         }
       };
       
-      this.on = function(event, handler) {
-        _handlers.push({
-          "on": event,
-          "handler": handler
-        });
-      };
-  
       this.addMarker = function (supernodo) {
         var lat = supernodo.latlng.lat;
         var lng = supernodo.latlng.lng;
@@ -328,63 +198,15 @@
           map: _instance,
           icon: icon
         });
-     
-        var ref = this; 
-        google.maps.event.addListener(marker, 'mouseover', function(event) {
-            var pixel = ref.projection.fromLatLngToContainerPixel(event.latLng);
-
-            var pos = [pixel.x, pixel.y];
-            marker.tooltip = $('<div />').qtip({
-                content: {
-                    text: supernodo.mainip,
-                    title: {
-                        text: supernodo.name,
-                        button: true
-                    }
-                },
-                style: {
-                    classes: 'ui-tooltip-bootstrap ui-tooltip-shadow'
-                },
-                position: {
-                    at: "right center",
-                    my: "left center",
-                    adjust: {
-                        method: "flip shift",
-                        x: 15
-                    },
-                    target: pos
-                },
-                show: {
-                    ready: true,
-                    event: false,
-                    solo: true
-                },
-                hide: {
-                    fixed: true,
-                    delay: 100,
-                    event: 'mouseleave unfocus',
-                    inactive: 2000
-                }
-            }).qtip('api');
-
-	});
- 
-        google.maps.event.addListener(marker, "click",
-            (function(supernodo) {
-                return function() {
-                    window.location = "/supernodo/#/" + supernodo.name;
-                };
-           })(supernodo)
-        );
-
+    
         // Cache marker 
         _markers.unshift(marker);
-        
+       
         // Cache instance of our marker for scope purposes
         that.markers.unshift({
-          "lat": lat,
-          "lng": lng,
-          "draggable": false
+          lat: lat,
+          lng: lng,
+          draggable: false
         });
         
         // Return marker instance
@@ -472,9 +294,7 @@
         links: "=links", // optional
         latitude: "=latitude", // required
         longitude: "=longitude", // required
-        zoom: "=zoom", // optional, default 8
-        //refresh: "&refresh", // optional
-        windows: "=windows" // optional"
+        zoom: "=zoom" // optional, default 8
       },
 
       controller: function ($scope, $element) {
@@ -499,81 +319,11 @@
         // Create our model
         var _m = new MapModel({
           container: element[0],
-            
           center: new google.maps.LatLng(scope.center.lat, 
                   scope.center.lng),
-              
-          draggable: attrs.draggable == "true",
           zoom: scope.zoom
         });       
      
-        _m.on("drag", function () {
-          
-          var c = _m.center;
-        
-          $timeout(function () {
-            
-            scope.$apply(function (s) {
-              scope.center.lat = c.lat();
-              scope.center.lng = c.lng();
-            });
-          });
-        });
-      
-        _m.on("zoom_changed", function () {
-          
-          if (scope.zoom != _m.zoom) {
-            
-            $timeout(function () {
-              
-              scope.$apply(function (s) {
-                scope.zoom = _m.zoom;
-              });
-            });
-          }
-        });
-      
-        _m.on("center_changed", function () {
-          var c = _m.center;
-        
-          $timeout(function () {
-            
-            scope.$apply(function (s) {
-              
-              if (!_m.dragging) {
-                scope.center.lat = c.lat();
-                scope.center.lng = c.lng();
-              }
-            });
-          });
-        });
-        
-        if (attrs.markClick == "true") {
-          (function () {
-            var cm = null;
-            
-            _m.on("click", function (e) {                         
-              if (cm == null) {
-                
-                cm = {
-                  latitude: e.latLng.lat(),
-                  longitude: e.latLng.lng() 
-                };
-                
-                scope.markers.push(cm);
-              }
-              else {
-                cm.latitude = e.latLng.lat();
-                cm.longitude = e.latLng.lng();
-              }
-              
-              $timeout(function () {
-                scope.$apply();
-              });
-            });
-          }());
-        }
-        
         // Put the map into the scope
         scope.map = _m;
         
@@ -590,23 +340,148 @@
           }); 
         }
       
+       function getById(id) {
+           for (var i=0; i< scope.markers.length; i++) {
+               var s = scope.markers[i];
+               if (s._id == id) {
+                   return s;
+               }
+           }
+       };
+
         scope.$watch("links", function(newArray, oldArray) {
             _m.clearLinks();
             if (newArray.length > 0) {
+          $timeout(function () {
                 angular.forEach(newArray, function(enlace) {
-                    _m.renderLink(enlace);
-                });
+                   var poly =  _m.renderLink(enlace);
+                   var path = poly.getPath(); 
+                   enlace.distance = google.maps.geometry.spherical.computeLength(path.getArray());
+                   if (scope.zoom) { 
+                       google.maps.event.addListener(poly, "mouseout", (function(enlace, poly) {
+                           return function() {
+                               poly.setOptions({
+                                   strokeColor: saturationColor[enlace.saturation]
+                               });
+                           };
+                       })(enlace, poly));
+
+                       google.maps.event.addListener(poly, "mouseover", (function(enlace, poly) {
+                           return function(event) {
+                               poly.setOptions({
+                                   strokeColor: "#FFFFFF"
+                               });
+
+                               var s1 = getById(enlace.supernodos[0].id);
+                               var s2 = getById(enlace.supernodos[1].id);
+
+                               var pixel = scope.map.projection.fromLatLngToContainerPixel(event.latLng);
+            	               var pos = [pixel.x, pixel.y];
+
+                               poly.tooltip = $('<div />').qtip({
+                                   content: '<a href="/enlace/#/' + s1.name + '/' + s2.name + '"><img src="' + "/graph/" + s1.name + "/" + s2.name + '" /></a>',
+                                   style: {
+                                       classes: 'ui-tooltip-bootstrap ui-tooltip-shadow graph'
+                                   },
+                                   position: {
+                                       at: "right center",
+                                       my: "left center",
+                                       adjust: {
+                                           method: "flip shift",
+                                           x: 15
+                                       },
+                                       target: pos
+                                   },
+                                   show: {
+                                       delay: 1,
+                                       ready: true,
+                                       event: false,
+                                       solo: true
+                                   },
+                                   hide: {
+                                       fixed: true,
+                                       delay: 50,
+                                       event: 'mouseleave unfocus',
+                                       inactive: 2000
+                                   }
+                               }).qtip('api');
+                           };
+                       })(enlace, poly));
+
+                       google.maps.event.addListener(poly, "click",
+                           (function(enlace) {
+                               return function() {
+                                   var s1 = getById(enlace.supernodos[0].id);
+                                   var s2 = getById(enlace.supernodos[1].id);
+                                   window.location = "/enlace/#/" + s1.name + "/" + s2.name;
+                               };
+                           })(enlace)
+                       );
+                   }
+               });
+               }, 300);
             }
         }); 
 
         // Markers
         scope.$watch("markers", function (newValue, oldValue) {
-          
+
+          if (newValue.length == 0) return;
+          if (newValue.length == 1 && oldValue.length == 1 && newValue[0].name == oldValue[0].name) return;
+
           $timeout(function () {
-            
+          
+            _m.clearMap();
             angular.forEach(newValue, function (v, i) {
               if (!_m.hasMarker(v.latlng.lat, v.latlng.lng)) {
-                _m.addMarker(v);
+                var supernodo = v;
+                var marker = _m.addMarker(v);
+                if (scope.zoom) {
+                    google.maps.event.addListener(marker, 'mouseover', function(event) {
+                        var pixel = scope.map.projection.fromLatLngToContainerPixel(event.latLng);
+                        var pos = [pixel.x, pixel.y];
+                        marker.tooltip = $('<div />').qtip({
+                            content: {
+                                text: supernodo.mainip,
+                                title: {
+                                    text: supernodo.name,
+                                    button: true
+                                }
+                            },
+                            style: {
+                                classes: 'ui-tooltip-bootstrap ui-tooltip-shadow'
+                            },
+                            position: {
+                                at: "right center",
+                                my: "left center",
+                                adjust: {
+                                    method: "flip shift",
+                                    x: 15
+                                },
+                                target: pos
+                            },
+                            show: {
+                                ready: true,
+                                event: false,
+                                solo: true
+                            },
+                            hide: {
+                                fixed: true,
+                                delay: 100,
+                                event: 'mouseleave unfocus',
+                                inactive: 2000
+                            }
+                        }).qtip('api');
+	            });
+ 
+                    google.maps.event.addListener(marker, "click",
+                        (function(supernodo) {
+                            return function() {
+                                window.location = "/supernodo/#/" + supernodo.name;
+                            };
+                        })(supernodo)
+                    );
+                }
               }
             });
             
@@ -643,7 +518,7 @@
             
             // Fit map when there are more than one marker. 
             // This will change the map center coordinates
-            if (attrs.fit == "true" && newValue.length > 1) {
+            if (newValue.length > 1) {
               _m.fit();
             }
           });
@@ -666,17 +541,24 @@
         
         scope.$watch("newmarker", function (newValue, oldValue) {
             if (newValue === true) {
-                _m.addmarker();
+                _m.clearMap();
+                var marker = _m.newMarker();
+                var cm = null;
+                google.maps.event.addListener(marker, "dragend", function(e) {
+                    if (cm == null) {
+                        cm = {
+                            latitude: e.latLng.lat(),
+                            longitude: e.latLng.lng()
+                        };
+                    } else {
+                        cm.latitude = e.latLng.lat();
+                        cm.longitude = e.latLng.lng();
+                    }
+                    scope.$apply(function () {
+                        scope.newmarker = cm;
+                    });
+                });
             }
-        });
-
-        scope.$watch("zoom", function (newValue, oldValue) {
-          if (newValue === oldValue) {
-            return;
-          }
-          
-          _m.zoom = newValue;
-          _m.draw();
         });
       }
     };

@@ -131,3 +131,16 @@ div.mainmenu {
 .navmenu a {
   font-weight: bold;
 }
+
+.angular-google-map {
+    border: 1px #ccc solid;
+    margin-bottom: 20px;
+    display: block;
+    background: #EEE;
+    height: 300px;
+}
+
+.angular-google-map img {
+        max-width: inherit !important;
+}
+

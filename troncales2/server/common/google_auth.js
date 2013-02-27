@@ -36,7 +36,8 @@ function configure() {
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
-    res.redirect(urls.login);
+    req.session.redirectUrl = req.url;
+    res.redirect(urls.googlelogin);
 }
 
 module.exports.ensureAuthenticated = ensureAuthenticated;

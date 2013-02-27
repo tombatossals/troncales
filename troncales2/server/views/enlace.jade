@@ -1,34 +1,47 @@
 extends layout
 block main
-  div.offset2.span8(style="margin-top: 3em; margin-bottom: 3em;", ng-show="enlace")
+  div(style="margin: 3em auto; width: 995px;", ng-show="enlace")
     h2(style="border-bottom: 2px solid #888; margin-bottom: .2em;", ng-bind="title") Enlace
-    div.pull-right
-      button.btn.btn-danger(ng-click="openModal()") Remove link
+    if (locals.user)
+      div.pull-right
+        button.btn.btn-danger(ng-click="openModal()") Remove link
 
-    table.table.table-striped
-      thead
-        tr
-          th Supernodos
-      tbody
-        tr
-          td
-            strong {{ s1.name }}
-          td(style="text-align: right;")
-            a.btn(type="submit", style="margin-right: 1em;", ng-click="goto(s1)") Detalles
-        tr
-          td
-            strong {{ s2.name }}
-          td(style="text-align: right;")
-            a.btn(type="submit", style="margin-right: 1em;", ng-click="goto(s2)") Detalles
+    div.row(style="clear: both;", ng-show="enlace")
+      div.span6
+        table.table.table-striped
+          thead
+            tr
+              th Supernodos
+          tbody
+            tr
+              td
+                strong
+                  a(ng-href="/supernodo/#/{{ s1.name }}") {{ s1.name }}
+              td
+                strong {{ s1.mainip }}
+            tr
+              td
+                strong
+                  a(ng-href="/supernodo/#/{{ s2.name }}") {{ s2.name }}
+              td
+                strong {{ s2.mainip }}
+      div.span4.pull-right
+        google-map(center="center", markers="markers", links="links")
 
-    h3 Daily graph
-    img(ng-src="{{ graph_image_url }}")
-    h3 Weekly graph
-    img(ng-src="{{ graph_image_url_weekly }}")
-    h3 Monthly graph
-    img(ng-src="{{ graph_image_url_monthly }}")
-    h3 Year graph
-    img(ng-src="{{ graph_image_url_year }}")
+    div.row
+      div.span5
+        h3 Daily graph
+        img(ng-src="{{ graph_image_url }}")
+      div.span5
+        h3 Weekly graph
+        img(ng-src="{{ graph_image_url_weekly }}")
+    div.row
+      div.span5
+        h3 Monthly graph
+        img(ng-src="{{ graph_image_url_monthly }}")
+      div.span5
+        h3 Year graph
+        img(ng-src="{{ graph_image_url_year }}")
 
   div(modal="shouldBeOpen", close="close()")
     div.modal-header

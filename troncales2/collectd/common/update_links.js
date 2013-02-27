@@ -5,6 +5,7 @@ var logger    = require("./log"),
     Netmask   = require('netmask').Netmask,
     Enlace    = require("../models/enlace").Enlace,
     util      = require("util");
+    ObjectId  = mongoose.Schema.Types.ObjectId;
     Supernodo = require("../models/supernodo");
 
 var conn = 'mongodb://localhost/troncales';
@@ -33,47 +34,46 @@ Enlace.find(function(err, enlaces) {
 
     var count = enlaces.length;
     enlaces.forEach(function(enlace) {
-        var s1 = enlace.supernodos[0];
-        var s2 = enlace.supernodos[1];
+        var s1 = enlace.supernodos[0].id;
+        var s2 = enlace.supernodos[1].id;
 
-	Supernodo.find({ _id: { $in: [ s1.toString(), s2.toString() ] } }, function(err, supernodos) {
+	Supernodo.find({ _id: { $in: [ s1, s2 ] } }, function(err, supernodos) {
             if (supernodos.length !== 2) { end(); return; };
             var s1 = supernodos[0];
             var s2 = supernodos[1];
-	    if (s1.system === "mikrotik" && s2.system === "mikrotik") {
-                var found = false;
-                for (var i=0; i<s1.interfaces.length; i++) {
-                    var interface = s1.interfaces[i];
-                    if (interface.address.search("172.16") === 0) {
-                        var network = new Netmask(interface.address);
-                        for (var j=0; j<s2.interfaces.length; j++) {
-                            var interface2 = s2.interfaces[j];
-                            if (interface2.address.search("172.16") === 0) {
-                                var address = interface2.address.split("/")[0];
-                                if (network.contains(address)) {
-                                    found = true;
-                                    enlace.s1_interface = interface.name;
-                                    enlace.s2_interface = interface2.name;
-                                    enlace.network = network.base + "/" + network.bitmask;
-				    enlace.active = true;
-                                    enlace.save(function() {
-                			logger.info(util.format("Supernode interfaces updated: %s-%s", s1.name, s2.name));
-					end();
-				    });
+            var found = false;
+            for (var i=0; i<s1.interfaces.length; i++) {
+                var iface = s1.interfaces[i];
+                if (iface.address.search("172.16") === 0) {
+                    var network = new Netmask(iface.address);
+                    for (var j=0; j<s2.interfaces.length; j++) {
+                        var iface2 = s2.interfaces[j];
+                        if (iface2.address.search("172.16") === 0) {
+                            var address = iface2.address.split("/")[0];
+                            if (network.contains(address)) {
+                                found = true;
+                                if (enlace.supernodos[0].id == s1._id.toString()) {
+                                    enlace.supernodos[0].iface = iface.name;
+                                    enlace.supernodos[1].iface = iface2.name;
+                                } else {
+                                    enlace.supernodos[1].iface = iface.name;
+                                    enlace.supernodos[0].iface = iface2.name;
                                 }
+                                enlace.network = network.base + "/" + network.bitmask;
+				enlace.active = true;
+                                enlace.save(function() {
+                		    logger.info(util.format("Supernode interfaces updated: %s-%s", s1.name, s2.name));
+				    end();
+				});
                             }
                         }
                     }
                 }
+            }
 
-                if (!found) {
-      		  logger.error(util.format("Link not found: %s-%s", s1.name, s2.name));
-                  end();
-                }
-
-	    } else {
-      		logger.warn(util.format("Link not updated: %s-%s", s1.name, s2.name));
-                end();
+            if (!found) {
+              logger.error(util.format("Link not found: %s-%s %s", s1.name, s2.name, enlace._id));
+              end();
             }
         });
     });

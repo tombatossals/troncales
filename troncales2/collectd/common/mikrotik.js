@@ -4,14 +4,14 @@ var api = require('mikronode'),
 
 function getips(ip, username, password, callback) {
 
-    //process.on('uncaughtException', function(err) {
-    process.on('error', function(err) {
+    var connection = new api(ip, username, password);
+    connection.on('error', function(err) {
         logger.error(err, ip);
         logger.error(util.format("FATAL: Can't connect to the API: %s %s %s", ip, username, password));
+        callback();
         //process.exit(0);
     });
 
-    var connection = new api(ip, username, password);
     connection.connect(function(conn) {
         var chan=conn.openChannel();
         chan.write('/ip/address/print',function() {

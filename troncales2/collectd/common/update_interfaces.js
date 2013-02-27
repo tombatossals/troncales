@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-var getips = require("./mikrotik").getips,
+var getips_mikrotik = require("./mikrotik").getips,
+    getips_openwrt = require("./openwrt").getips,
     logger = require("./log"),
     mongoose = require('mongoose'),
     Supernodo = require("../models/supernodo");
@@ -8,12 +9,12 @@ var getips = require("./mikrotik").getips,
 var conn = 'mongodb://localhost/troncales';
 var db = mongoose.connect(conn);
 
-Supernodo.count( { system : "mikrotik" }, function(err, count) {
+Supernodo.count(function(err, count) {
     if (count == 0) {
             mongoose.connection.close();
     } else {
              
-        Supernodo.find({ system : "mikrotik" }, function(err, supernodos) {
+        Supernodo.find(function(err, supernodos) {
             if (err) { throw err };
 
             var count = supernodos.length;
@@ -27,26 +28,27 @@ Supernodo.count( { system : "mikrotik" }, function(err, count) {
             }
 
             supernodos.forEach(function(supernodo) {
+                var getips = undefined; 
                 if (supernodo.system === "mikrotik") {
-                    logger.info("Updating interfaces of: " + supernodo.name);
-                    var guest_password = supernodo.guest_password || "";
-                    var guest_username = supernodo.guest_username || "guest";
-
-                    getips(supernodo.mainip, guest_username, guest_password, function(resul) {
-                        supernodo.interfaces = resul;
-                        if (resul) {
-                            supernodo.save(function() {
-                                logger.info("Supernode interfaces updated: " + supernodo.name);
-                                end();
-                            });
-                        } else {
-                            end();
-                        }
-                    });
-                } else {
-                    logger.warn("Supernode interfaces not updated: " + supernodo.name);
-                    end();
+                    getips = getips_mikrotik;
+                } else { 
+                    getips = getips_openwrt;
                 }
+
+                var password = supernodo.password;
+                var username = supernodo.username;
+
+                getips(supernodo.mainip, username, password, function(resul) {
+                    if (resul) {
+                        supernodo.interfaces = resul;
+                        supernodo.save(function() {
+                            logger.info("Supernode interfaces updated: " + supernodo.name);
+                            end();
+                        });
+                    } else {
+                        end();
+                    }
+                });
           });
         });
     }

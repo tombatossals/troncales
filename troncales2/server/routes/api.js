@@ -7,10 +7,59 @@ var Supernodo = require('../models/supernodo'),
 
 module.exports = function(app, urls) {
 
-    app.get(urls.api.supernodo, function(req, res) {
-        var supernodo = req.params.supernodo;
+    app.get(urls.api.supernodoSearch, function(req, res) {
+        var q = req.query.q;
+        var query= {};
+        if (q) {
+            query = { name: new RegExp("^" + q, "i") };
+        }
+        Supernodo.find(query, function(err, supernodos) {
+            if (err) {
+                throw err;
+            } else {
+                var names = new Array();
+                for (var i in supernodos) {
+                    names.push({ id: supernodos[i].name, text: supernodos[i].name });
+                }
+                return res.json(names);
+            }
+        });
+    });
+
+    app.post(urls.api.supernodo, ensureAuthenticated, function(req, res) {
+        var lat = req.body.latitude;
+        var lng = req.body.longitude;
+        var supernodo = new Supernodo();
+        supernodo.latlng.lat = lat;
+        supernodo.latlng.lng = lng;
+        supernodo.name = "newsupernodo";
+        supernodo.save(function(err) {
+            if (err) {
+                throw err;
+            } else {
+                res.send(200);
+            }
+        });
+    });
+
+    app.post(urls.api.enlace, ensureAuthenticated, function(req, res) {
+        var s1 = req.body.s1;
+        var s2 = req.body.s2;
+
+        Supernodo.find({ name: { "$in" : [ s1, s2] } }, function(err, supernodos) {
+            var s1 = supernodos[0];
+            var s2 = supernodos[1];
+            var enlace = new Enlace();
+            enlace.supernodos = [ { id: s1._id.toString() }, { id: s2._id.toString() } ];
+            enlace.save();
+            res.send(200);
+        });
+    });
+
+    app.get(urls.api.supernodoByName, function(req, res) {
+        var name = req.params.name;
         var query = new Object();
-	query["name"] = supernodo;
+	query["name"] = name;
 
         Supernodo.findOne(query, function(err, supernodo) {
             if (err) {
@@ -21,22 +70,43 @@ module.exports = function(app, urls) {
         });
     });
 
-    app.delete(urls.api.supernodo, ensureAuthenticated, function(req, res) {
-        var supernodo = req.params.id;
-        var query = new Object();
-	query["id"] = supernodo;
+    app.put(urls.api.supernodoById, ensureAuthenticated, function(req, res) {
+        var id = req.params.id;
+        var name = req.body.name;
+        var mainip = req.body.mainip;
 
-        Supernodo.findOne(query, function(err, supernodo) {
+        Supernodo.findOne({ _id: id }, function(err, supernodo) {
             if (err) {
                 throw err;
             } else {
-                //supernodo.remove();
+                console.log(supernodo.id);
+                supernodo.name = name;
+                supernodo.mainip = mainip;
+                supernodo.save(function(err) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        return res.send(200);
+                    }
+                });
+            }
+        });
+    });
+
+    app.delete(urls.api.supernodoById, ensureAuthenticated, function(req, res) {
+        var id = req.params.id;
+
+        Supernodo.findOne({ _id: id }, function(err, supernodo) {
+            if (err) {
+                throw err;
+            } else {
+                supernodo.remove();
                 return res.send(200);
             }
         });
     });
 
-    app.get(urls.api.supernodos, function(req, res) {
+    app.get(urls.api.supernodo, function(req, res) {
         var query = new Object();
 	//query["geometry"] = { $exists: true };
 
@@ -75,8 +145,7 @@ module.exports = function(app, urls) {
 
     app.get(urls.api.neighbours, function(req, res) {
         var id = req.params.id;
-        console.log(id);
-        Enlace.find({ supernodos: { $in: [ id ] } }, function(err, enlaces ) {
+        Enlace.find({ "supernodos.id": { $in: [ id ] } }, function(err, enlaces ) {
             if (err) { 
                 throw err;
             } else {
@@ -84,10 +153,10 @@ module.exports = function(app, urls) {
                 for (var i in enlaces) {
                     var enlace = enlaces[i];
                     var supernodos = enlace["supernodos"];
-                    if (supernodos[0].toString() == id) {
-                        neighbours.push(supernodos[1].toString());
+                    if (supernodos[0].id == id) {
+                        neighbours.push(supernodos[1].id);
                     } else {
-                        neighbours.push(supernodos[0].toString());
+                        neighbours.push(supernodos[0].id);
                     }
                 } 
                 Supernodo.find( { _id: { $in: neighbours } }, function( err, supernodos) { 
@@ -97,7 +166,7 @@ module.exports = function(app, urls) {
         });
     });
 
-    app.get(urls.api.enlace, function(req, res) {
+    app.get(urls.api.enlaceBySupernodos, function(req, res) {
         var s1 = req.params.s1;
         var s2 = req.params.s2;
         Supernodo.find({ name: { $in: [ s1, s2 ] } }, function(err, supernodos) {
@@ -107,22 +176,38 @@ module.exports = function(app, urls) {
             } else {
                 var s1 = supernodos[0];
                 var s2 = supernodos[1];
-                Enlace.findOne({ supernodos: { $all: [ s1.id, s2.id ] } }, function(err, enlace) {
+                Enlace.findOne({ "supernodos.id": { $all: [ s1.id, s2.id ] } }, function(err, enlace) {
                     res.send({ enlace: enlace, s1: s1, s2: s2 });
                 });
             }
         });
     });
 
-    app.delete(urls.api.delEnlace, ensureAuthenticated, function(req, res) {
+    app.put(urls.api.enlaceById, ensureAuthenticated, function(req, res) {
         var id = req.params.id;
-        Enlace.findOne({ id: id }, function(err, enlace) {
-            //enlace.remove();
+        var distance = req.body.distance;
+
+        Enlace.findOne({ _id: id }, function(err, enlace) {
+            enlace.distance = distance;
+            enlace.save(function(err) {
+                if (err) {
+                    throw err;
+                } else {
+                    res.send(200);
+                }
+            });
+        });
+    });
+
+    app.delete(urls.api.enlaceById, ensureAuthenticated, function(req, res) {
+        var id = req.params.id;
+        Enlace.findOne({ _id: id }, function(err, enlace) {
+            enlace.remove();
             res.send(200);
         });
     });
 
-    app.get(urls.api.enlaces, function(req, res) {
+    app.get(urls.api.enlace, function(req, res) {
         var query = new Object();
 	query["active"] = true;
 	//query["geometry"] = { $exists: true };

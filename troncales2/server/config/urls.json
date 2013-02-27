@@ -1,15 +1,17 @@
 {
     "logout": "logout",
     "login" : "login",
+    "googlelogin" : "login/google",
     "user" : "user",
     "authcallback" : "auth/google/callback",
     "api": {
-        "supernodos": "api/supernodos",
-        "enlaces": "api/enlaces",
-        "enlace": "api/enlace/:s1/:s2",
-        "delEnlace": "api/enlace/:id",
-        "delSupernodo": "api/supernodo/:id",
-        "supernodo": "api/supernodo/:supernodo",
+        "supernodo": "api/supernodo",
+        "supernodoById": "api/supernodo/:id",
+        "supernodoByName": "api/supernodo/:name",
+        "enlace": "api/enlace",
+        "enlaceBySupernodos": "api/enlace/:s1/:s2",
+        "enlaceById": "api/enlace/:id",
+        "supernodoSearch": "api/supernodos/search",
         "neighbours": "api/supernodo/:id/neighbours",
         "user": "api/user"
     },
