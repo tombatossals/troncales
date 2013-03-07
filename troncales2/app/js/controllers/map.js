@@ -32,8 +32,9 @@ function MapController($scope, $location, $http) {
 	},
 	markers: [],
 	links: [],
+        path: [],
 	zoom: 13,
-        showLinks: false,
+        gps: true,
         newmarker: false
     });
 
@@ -42,10 +43,6 @@ function MapController($scope, $location, $http) {
     $http.get("/api/supernodo/").success(function(response) {
         $scope.markers = response;
     });
-
-    $scope.gps = function() {
-        $scope.step1 = true;
-    };
 
     $scope.openModal = function() {
         $scope.shouldBeOpen = true;
@@ -59,7 +56,7 @@ function MapController($scope, $location, $http) {
         $scope.links = [];
         $scope.markers = [];
         $scope.newmarker = true;
-        $scope.showLinks = false;
+        $scope.gps = false;
         $("#all-links").removeClass("active");
     };
 
@@ -82,11 +79,11 @@ function MapController($scope, $location, $http) {
         }
     };
 
-    $scope.toggleLinks = function() {
+    $scope.toggleGps = function() {
+        $scope.gps = !$scope.gps;
         $scope.newmarker = false;
-        $scope.showLinks = !$scope.showLinks;
 
-        if ($scope.showLinks) {
+        if (!$scope.gps) {
             $http.get("/api/enlace/").success(function(response) {
                $scope.links = response;
             });
@@ -97,4 +94,17 @@ function MapController($scope, $location, $http) {
             $scope.links = [];
         }
     };
+
+    $scope.$watch("path", function(newValue, oldValue) {
+        var path = newValue;
+        $scope.links = [];
+        if (path.length == 2) {
+            $http.get("/api/path/" + path[0].name + "/" + path[1].name).success(function(response) {
+                $scope.links = response;
+            });
+        }
+    }, true);
+
+    $scope.toggleGps();
+
 }

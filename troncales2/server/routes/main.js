@@ -79,6 +79,7 @@ module.exports = function(app, urls) {
                             } else {
                               iface = enlace.supernodos[1].iface;
                             }
+                            iface = iface.replace(/:[0-9]+\./, ".");
                             var b = "/var/lib/collectd/" + s1.name + "/snmp/if_octets-" + iface + ".rrd";
                         } else {
                             var a = "/var/lib/collectd/" + s2.name + "/links/bandwidth-" + s1.name + ".rrd";
@@ -87,8 +88,10 @@ module.exports = function(app, urls) {
                             } else {
                               iface = enlace.supernodos[0].iface;
                             }
+                            iface = iface.replace(/:[0-9]+/, "");
                             var b = "/var/lib/collectd/" + s2.name + "/snmp/if_octets-" + iface + ".rrd";
                         }
+
                         if (!fs.existsSync(a) || !fs.existsSync(b)) {
                             res.send(404);
                             return;

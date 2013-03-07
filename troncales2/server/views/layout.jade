@@ -17,8 +17,6 @@ html
         div.navbar.mainmenu
           div.navbar-inner(style="padding: 0;")
             a.brand(href=urls.base) Troncal de La Plana
-            div.pull-right(style="margin: .4em .5em .4em 0;")
-              input.bigdrop.search.span2(type="hidden")
             div.pull-right.navmenu
               a.btn.btn-success(href=urls.base, style="margin-right: .5em;") Map
               if (locals.user)
@@ -31,5 +29,7 @@ html
                       a(href=urls.logout) Logout
               else
                 a.btn.btn-warning(ng-href=urls.login + "?return={{ hash }}") Login
+              div.pull-right(style="margin: .4em .5em .4em 0;")
+                input.bigdrop.search.span2(type="hidden")
 
       block main

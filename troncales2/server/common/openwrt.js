@@ -6,7 +6,6 @@ process.on('error', function(err) {
 });
 
 var logger    = require("./log"),
-    Netmask   = require('netmask').Netmask,
     util      = require("util"),
     sshConn   = require("ssh2");
 
@@ -18,30 +17,29 @@ function convierteEstructura(res) {
 
     for (var l in res) {
         var line = res[l];
-        if (line.search(" +inet 10\.") != -1 || line.search(" +inet 172\.16\.") != -1) {
-            line = line.replace(/ +inet /, "");
-            line = line.replace(/brd /, "");
-            line = line.replace(/scope global /, "");
-            var interface = line.split(" ")[2];
-            var address = line.split(" ")[0];
-            result.push({ name: interface, address: address });
+        if (line.search("traceroute") != 0) {
+            line = line.replace(/ [0-9]+ +/, "");
+            line = line.split(" ")[0];
+            if (line.search("10.") == 0 || line.search("172.") == 0) {
+                result.push(line);
+            }
         }
     }
 
     return result;
 }
 
-function getips(ip, username, password, callback) {
+function traceroute(ip, username, password, remoteip, callback) {
     var c = new sshConn();
     c.on("ready", function() {
-        c.exec(util.format("/usr/sbin/ip a"), function(err, stream) {
+        c.exec(util.format("/usr/bin/traceroute %s", remoteip), function(err, stream) {
             if (err) { 
                 logger.debug(util.format("Error getting IP information from OpenWRT: %s", ip));
             } else {
-                var res = "";
+                var res = new Array();
                 stream.on("data", function(data) {
-                    res = data.toString().trim();
-                    res = convierteEstructura(res);
+                    data = data.toString().trim();
+                    res = convierteEstructura(data);
                 });
                 stream.on("exit", function() {
                     callback(res);
@@ -63,4 +61,4 @@ function getips(ip, username, password, callback) {
     });  
 }
 
-module.exports.getips = getips;
+module.exports.traceroute = traceroute;

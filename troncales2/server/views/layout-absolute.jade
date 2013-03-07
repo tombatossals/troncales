@@ -21,8 +21,7 @@ html
               input.bigdrop.search.span2(type="hidden")
 
             div.pull-right.navmenu
-              <!--button.btn.btn-success(ng-click="gps()", data-toggle="button", style="margin-right: .5em;") GPS-->
-              button.btn.btn-primary(id="all-links", ng-click="toggleLinks()", data-toggle="button", style="margin-right: .5em;") Ver enlaces
+              button.btn.btn-success(ng-click="toggleGps()", data-toggle="button", style="margin-right: .5em;") GPS
               if (locals.user)
                 div.btn-group
                   a.btn.btn-danger(href=urls.user) #{locals.user.displayName}

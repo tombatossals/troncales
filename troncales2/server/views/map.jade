@@ -1,6 +1,6 @@
 extends layout-absolute
 block main
-  google-map(center="center", zoom="zoom", markers="markers", links="links", newmarker="newmarker")
+  google-map(center="center", zoom="zoom", markers="markers", links="links", newmarker="newmarker", gps="gps", path="path")
 
   div(modal="shouldBeOpen", close="close()")
     div.modal-header
@@ -10,9 +10,12 @@ block main
     div.modal-footer
       button.btn.btn-warning.cancel(ng-click="close()") Cancel
 
-  div(ng-show="step1", style="position: absolute; top: 5em; left: 3em; z-index: 100;")
-    div.alert.alert-block
-      | Select the initial supernode
+  div(ng-show="gps", style="position: absolute; top: 5em; left: 3em; z-index: 100;")
+    div.alert.alert-block(style="border: 1px solid #c09853;")
+      h3(style="margin: 0.1em; padding: 0em;") GPS utility
+      ul
+        li Click on the initial supernode
+        li(ng-show="path.length") Click on the final supernode
 
   div(ng-show="newmarker", style="position: absolute; top: 5em; left: 3em; z-index: 100; width: 300px;")
     div.alert.alert-block(style="overflow: hidden;")

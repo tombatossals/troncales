@@ -10,6 +10,7 @@
         "supernodoByName": "api/supernodo/:name",
         "enlace": "api/enlace",
         "enlaceBySupernodos": "api/enlace/:s1/:s2",
+        "path": "api/path/:s1/:s2",
         "enlaceById": "api/enlace/:id",
         "supernodoSearch": "api/supernodos/search",
         "neighbours": "api/supernodo/:id/neighbours",

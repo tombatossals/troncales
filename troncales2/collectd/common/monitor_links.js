@@ -61,11 +61,12 @@ function bandwidth_test_openwrt(enlace, s1, s2, cb) {
     var ip = s1.mainip;
     var username = s1.username;
     var password = s1.password;
-    var duration = 5;
+    var duration = 20;
     var testip = get_testing_ip(enlace, s2);
     if (testip) {
         c.on("ready", function() {
             c.exec(util.format("/usr/sbin/mikrotik_btest -d both -t %s %s", duration, testip), function(err, stream) {
+                logger.debug(util.format("ssh %s /usr/sbin/mikrotik_btest -d both -t %s %s", ip, duration, testip)); 
                 var tx = 0, rx = 0;
                 stream.on("data", function(data) {
                     var data = data.toString().trim();
@@ -115,12 +116,14 @@ function bandwidth_test_mikrotik(enlace, s1, s2, cb) {
     var ip = s1.mainip;
     var username = s1.username;
     var password = s1.password;
+    var username2 = s2.username;
+    var password2 = s2.password;
     var interval = 5;
     var duration = 19;
     var testip = get_testing_ip(enlace, s2);
     if (testip) {
         c.on("ready", function() {
-            c.exec(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username, password, interval, duration), function(err, stream) {
+            c.exec(util.format(":global ip; :global username; :global password; :global interval; :global duration; :set ip %s; :set username %s; :set password %s; :set interval %s; :set duration %s; /system script run bandwidth", testip, username2, password2, interval, duration), function(err, stream) {
                 logger.debug(util.format("Executing on %s: :global ip; :set ip %s; /system script run bandwidth", ip, testip));
                 if (err) { 
                         logger.debug(util.format("Error on bandwidth from %s to %s.", ip, testip));
@@ -173,6 +176,7 @@ function monitor_link(enlace, countdown_and_exit) {
             Supernodo.find({ _id: { $in: [ s1, s2 ] } }, function(err, supernodos) {
                 var s1 = supernodos[0];
                 var s2 = supernodos[1];
+
                 var time = 45000;
                 if (working.length == 0) {
                     working[0] = new Array();

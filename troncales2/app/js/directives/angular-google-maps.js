@@ -129,6 +129,23 @@
           });
       };
 
+      this.deactivateMarker = function(supernodo) {
+          var marker = null;
+          for (var i=0;i<_markers.length; i++) {
+              if (_markers[i].name === supernodo) {
+                 marker = _markers[i];
+                 break;
+              } 
+          }
+          var hicon = new google.maps.MarkerImage("img/star.png", null, null, new google.maps.Point(16, 16));
+          marker.setIcon(hicon);
+      };
+
+      this.activateMarker = function(marker) {
+          var hicon = new google.maps.MarkerImage("img/wifiRed.png", null, null, new google.maps.Point(16, 16));
+          marker.setIcon(hicon);
+      };
+
       this.clearLinks = function() {
           angular.forEach(this.polylines, function(poly) {
               poly.setMap(null);
@@ -194,6 +211,7 @@
 
         var position = new google.maps.LatLng(lat, lng); 
         var marker = new google.maps.Marker({
+          name: supernodo.name,
           position: position,
           map: _instance,
           icon: icon
@@ -290,6 +308,8 @@
       scope: {
         center: "=center", // required
         markers: "=markers", // optional
+        gps: "=gps", // optional
+        path: "=path", // optional
         newmarker: "=newmarker", // optional
         links: "=links", // optional
         latitude: "=latitude", // required
@@ -352,7 +372,7 @@
         scope.$watch("links", function(newArray, oldArray) {
             _m.clearLinks();
             if (newArray.length > 0) {
-          $timeout(function () {
+              $timeout(function () {
                 angular.forEach(newArray, function(enlace) {
                    var poly =  _m.renderLink(enlace);
                    var path = poly.getPath(); 
@@ -473,11 +493,32 @@
                             }
                         }).qtip('api');
 	            });
- 
+                    
                     google.maps.event.addListener(marker, "click",
                         (function(supernodo) {
                             return function() {
-                                window.location = "/supernodo/#/" + supernodo.name;
+                                if (scope.gps) {
+                                    var found = false;
+                                    for (var i=0; i<scope.path.length;i++) {
+                                        if (supernodo.name == scope.path[i].name) {
+                                            _m.deactivateMarker(scope.path[i].name);
+                                            scope.path.splice(i, 1);
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (found === false) {
+                                        if (scope.path.length == 2) {
+                                            _m.deactivateMarker(scope.path[1].name);
+                                            scope.path.splice(1, 1);
+                                        }
+                                        _m.activateMarker(marker);
+                                        scope.path.push(supernodo);
+                                    }
+                                    scope.$apply();
+                                } else {
+                                    window.location = "/supernodo/#/" + supernodo.name;
+                                }
                             };
                         })(supernodo)
                     );

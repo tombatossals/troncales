@@ -18,6 +18,19 @@ var SupernodoSchema = new Schema({
     latlng: {
         lat: Number,
         lng: Number
+    },
+    interfaces: [ {
+        name: String,
+        address: String
+    }],
+    username: {
+        type: String
+    },
+    password: {
+        type: String
+    },
+    system: {
+        type: String
     }
 });
 
